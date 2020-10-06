@@ -1,3 +1,4 @@
 {
-    "exit": "Disconnect-TvServer"
+    "exit": "Disconnect-TvServer",
+    "leave": "Split-TvChannel"
 }

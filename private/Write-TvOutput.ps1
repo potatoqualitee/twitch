@@ -53,6 +53,10 @@ function Write-TvOutput {
             "JOIN" {
                 Write-Output "*** $user has joined #$script:Channel"
             }
+            "PING" {
+                Send-Server -Message "PONG"
+                Write-Output "PONG!"
+            }
             353 {
                 $members = $message.Split(" ")
                 if ($members.Count -le 100) {
