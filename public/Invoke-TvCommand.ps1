@@ -43,7 +43,6 @@ function Invoke-TvCommand {
 
         # some defaults
         if (-not $UserCommand) {
-            write-warning "nouser"
             $UserCommand = @{
                 ping = 'Send-TvMessage -Message "$user, pong"'
                 pwd  = 'Send-TvMessage -Message $(Get-Location)'
