@@ -17,7 +17,7 @@ function Disconnect-TvServer {
         [string]$Message
     )
 
-    if (-not $writer.BaseStream) {
+    if (-not $script:bot.Connection.GetStream()) {
         throw "*** Already disconnected 😊"
     }
 
@@ -27,9 +27,9 @@ function Disconnect-TvServer {
 
     $writer.WriteLine("QUIT")
     $writer.Flush()
-    $conn.Close()
+    $script:bot.Close()
     $script:channel = $script:line = $script:writer = $null
-    $script:reader = $script:sslstream = $script:conn = $null
+    $script:reader = $script:sslstream = $script:bot = $null
     $script:owner = $null
     Write-Output "*** Disconnected"
 }
