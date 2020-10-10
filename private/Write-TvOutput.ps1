@@ -55,7 +55,7 @@ function Write-TvOutput {
             }
             "PING" {
                 Send-Server -Message "PONG"
-                Write-Output "PONG!"
+                Write-Output -InputObject "PONG!"
             }
             353 {
                 $members = $message.Split(" ")

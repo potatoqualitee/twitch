@@ -52,20 +52,48 @@ function Wait-TvResponse {
             throw "Have you connected to a server using Connect-TvServer?"
         }
 
-        while ($null -ne $script:line) {
-            try {
-                $script:line = $reader.ReadLine()
-                $params = @{
-                    InputObject  = $script:line
-                    Owner        = $script:Owner
-                    UserCommand  = $script:UserCommand
-                    AdminCommand = $script:AdminCommand
-                    Channel      = $Channel
-                    Key          = $Key
+        $script:running = $true
+        $active = $false
+        $lasttick = [DateTime]::Now
+
+        $inactivedelay = 1000
+        $interactivedelay = 100
+        $timerinterval = 0
+
+        while ($script:running) {
+            if ($active) {
+                Start-Sleep -Milliseconds $interactivedelay
+            } else {
+                Start-Sleep -Milliseconds $inactivedelay
+            }
+
+            $active = $false
+
+            if ($script:running -and $timerinterval) {
+                if ((New-TimeSpan $lasttick ([DateTime]::Now)).TotalMilliseconds -gt $timerinterval) {
+                    Send-Server -Message "PING"
+                    $lasttick = [DateTime]::Now
                 }
-                Invoke-TvCommand @params
-            } catch {
-                throw "Cannot read stream: $_"
+            } else {
+                $lasttick = [DateTime]::Now
+            }
+
+            while ($script:running -and ($script:bot.GetStream().DataAvailable -or $reader.Peek() -ne -1)) {
+                try {
+                    $script:line = $reader.ReadLine()
+                    $active = $true
+                    $params = @{
+                        InputObject  = $script:line
+                        Owner        = $script:Owner
+                        UserCommand  = $script:UserCommand
+                        AdminCommand = $script:AdminCommand
+                        Channel      = $Channel
+                        Key          = $Key
+                    }
+                    Invoke-TvCommand @params
+                } catch {
+                    throw "Cannot read stream: $_"
+                }
             }
         }
     }

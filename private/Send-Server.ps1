@@ -15,11 +15,15 @@ function Send-Server {
     }
 
     foreach ($msg in $Message) {
+        Write-Verbose "$msg"
         $writer.WriteLine($msg)
     }
 
     try {
         $writer.Flush()
+        if ($Message -eq "PONG") {
+            Start-Sleep -Second 5
+        }
     } catch {
         Write-Warning "Whoops! $_"
     }
@@ -27,6 +31,7 @@ function Send-Server {
     if ($reader.BaseStream.CanRead) {
         do {
             $script:line = $reader.ReadLine()
+            write-warning "$script:line"
             if ($Channel) {
                 Write-TvOutput -InputObject $script:line -Channel $Channel
             } else {
