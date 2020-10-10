@@ -68,8 +68,7 @@ function Invoke-TvCommand {
                 $AdminCommand = $AdminCommand | ConvertTo-HashTable -ErrorAction Stop
             }
         } catch {
-            Stop-PSFFunction -Message "Conversion for UserCommand and AdminCommand failed. Please check examples."
-            return
+            throw "Conversion for UserCommand and AdminCommand failed. Please check examples."
         }
 
         $allowedregex = [Regex]::new("^$Key[a-zA-Z0-9\ ]+`$")
