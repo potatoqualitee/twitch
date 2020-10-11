@@ -27,7 +27,6 @@ Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmn
 
 To run the bot as a background job, run the following:
 ```
-# Run the bot in
 Start-Job -ScriptBlock { Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee }
 ```
 
