@@ -23,7 +23,6 @@ Install-Module tvbot
 ## Run
 Once `tvbot` is installed, start it up. Note that this will run the bot infinitely so you will not be brought back to a prompt.
 ```
-# Start your bot
 Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
 ```
 
