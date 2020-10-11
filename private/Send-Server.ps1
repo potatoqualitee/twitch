@@ -31,7 +31,6 @@ function Send-Server {
     if ($reader.BaseStream.CanRead) {
         do {
             $script:line = $reader.ReadLine()
-            write-warning "$script:line"
             if ($Channel) {
                 Write-TvOutput -InputObject $script:line -Channel $Channel
             } else {

@@ -24,6 +24,10 @@ function Send-TvMessage {
             Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$chan :$Message"
             Send-Server -Message "PRIVMSG #$chan :$Message"
         }
+        if (-not $PSBoundParameters.Channel) {
+            Write-Verbose -Message "[$(Get-Date)] PRIVMSG :$Message"
+            Send-Server -Message "PRIVMSG :$Message"
+        }
     } else {
         throw "Disconnected?"
     }
