@@ -12,8 +12,10 @@ Next, change your execution policy then install `tvbot` from the PowerShell Gall
 ```
 # Set execution policy to allow local scripts
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 # OPTIONAL: Trust the Microsoft Gallery to avoid prompts
 Set-PSRepository PSGallery -InstallationPolicy Trusted
+
 # Install the tvbot PowerShell module
 Install-Module tvbot
 ```
