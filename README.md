@@ -1,5 +1,8 @@
-# tvbot
+## Getting Started
 
+<img align="left" src=https://user-images.githubusercontent.com/8278033/95674723-6c0fef80-0bb2-11eb-8156-fbb026255c94.png alt="dbatools logo">  `tvbot` is a proof of concept PowerShell bot for [https://twitch.tv](twitch.tv) that works on the Raspberry Pi. It supports user commands and admin commands which can be imported from JSON files.
+
+## Getting Started
 
 Once this is published to the PowerShell Gallery, you will just need to run the following code to start testing your bot:
 ```
@@ -20,5 +23,4 @@ The owner(s) of the bot can issue the following command:
 
 ## TODO
 
-- Currently, the bot will most definintely timeout. I have to fix that.
-- Tested reconnects
+- Automatic reconnects
