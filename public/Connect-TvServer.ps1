@@ -12,8 +12,7 @@ function Connect-TvServer {
     .PARAMETER Token
         The plain-text Twitch token from https://twitchapps.com/tmi/
 
-    .PARAMETER SecureToken
-        The Twitch token from https://twitchapps.com/tmi/ in SecureString format
+        SecureStrings were attempted but were not cross-platform yet :(
 
     .PARAMETER Server
         The Twitch IRC server. Defaults to irc.chat.twitch.tv.
@@ -28,31 +27,18 @@ function Connect-TvServer {
         PS> Connect-TvServer -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs
 
         Connects to irc.chat.twitch.tv on port 6697 as a bot with the Twitch account, mypsbot. potatoqualitee is the owner.
-
-    .EXAMPLE
-        PS> Connect-TvServer -Name mypsbot -Owner potatoqualitee -SecureToken (Get-Credential doesntmatter).Password
-
-        Passes in a SecureString for the token and is never exposed
     #>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory)]
         [string]$Name,
         [string]$Token,
-        [securestring]$SecureToken,
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
         [Parameter(Mandatory)]
         [string[]]$Owner
     )
     process {
-        if (-not $PSBoundParameters.Token -and -not $PSBoundParameters.SecureToken) {
-            throw "Please provide either Token or SecureToken"
-        }
-        if ($PSBoundParameters.Token) {
-            $SecureToken = ConvertTo-SecureString -AsPlainText $Token -Force
-        }
-
         $script:Owner = $Owner
 
         try {
@@ -73,8 +59,11 @@ function Connect-TvServer {
             $writer.NewLine = "`r`n"
             $script:reader = New-Object System.IO.StreamReader $sslstream
 
-            $string1 = "PASS oauth:$(([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureToken)))).Replace('oauth:', ''))"
+            # allow user to pass in a token starting or not starting with oauth:
+            $string1 = "PASS oauth:$($token.Replace('oauth:', ''))"
             $string2 = "NICK $Name"
+
+            # enble extra features from twitch
             $string3 = "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"
 
             Send-Server -Message $string1, $string2, $string3

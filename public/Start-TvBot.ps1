@@ -12,9 +12,6 @@ function Start-TvBot {
     .PARAMETER Token
         The plain-text Twitch token from https://twitchapps.com/tmi/
 
-    .PARAMETER SecureToken
-        The Twitch token from https://twitchapps.com/tmi/ in SecureString format
-
     .PARAMETER Server
         The Twitch IRC server. Defaults to irc.chat.twitch.tv.
 
@@ -49,7 +46,6 @@ function Start-TvBot {
         [Parameter(Mandatory)]
         [string]$Name,
         [string]$Token,
-        [securestring]$SecureToken,
         [Parameter(Mandatory)]
         [string[]]$Owner,
         [Parameter(Mandatory)]
@@ -66,12 +62,11 @@ function Start-TvBot {
     }
     process {
         $params = @{
-            Name        = $Name
-            Token       = $Token
-            SecureToken = $SecureToken
-            Server      = $Server
-            Port        = $Port
-            Owner       = $Owner
+            Name   = $Name
+            Token  = $Token
+            Server = $Server
+            Port   = $Port
+            Owner  = $Owner
         }
         Connect-TvServer @params
         Join-TvChannel -Channel $Channel
