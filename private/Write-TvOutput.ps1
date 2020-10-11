@@ -43,40 +43,40 @@ function Write-TvOutput {
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
-                        Write-Output "<$user> $message"
+                        Write-Output "[$(Get-Date)] <$user> $message"
                     } else {
-                        Write-Output "> $message"
+                        Write-Output "[$(Get-Date)] > $message"
                     }
                     Invoke-TvCommand -InputObject $message -Channel $script:Channel -Owner $Owner -User $user
                 }
             }
             "JOIN" {
-                Write-Output "*** $user has joined #$script:Channel"
+                Write-Output "[$(Get-Date)] *** $user has joined #$script:Channel"
             }
             "PING" {
                 Send-Server -Message "PONG"
-                Write-Output "PONG!"
+                Write-Output -InputObject "[$(Get-Date)] PONG!"
             }
             353 {
                 $members = $message.Split(" ")
                 if ($members.Count -le 100) {
-                    Write-Output "> Current user list:"
+                    Write-Output "[$(Get-Date)] > Current user list:"
                     foreach ($member in $members) {
                         Write-Output "  $member"
                     }
                 } else {
-                    Write-Output "User list is super long, skipping"
+                    Write-Output "[$(Get-Date)] User list is super long, skipping"
                 }
             }
             { $psitem.Trim() -in 001, 002, 003, 372 } {
-                Write-Output "> $message"
+                Write-Output "[$(Get-Date)] > $message"
             }
             default {
-                Write-Verbose "command: $command"
-                Write-Verbose "message: $message"
-                Write-Verbose "params: $params"
-                Write-Verbose "prefix: $prefix"
-                Write-Verbose "user: $user"
+                Write-Verbose "[$(Get-Date)] command: $command"
+                Write-Verbose "[$(Get-Date)] message: $message"
+                Write-Verbose "[$(Get-Date)] params: $params"
+                Write-Verbose "[$(Get-Date)] prefix: $prefix"
+                Write-Verbose "[$(Get-Date)] user: $user"
             }
         }
     }

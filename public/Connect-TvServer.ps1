@@ -56,14 +56,14 @@ function Connect-TvServer {
         $script:Owner = $Owner
 
         try {
-            $script:conn = New-Object System.Net.Sockets.TcpClient
-            $conn.NoDelay = $true
-            $conn.SendBufferSize = 81920
-            $conn.ReceiveBufferSize = 81920
+            $script:bot = New-Object System.Net.Sockets.TcpClient
+            $bot.NoDelay = $true
+            $bot.SendBufferSize = 81920
+            $bot.ReceiveBufferSize = 81920
 
             Write-Output "> Connecting to $($Server):$Port"
-            $conn.Connect($Server, $Port)
-            $stream = $conn.GetStream()
+            $bot.Connect($Server, $Port)
+            $stream = $bot.GetStream()
 
             Write-Output "> Connected"
             $script:sslstream = New-Object System.Net.Security.SslStream $stream, $false
