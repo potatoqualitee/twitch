@@ -106,6 +106,7 @@ function Invoke-TvCommand {
         }
     }
     end {
+        # clear out user
         $user = $null
     }
 }

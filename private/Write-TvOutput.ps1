@@ -54,8 +54,8 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] *** $user has joined #$script:Channel"
             }
             "PING" {
+                $script:ping = [DateTime]::Now
                 Send-Server -Message "PONG"
-                Write-Output -InputObject "[$(Get-Date)] PONG!"
             }
             353 {
                 $members = $message.Split(" ")

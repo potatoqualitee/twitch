@@ -15,20 +15,18 @@ function Send-Server {
     }
 
     foreach ($msg in $Message) {
-        Write-Verbose "$msg"
+        Write-Verbose "[$(Get-Date)] $msg"
         $writer.WriteLine($msg)
     }
 
     try {
         $writer.Flush()
-        if ($Message -eq "PONG") {
-            Start-Sleep -Second 5
-        }
     } catch {
         Write-Warning "Whoops! $_"
     }
 
-    if ($reader.BaseStream.CanRead) {
+    # Ping and pong do not return output it seems so no need to read the stream
+    if ($reader.BaseStream.CanRead -and $Message -notin "PING", "PONG") {
         do {
             $script:line = $reader.ReadLine()
             if ($Channel) {
