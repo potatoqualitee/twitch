@@ -54,7 +54,7 @@ function Wait-TvResponse {
 
         $script:running = $true
         $active = $false
-        $lasttick = [DateTime]::Now
+        $lasttick = $script:ping = [DateTime]::Now
 
         $inactivedelay = 1000
         $interactivedelay = 100
@@ -72,10 +72,15 @@ function Wait-TvResponse {
             if ($script:running -and $timerinterval) {
                 if ((New-TimeSpan $lasttick ([DateTime]::Now)).TotalMilliseconds -gt $timerinterval) {
                     Send-Server -Message "PING"
-                    $lasttick = [DateTime]::Now
+                    $lasttick = $script:ping = [DateTime]::Now
                 }
             } else {
                 $lasttick = [DateTime]::Now
+            }
+
+            if ($script:ping -lt (Get-Date).AddMinutes(-20)) {
+                # Reconnect
+                Wait-TvResponse @PSBoundParameters
             }
 
             while ($script:running -and ($script:bot.GetStream().DataAvailable -or $reader.Peek() -ne -1)) {
