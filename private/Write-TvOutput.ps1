@@ -53,6 +53,9 @@ function Write-TvOutput {
             "JOIN" {
                 Write-Output "[$(Get-Date)] *** $user has joined #$script:Channel"
             }
+            "PART" {
+                Write-Output "[$(Get-Date)] *** $user has left #$script:Channel"
+            }
             "PING" {
                 $script:ping = [DateTime]::Now
                 Send-Server -Message "PONG"
