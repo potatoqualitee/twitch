@@ -23,7 +23,9 @@ function Write-TvOutput {
         [parameter(Mandatory)]
         [string]$InputObject,
         [string]$Channel = $script:Channel,
-        [string[]]$Owner = $script:Owner
+        [string[]]$Owner = $script:Owner,
+        [ValidateSet("chat", "leave", "join")]
+        [string[]]$Notify
     )
     process {
         if (-not $writer.BaseStream) {
@@ -44,6 +46,11 @@ function Write-TvOutput {
                 if ($message) {
                     if ($user) {
                         Write-Output "[$(Get-Date)] <$user> $message"
+
+                        if ($Notify -contains "chat") {
+                            write-warning $message.ToString().Replace("☺","")
+                            #Send-OSNotification -Title $user -Body $message.Replace("☺","") -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                        }
                     } else {
                         Write-Output "[$(Get-Date)] > $message"
                     }
@@ -52,9 +59,17 @@ function Write-TvOutput {
             }
             "JOIN" {
                 Write-Output "[$(Get-Date)] *** $user has joined #$script:Channel"
+
+                if ($Notify -contains "join") {
+                    Send-OSNotification -Title $user -Body "$user has joined" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                }
             }
             "PART" {
                 Write-Output "[$(Get-Date)] *** $user has left #$script:Channel"
+
+                if ($Notify -contains "leave") {
+                    Send-OSNotification -Title $user -Body "$user has has left" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                }
             }
             "PING" {
                 $script:ping = [DateTime]::Now
@@ -75,11 +90,13 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] > $message"
             }
             default {
-                Write-Verbose "[$(Get-Date)] command: $command"
-                Write-Verbose "[$(Get-Date)] message: $message"
-                Write-Verbose "[$(Get-Date)] params: $params"
-                Write-Verbose "[$(Get-Date)] prefix: $prefix"
-                Write-Verbose "[$(Get-Date)] user: $user"
+                if ($params -notmatch "PASS") {
+                    Write-Verbose "[$(Get-Date)] command: $command"
+                    Write-Verbose "[$(Get-Date)] message: $message"
+                    Write-Verbose "[$(Get-Date)] params: $params"
+                    Write-Verbose "[$(Get-Date)] prefix: $prefix"
+                    Write-Verbose "[$(Get-Date)] user: $user"
+                }
             }
         }
     }

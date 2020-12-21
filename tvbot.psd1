@@ -10,7 +10,7 @@
     RootModule         = 'tvbot.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.0.3'
+    ModuleVersion      = '0.0.4'
 
     # ID used to uniquely identify this module
     GUID               = 'd6a499b1-fafd-4911-9b4c-cabd00c11546'
@@ -31,7 +31,7 @@
     PowerShellVersion  = '5.1'
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules    = @()
+    RequiredModules    = @("PoshNotify")
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = @()
