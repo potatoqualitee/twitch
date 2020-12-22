@@ -102,7 +102,7 @@ function Wait-TvResponse {
                     }
                     Invoke-TvCommand @params
                 } catch {
-                    if ($PSBoundParameters.Notify -and $script:startboundparams) {
+                    if ($PSBoundParameters.Notify -and $script:startboundparams -and $script:reconnect) {
                         Start-TVBot @script:startboundparams
                     } else {
                         throw "Cannot read stream: $_"

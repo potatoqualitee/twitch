@@ -37,6 +37,9 @@ function Start-TvBot {
     .PARAMETER Notify
         Sends toast notifications for all chats.
 
+    .PARAMETER AutoReconnect
+        Attempt to automatically reconnect if disconnected
+
     .EXAMPLE
         PS> Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
 
@@ -59,11 +62,13 @@ function Start-TvBot {
         [object]$UserCommand,
         [object]$AdminCommand,
         [ValidateSet("chat", "leave", "join")]
-        [string[]]$Notify
+        [string[]]$Notify,
+        [switch]$AutoReconnect
     )
     begin {
         $script:UserCommand = $UserCommand
         $script:AdminCommand = $AdminCommand
+        $script:reconnect = $AutoReconnect
     }
     process {
         $params = @{

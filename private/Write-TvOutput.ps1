@@ -52,11 +52,22 @@ function Write-TvOutput {
                             if ($message) {
                                 try {
                                     $xml = [System.Security.SecurityElement]::Escape($message)
+                                    # THANK YOU VEXX!
                                     $string = ($xml -replace '\x01').Replace("ACTION ", "")
+                                    $id = "tvbot"
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
                                     if ($script:burnt) {
-                                        $id = "tvbot"
+                                        if ($false) {
+                                            $ie.Navigate("https://twitch.tv/$user/about")
+                                            do { Start-Sleep -Milliseconds 100 } while ( $ie.ReadyState -ne 4 )
+                                            $photo = $ie.document.getElementsByClassName("tw-avatar--size-96") | Select-Object -ExpandProperty innerhtml
+                                            $img = ([regex]'(?i)src="(.*?)"').Matches($photo) | ForEach-Object { $_.Groups[1].Value }
+                                            if ($img) {
+                                                $image = $img
+                                            }
+                                        }
+
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
@@ -66,7 +77,7 @@ function Write-TvOutput {
                                         Send-OSNotification -Title $user -Body $string -Icon $image -ErrorAction Stop
                                     }
                                 } catch {
-                                    #$_ | Out-String | Write-Warning
+                                    $_ | Out-String | Write-Warning # vexx
                                     write-warning -message "$_ .... UGH FAILED ON $string"
                                 }
                             }

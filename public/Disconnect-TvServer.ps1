@@ -33,4 +33,10 @@ function Disconnect-TvServer {
     $script:reader = $script:sslstream = $script:bot = $null
     $script:owner = $null
     Write-Output "*** Disconnected"
+
+    if ($script:ie) {
+        $script:ie.Quit()
+        $null = [System.Runtime.Interopservices.Marshal]::ReleaseComObject($ie)
+        Remove-Variable -Scope Script -Name ie -ErrorAction SilentlyContinue
+    }
 }

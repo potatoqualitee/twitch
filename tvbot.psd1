@@ -34,7 +34,7 @@
     RequiredModules    = @("PoshNotify")
 
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @()
+    RequiredAssemblies = @("HtmlAgilityPack.dll")
 
     # Format files (.ps1xml) to be loaded when importing this module
     FormatsToProcess   = @()
