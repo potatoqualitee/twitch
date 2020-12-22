@@ -58,16 +58,6 @@ function Write-TvOutput {
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
                                     if ($script:burnt) {
-                                        if ($false) {
-                                            $ie.Navigate("https://twitch.tv/$user/about")
-                                            do { Start-Sleep -Milliseconds 100 } while ( $ie.ReadyState -ne 4 )
-                                            $photo = $ie.document.getElementsByClassName("tw-avatar--size-96") | Select-Object -ExpandProperty innerhtml
-                                            $img = ([regex]'(?i)src="(.*?)"').Matches($photo) | ForEach-Object { $_.Groups[1].Value }
-                                            if ($img) {
-                                                $image = $img
-                                            }
-                                        }
-
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
@@ -78,7 +68,7 @@ function Write-TvOutput {
                                     }
                                 } catch {
                                     $_ | Out-String | Write-Warning # vexx
-                                    write-warning -message "$_ .... UGH FAILED ON $string"
+                                    #write-warning -message "$_ .... UGH FAILED ON $string"
                                 }
                             }
                         }

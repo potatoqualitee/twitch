@@ -25,12 +25,6 @@ foreach ($function in (Get-ChildItem "$ModuleRoot\public" -Filter "*.ps1" -Recur
 }
 
 if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
-    try {
-        $script:ie = New-Object -COM InternetExplorer.Application -ErrorAction Stop -Property @{
-            Visible = $false
-        }
-    } catch {
-        $ie = $null
-    }
+    # sqlite shared cache
     $script:burnt = $true
 }
