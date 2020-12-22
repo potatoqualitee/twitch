@@ -47,7 +47,7 @@ function Wait-TvResponse {
     }
     process {
         if (-not $script:line) {
-            throw "Nothing to parse"
+            continue
         }
 
         if (-not $writer.BaseStream) {

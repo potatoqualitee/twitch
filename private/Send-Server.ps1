@@ -15,7 +15,11 @@ function Send-Server {
     }
 
     foreach ($msg in $Message) {
-        Write-Verbose "[$(Get-Date)] $msg"
+        if ($msg -match "PASS ") {
+            Write-Verbose "[$(Get-Date)] PASS ********"
+        } else {
+            Write-Verbose "[$(Get-Date)] $msg"
+        }
         $writer.WriteLine($msg)
     }
 
@@ -29,10 +33,12 @@ function Send-Server {
     if ($reader.BaseStream.CanRead -and $Message -notin "PING", "PONG") {
         do {
             $script:line = $reader.ReadLine()
-            if ($Channel) {
-                Write-TvOutput -InputObject $script:line -Channel $Channel
-            } else {
-                Write-TvOutput -InputObject $script:line
+            if ($script:line) {
+                if ($Channel) {
+                    Write-TvOutput -InputObject $script:line -Channel $Channel
+                } else {
+                    Write-TvOutput -InputObject $script:line
+                }
             }
         } while ($reader.Peek() -ne -1)
     }

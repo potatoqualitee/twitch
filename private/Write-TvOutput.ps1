@@ -40,6 +40,7 @@ function Write-TvOutput {
         $params = $match.Groups[5].Value
         $message = $match.Groups[6].Value
 
+        Write-Verbose $InputObject
         # format it
         switch ($command) {
             "PRIVMSG" {
@@ -48,8 +49,26 @@ function Write-TvOutput {
                         Write-Output "[$(Get-Date)] <$user> $message"
 
                         if ($Notify -contains "chat") {
-                            write-warning $message.ToString().Replace("☺","")
-                            #Send-OSNotification -Title $user -Body $message.Replace("☺","") -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                            if ($message) {
+                                try {
+                                    $xml = [System.Security.SecurityElement]::Escape($message)
+                                    $string = $xml -replace '\x01'
+                                    $image = (Resolve-Path "$script:ModuleRoot\icon.png")
+
+                                    if ($script:burnt) {
+                                        $id = "tvbot"
+                                        $existingtoast = Get-BTHistory -UniqueIdentifier $id
+                                        if ($existingtoast) {
+                                            Remove-BTNotification -Tag $id -Group $id
+                                        }
+                                        New-BurntToastNotification -AppLogo $image -Text $user, $message -UniqueIdentifier $id
+                                    } else {
+                                        Send-OSNotification -Title $user -Body $string.Replace("ACTION ", "") -Icon $image -ErrorAction Stop
+                                    }
+                                } catch {
+                                    write-warning -message "$_ .... UGH FAILED ON $string"
+                                }
+                            }
                         }
                     } else {
                         Write-Output "[$(Get-Date)] > $message"
@@ -90,13 +109,11 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] > $message"
             }
             default {
-                if ($params -notmatch "PASS") {
-                    Write-Verbose "[$(Get-Date)] command: $command"
-                    Write-Verbose "[$(Get-Date)] message: $message"
-                    Write-Verbose "[$(Get-Date)] params: $params"
-                    Write-Verbose "[$(Get-Date)] prefix: $prefix"
-                    Write-Verbose "[$(Get-Date)] user: $user"
-                }
+                Write-Verbose "[$(Get-Date)] command: $command"
+                Write-Verbose "[$(Get-Date)] message: $message"
+                Write-Verbose "[$(Get-Date)] params: $params"
+                Write-Verbose "[$(Get-Date)] prefix: $prefix"
+                Write-Verbose "[$(Get-Date)] user: $user"
             }
         }
     }

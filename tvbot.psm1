@@ -23,3 +23,14 @@ foreach ($function in (Get-ChildItem "$ModuleRoot\private\" -Filter "*.ps1" -Rec
 foreach ($function in (Get-ChildItem "$ModuleRoot\public" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
     . Import-ModuleFile -Path $function.FullName
 }
+
+if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
+    try {
+        $script:ie = New-Object -COM InternetExplorer.Application -ErrorAction Stop -Property @{
+            Visible = $false
+        }
+    } catch {
+        $ie = $null
+    }
+    $script:burnt = $true
+}
