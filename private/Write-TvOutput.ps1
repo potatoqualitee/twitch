@@ -52,7 +52,7 @@ function Write-TvOutput {
                             if ($message) {
                                 try {
                                     $xml = [System.Security.SecurityElement]::Escape($message)
-                                    $string = $xml -replace '\x01'
+                                    $string = ($xml -replace '\x01').Replace("ACTION ", "")
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
                                     if ($script:burnt) {
@@ -61,11 +61,12 @@ function Write-TvOutput {
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
                                         }
-                                        New-BurntToastNotification -AppLogo $image -Text $user, $message -UniqueIdentifier $id
+                                        New-BurntToastNotification -AppLogo $image -Text $user, $string -UniqueIdentifier $id
                                     } else {
-                                        Send-OSNotification -Title $user -Body $string.Replace("ACTION ", "") -Icon $image -ErrorAction Stop
+                                        Send-OSNotification -Title $user -Body $string -Icon $image -ErrorAction Stop
                                     }
                                 } catch {
+                                    #$_ | Out-String | Write-Warning
                                     write-warning -message "$_ .... UGH FAILED ON $string"
                                 }
                             }
