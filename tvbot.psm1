@@ -27,6 +27,7 @@ foreach ($function in (Get-ChildItem "$ModuleRoot\public" -Filter "*.ps1" -Recur
 if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
     # sqlite shared cache
     $script:burnt = $true
+    $script:cache = @{}
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

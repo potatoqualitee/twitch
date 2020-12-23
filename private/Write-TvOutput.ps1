@@ -58,8 +58,13 @@ function Write-TvOutput {
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
                                     if ($script:burnt) {
-                                        $avatar = Invoke-TvRequest -Path /users?login=$user
-                                        $image = $avatar.data.profile_image_url
+                                        if ($script:cache[$user]) {
+                                            $image = $script:cache[$user]
+                                        } else {
+                                            $avatar = Invoke-TvRequest -Path /users?login=$user
+                                            $image = $avatar.data.profile_image_url
+                                            $script:cache[$user] = $image
+                                        }
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
