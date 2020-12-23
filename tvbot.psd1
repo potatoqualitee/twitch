@@ -50,7 +50,8 @@
         'Send-TvMessage',
         'Split-TvChannel',
         'Start-TvBot',
-        'Wait-TvResponse'
+        'Wait-TvResponse',
+        'Watch-TvViewCount'
     )
 
     # Cmdlets to export from this module

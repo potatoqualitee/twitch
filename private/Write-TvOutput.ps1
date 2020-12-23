@@ -46,14 +46,22 @@ function Write-TvOutput {
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
+                        $hash = @{}
+                        $InputObject.split(';') | ForEach-Object {
+                            $split = $PSItem.Split('=')
+                            $key = $split[0]
+                            $value = $split[1]
+                            $hash.Add($key,$value)
+                        }
+                        $displayname = $hash["display-name"]
+                        Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
                         if ($Notify -contains "chat") {
                             if ($message) {
                                 try {
-                                    $xml = [System.Security.SecurityElement]::Escape($message)
-                                    # THANK YOU VEXX!
-                                    $string = ($xml -replace '\x01').Replace("ACTION ", "")
+                                    # THANK YOU @vexx32!
+                                    $string = ($message -replace '\x01').Replace("ACTION ", "")
                                     $id = "tvbot"
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
@@ -69,13 +77,13 @@ function Write-TvOutput {
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
                                         }
-                                        New-BurntToastNotification -AppLogo $image -Text $user, $string -UniqueIdentifier $id
+                                        New-BurntToastNotification -AppLogo $image -Text $displayname, $string -UniqueIdentifier $id
                                     } else {
+                                        $string = [System.Security.SecurityElement]::Escape($message)
                                         Send-OSNotification -Title $user -Body $string -Icon $image -ErrorAction Stop
                                     }
                                 } catch {
-                                    $_ | Out-String | Write-Warning # vexx
-                                    #write-warning -message "$_ .... UGH FAILED ON $string"
+                                    $_
                                 }
                             }
                         }
@@ -111,7 +119,10 @@ function Write-TvOutput {
                         Write-Output "  $member"
                     }
                 } else {
-                    Write-Output "[$(Get-Date)] User list is super long, skipping"
+                    Write-Verbose "[$(Get-Date)] > Current user list:"
+                    foreach ($member in $members) {
+                        Write-Verbose "  $member"
+                    }
                 }
             }
             { $psitem.Trim() -in 001, 002, 003, 372 } {

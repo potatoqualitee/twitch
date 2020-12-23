@@ -94,11 +94,6 @@ function Invoke-TvCommand {
                     try {
                         if ($code) {
                             Invoke-Expression $code
-                        } else {
-                            if (-not $Notify) {
-                                write-warning "$notify"
-                                Send-TvMessage -Message "$key$index is an invalid command" -Channel $Channel
-                            }
                         }
                     } catch {
                         Send-TvMessage -Channel $Channel -Message "$($_.Exception.Message)"

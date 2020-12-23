@@ -16,13 +16,15 @@ function Invoke-TvRequest {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$ClientId,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Secret,
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-        [string]$Path
+        [Alias("Secret")]
+        [string]$Token,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$Path = "search/channels?query=powershell"
     )
     process {
-        if (-not $script:session -and -not $PSBoundParameters.ClientId -and -not $PSBoundParameters.Secret) {
-            throw "You must connect at least once using ClientId and Secret"
+        $PSDefaultParameterValues["*:UseBasicParsing"] = $true
+        if (-not $script:session -and -not $PSBoundParameters.ClientId -and -not $PSBoundParameters.Token) {
+            throw "You must connect at least once using ClientId and Token"
         }
 
         $Path = $Path.TrimStart("/")
@@ -37,7 +39,7 @@ function Invoke-TvRequest {
         } else {
             $headers = @{
                 "client-id"     = $ClientId
-                "Authorization" = "Bearer $Secret"
+                "Authorization" = "Bearer $Token"
             }
             $params.Headers = $headers
             $params.SessionVariable = "websession"
