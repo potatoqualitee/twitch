@@ -34,7 +34,7 @@
     RequiredModules    = @("PoshNotify")
 
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @("HtmlAgilityPack.dll")
+    RequiredAssemblies = @()
 
     # Format files (.ps1xml) to be loaded when importing this module
     FormatsToProcess   = @()
@@ -45,6 +45,7 @@
         'Disconnect-TvServer',
         'Get-TvStatusList',
         'Invoke-TvCommand',
+        'Invoke-TvRequest',
         'Join-TvChannel',
         'Send-TvMessage',
         'Split-TvChannel',

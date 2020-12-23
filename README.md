@@ -7,6 +7,8 @@
 
 Create a bot account on twitch, then get an oauth token from [twitchapps.com/tmi](https://twitchapps.com/tmi/).
 
+Then do this from [twitchtokengenerator.com](https://twitchtokengenerator.com/)
+
 Next, change your execution policy then install `tvbot` from the PowerShell Gallery.
 
 ```

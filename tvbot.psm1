@@ -28,3 +28,5 @@ if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction
     # sqlite shared cache
     $script:burnt = $true
 }
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

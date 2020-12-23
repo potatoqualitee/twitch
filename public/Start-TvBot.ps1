@@ -63,7 +63,9 @@ function Start-TvBot {
         [object]$AdminCommand,
         [ValidateSet("chat", "leave", "join")]
         [string[]]$Notify,
-        [switch]$AutoReconnect
+        [switch]$AutoReconnect,
+        [string]$ClientId,
+        [string]$Secret
     )
     begin {
         $script:UserCommand = $UserCommand
@@ -71,6 +73,10 @@ function Start-TvBot {
         $script:reconnect = $AutoReconnect
     }
     process {
+        if ($PSBoundParameters.ClientId -and $PSBoundParameters.Secret) {
+            $null = Invoke-TvRequest -ClientId $ClientId -Secret $Secret -Path search/channels?query=powershell
+        }
+
         $params = @{
             Name   = $Name
             Token  = $Token
