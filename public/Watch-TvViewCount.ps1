@@ -94,7 +94,7 @@ function Watch-TvViewCount {
                 Stop-Process $pid
             })
 
-        $ticketInterval = 60000
+        $ticketInterval = 30000
         $ticketTimer = New-Object System.Windows.Forms.Timer
         $ticketTimer.Interval = $ticketInterval
         $ticketTimer.add_Tick( { $script:notifyicon.Icon = Update-ViewCount })
