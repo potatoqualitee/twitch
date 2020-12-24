@@ -63,21 +63,21 @@ function Watch-TvViewCount {
     }
     process {
         # Create notifyicon, and right-click -> Exit menu
-        $notifyicon = New-Object System.Windows.Forms.NotifyIcon
-        $notifyicon.Text = "tvbot"
-        $notifyicon.Icon = Update-ViewCount
-        $notifyicon.Visible = $true
+        $script:notifyicon = New-Object System.Windows.Forms.NotifyIcon
+        $script:notifyicon.Text = "tvbot"
+        $script:notifyicon.Icon = Update-ViewCount
+        $script:notifyicon.Visible = $true
 
         $menuitem = New-Object System.Windows.Forms.MenuItem
         $menuitem.Text = "Exit"
 
         $contextmenu = New-Object System.Windows.Forms.ContextMenu
-        $notifyicon.ContextMenu = $contextmenu
-        $notifyicon.contextMenu.MenuItems.AddRange($menuitem)
+        $script:notifyicon.ContextMenu = $contextmenu
+        $script:notifyicon.contextMenu.MenuItems.AddRange($menuitem)
 
         # Add a left click that makes the Window appear in the lower right
         # part of the screen, above the notify icon.
-        $notifyicon.add_Click( {
+        $script:notifyicon.add_Click( {
                 if ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
                     # reposition each time, in case the resolution or monitor changes
                     $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width - $window.Width)
@@ -89,10 +89,16 @@ function Watch-TvViewCount {
 
         # When Exit is clicked, close everything and kill the PowerShell process
         $menuitem.add_Click( {
-                $notifyicon.Visible = $false
+                $script:notifyicon.Visible = $false
                 $window.Close()
                 Stop-Process $pid
             })
+
+        $ticketInterval = 60000
+        $ticketTimer = New-Object System.Windows.Forms.Timer
+        $ticketTimer.Interval = $ticketInterval
+        $ticketTimer.add_Tick( { $script:notifyicon.Icon = Update-ViewCount })
+        $ticketTimer.Start()
 
         # Make PowerShell Disappear
         $windowcode = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'
