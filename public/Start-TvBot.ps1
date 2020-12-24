@@ -76,11 +76,12 @@ function Start-TvBot {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
 
             if ($script:burnt) {
-                Start-Job -Name tvbot -ScriptBlock {
+                $null = Start-Job -Name tvbot -ScriptBlock {
                     param (
                         [string]$ClientId,
                         [string]$Token
-                    )Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
+                    )
+                    Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
             }
         }
 
