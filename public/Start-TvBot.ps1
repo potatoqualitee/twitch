@@ -55,7 +55,6 @@ function Start-TvBot {
         [string]$Token,
         [Parameter(Mandatory)]
         [string[]]$Owner,
-        [Parameter(Mandatory)]
         [string]$Channel,
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
@@ -72,6 +71,13 @@ function Start-TvBot {
         $script:reconnect = $AutoReconnect
     }
     process {
+        if (-not $PSBoundParameters.Channel) {
+            if ($Owner.Count -eq 1) {
+                $Channel = "$Owner"
+            } else {
+                throw "You must specify a Channel when assigning multiple owners"
+            }
+        }
         if ($PSBoundParameters.ClientId -and $PSBoundParameters.Token) {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
 
