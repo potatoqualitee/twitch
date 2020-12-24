@@ -34,6 +34,12 @@ function Start-TvBot {
     .PARAMETER AdminCommand
         The commands that admins can use. Input can be JSON, a filename with JSON or a hashtable.
 
+    .PARAMETER Notify
+        Sends toast notifications for all chats.
+
+    .PARAMETER AutoReconnect
+        Attempt to automatically reconnect if disconnected
+
     .EXAMPLE
         PS> Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
 
@@ -45,6 +51,7 @@ function Start-TvBot {
     param (
         [Parameter(Mandatory)]
         [string]$Name,
+        [string]$ClientId,
         [string]$Token,
         [Parameter(Mandatory)]
         [string[]]$Owner,
@@ -54,13 +61,29 @@ function Start-TvBot {
         [int]$Port = 6697,
         [string]$Key = "!",
         [object]$UserCommand,
-        [object]$AdminCommand
+        [object]$AdminCommand,
+        [ValidateSet("chat", "leave", "join")]
+        [string[]]$Notify,
+        [switch]$AutoReconnect
     )
     begin {
         $script:UserCommand = $UserCommand
         $script:AdminCommand = $AdminCommand
+        $script:reconnect = $AutoReconnect
     }
     process {
+        if ($PSBoundParameters.ClientId -and $PSBoundParameters.Token) {
+            $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
+
+            if ($script:burnt) {
+                Start-Job -Name tvbot -ScriptBlock {
+                    param (
+                        [string]$ClientId,
+                        [string]$Token
+                    )Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
+            }
+        }
+
         $params = @{
             Name   = $Name
             Token  = $Token
@@ -70,14 +93,16 @@ function Start-TvBot {
         }
         Connect-TvServer @params
         Join-TvChannel -Channel $Channel
-
         $params = @{
             UserCommand  = $script:UserCommand
             AdminCommand = $script:AdminCommand
             Channel      = $Channel
             Key          = $Key
         }
-
-        Wait-TvResponse  @params
+        if ($PSBoundParameters.Notify) {
+            $params.Notify = $Notify
+        }
+        $script:startboundparams = $PSBoundParameters
+        Wait-TvResponse @params
     }
 }

@@ -23,3 +23,11 @@ foreach ($function in (Get-ChildItem "$ModuleRoot\private\" -Filter "*.ps1" -Rec
 foreach ($function in (Get-ChildItem "$ModuleRoot\public" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
     . Import-ModuleFile -Path $function.FullName
 }
+
+if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
+    # sqlite shared cache
+    $script:burnt = $true
+    $script:cache = @{}
+}
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

@@ -34,7 +34,9 @@ function Invoke-TvCommand {
         [string]$Key = "!",
         [string]$User,
         [object]$UserCommand = $script:UserCommand,
-        [object]$AdminCommand = $script:AdminCommand
+        [object]$AdminCommand = $script:AdminCommand,
+        [ValidateSet("chat", "leave", "join")]
+        [string[]]$Notify
     )
     process {
         if (-not $writer.BaseStream) {
@@ -92,8 +94,6 @@ function Invoke-TvCommand {
                     try {
                         if ($code) {
                             Invoke-Expression $code
-                        } else {
-                            Send-TvMessage -Message "$key$index is an invalid command" -Channel $Channel
                         }
                     } catch {
                         Send-TvMessage -Channel $Channel -Message "$($_.Exception.Message)"
@@ -101,7 +101,11 @@ function Invoke-TvCommand {
                     }
                 }
             } else {
-                Write-TvOutput -InputObject $object -Channel $Channel
+                if ($PSBoundParameters.Notify) {
+                    Write-TvOutput -InputObject $object -Channel $Channel -Notify $Notify
+                } else {
+                    Write-TvOutput -InputObject $object -Channel $Channel
+                }
             }
         }
     }

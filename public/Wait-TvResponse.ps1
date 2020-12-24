@@ -37,7 +37,9 @@ function Wait-TvResponse {
         [string]$Channel = $script:Channel,
         [string]$Key = "!",
         [object]$UserCommand = $script:UserCommand,
-        [object]$AdminCommand = $script:AdminCommand
+        [object]$AdminCommand = $script:AdminCommand,
+        [ValidateSet("chat", "leave", "join")]
+        [string[]]$Notify
     )
     begin {
         $script:UserCommand = $UserCommand
@@ -45,7 +47,7 @@ function Wait-TvResponse {
     }
     process {
         if (-not $script:line) {
-            throw "Nothing to parse"
+            continue
         }
 
         if (-not $writer.BaseStream) {
@@ -95,9 +97,16 @@ function Wait-TvResponse {
                         Channel      = $Channel
                         Key          = $Key
                     }
+                    if ($PSBoundParameters.Notify) {
+                        $params.Notify = $Notify
+                    }
                     Invoke-TvCommand @params
                 } catch {
-                    throw "Cannot read stream: $_"
+                    if ($PSBoundParameters.Notify -and $script:startboundparams -and $script:reconnect) {
+                        Start-TVBot @script:startboundparams
+                    } else {
+                        throw "Cannot read stream: $_"
+                    }
                 }
             }
         }
