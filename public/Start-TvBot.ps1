@@ -53,8 +53,6 @@ function Start-TvBot {
         [string]$Name,
         [string]$ClientId,
         [string]$Token,
-        [string]$StreamlabsClientId,
-        [string]$StreamlabsToken,
         [Parameter(Mandatory)]
         [string[]]$Owner,
         [Parameter(Mandatory)]
@@ -78,15 +76,11 @@ function Start-TvBot {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
 
             if ($script:burnt) {
-                $null = Start-Job -Name tvbot -ScriptBlock {
+                Start-Job -Name tvbot -ScriptBlock {
                     param (
                         [string]$ClientId,
                         [string]$Token
-                    )
-                    Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
-            }
-            if ($PSBoundParameters.StreamlabsClientId -and $PSBoundParameters.StreamlabsToken) {
-
+                    )Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
             }
         }
 
