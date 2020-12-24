@@ -67,7 +67,6 @@ function Watch-TvViewCount {
     process {
         # Create notifyicon, and right-click -> Exit menu
         $script:notifyicon = New-Object System.Windows.Forms.NotifyIcon
-        #$script:notifyicon.Text = "tvbot"
         $script:notifyicon.Icon = Update-ViewCount
         $script:notifyicon.Visible = $true
 
@@ -99,7 +98,7 @@ function Watch-TvViewCount {
 
         # THANK YOU MRMARKWEST @mrmarkwest!!
         $timer = New-Object System.Windows.Forms.Timer
-        $timer.Interval = 30000
+        $timer.Interval = 10000
         $timer.add_Tick( { $script:notifyicon.Icon = Update-ViewCount })
         $timer.Start()
 
