@@ -94,11 +94,11 @@ function Watch-TvViewCount {
                 Stop-Process $pid
             })
 
-        $ticketInterval = 30000
-        $ticketTimer = New-Object System.Windows.Forms.Timer
-        $ticketTimer.Interval = $ticketInterval
-        $ticketTimer.add_Tick( { $script:notifyicon.Icon = Update-ViewCount })
-        $ticketTimer.Start()
+        # THANK YOU MRMARKWEST @mrmarkwest!!
+        $timer = New-Object System.Windows.Forms.Timer
+        $timer.Interval = 30000
+        $timer.add_Tick( { $script:notifyicon.Icon = Update-ViewCount })
+        $timer.Start()
 
         # Make PowerShell Disappear
         $windowcode = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'

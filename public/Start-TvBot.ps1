@@ -74,6 +74,14 @@ function Start-TvBot {
     process {
         if ($PSBoundParameters.ClientId -and $PSBoundParameters.Token) {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
+
+            if ($script:burnt) {
+                Start-Job -Name tvbot -ScriptBlock {
+                    param (
+                        [string]$ClientId,
+                        [string]$Token
+                    )Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
+            }
         }
 
         $params = @{
@@ -85,7 +93,6 @@ function Start-TvBot {
         }
         Connect-TvServer @params
         Join-TvChannel -Channel $Channel
-
         $params = @{
             UserCommand  = $script:UserCommand
             AdminCommand = $script:AdminCommand
