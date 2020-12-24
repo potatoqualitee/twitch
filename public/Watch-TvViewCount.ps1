@@ -28,6 +28,9 @@ function Watch-TvViewCount {
             # THANKS VEXX!
             $stream = Invoke-TvRequest -ClientId $ClientId -Secret $Token -Path /streams?user_login=$Channel
             $viewcount = $stream.data.viewer_count
+            if (-not $viewcount) {
+                $viewcount = 0
+            }
             [System.Drawing.Bitmap]$image = [System.Drawing.Bitmap]::New(16, 16)
             $null = $image.SetResolution(96, 96)
             [System.Drawing.Graphics]$surface = [System.Drawing.Graphics]::FromImage($image)
