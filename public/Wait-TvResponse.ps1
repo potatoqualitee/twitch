@@ -84,7 +84,6 @@ function Wait-TvResponse {
                 # Reconnect
                 Wait-TvResponse @PSBoundParameters
             }
-
             while ($script:running -and ($script:bot.GetStream().DataAvailable -or $reader.Peek() -ne -1)) {
                 try {
                     $script:line = $reader.ReadLine()
