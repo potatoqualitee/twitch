@@ -77,18 +77,6 @@ function Watch-TvViewCount {
         $script:notifyicon.ContextMenu = $contextmenu
         $script:notifyicon.contextMenu.MenuItems.AddRange($menuitem)
 
-        # Add a left click that makes the Window appear in the lower right
-        # part of the screen, above the notify icon.
-        $script:notifyicon.add_Click( {
-                if ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-                    # reposition each time, in case the resolution or monitor changes
-                    $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width - $window.Width)
-                    $window.Top = $([System.Windows.SystemParameters]::WorkArea.Height - $window.Height)
-                    $window.Show()
-                    $window.Activate()
-                }
-            })
-
         # When Exit is clicked, close everything and kill the PowerShell process
         $menuitem.add_Click( {
                 $script:notifyicon.Visible = $false

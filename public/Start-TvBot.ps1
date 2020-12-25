@@ -69,6 +69,9 @@ function Start-TvBot {
         $script:UserCommand = $UserCommand
         $script:AdminCommand = $AdminCommand
         $script:reconnect = $AutoReconnect
+        if ($PSBoundParameters.Notify) {
+            $script:mode = "notify"
+        }
     }
     process {
         if (-not $PSBoundParameters.Channel) {
@@ -86,7 +89,7 @@ function Start-TvBot {
                     param (
                         [string]$ClientId,
                         [string]$Token
-                    )
+                    ) -AutoRemoveJob
                     Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
             }
         }
