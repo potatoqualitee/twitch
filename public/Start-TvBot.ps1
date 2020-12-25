@@ -72,6 +72,13 @@ function Start-TvBot {
         if ($PSBoundParameters.Notify) {
             $script:mode = "notify"
         }
+        <#
+
+        $id = (Invoke-TvRequest -Path /users?login=$Channel).data.id
+
+        $subs = (Invoke-TvRequest -Path /subscriptions?broadcaster_id=$id -Verbose).data
+        $follows = (Invoke-TvRequest -Path /users/follows?to_id=$id).data
+        #>
     }
     process {
         if (-not $PSBoundParameters.Channel) {
@@ -85,12 +92,14 @@ function Start-TvBot {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
 
             if ($script:burnt) {
-                $null = Start-Job -Name tvbot -ScriptBlock {
-                    param (
-                        [string]$ClientId,
-                        [string]$Token
-                    ) -AutoRemoveJob
-                    Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
+                if (-not (Get-Job -Name tvbot | Where-Object State -eq Running)) {
+                    $null = Start-Job -Name tvbot -ScriptBlock {
+                        param (
+                            [string]$ClientId,
+                            [string]$Token
+                        ) -AutoRemoveJob
+                        Watch-TvViewCount -Client $ClientId -Token $Token } -ArgumentList $ClientId, $Token
+                }
             }
         }
 

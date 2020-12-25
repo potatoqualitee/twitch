@@ -40,26 +40,63 @@ function Write-TvOutput {
         $params = $match.Groups[5].Value
         $message = $match.Groups[6].Value
 
-        <#
-        @badge-info = ;badges=premium/1;bits=100;color=#5F9EA0;display-name=KnownOnSense;emotes=;flags=;id=777b9ba6-a743-4183-b2c5-46c563e74d73;mod=0;room-id=403789625
-        ;subscriber=0;tmi-sent-ts=1608859353640;turbo=0;user-id=134631325;user-type= :knownonsense!knownonsense@knownonsense.tmi.twitch.tv PRIVMSG #potatoqualitee
-        :cheer100
-        #>
+        $hash = @{}
+        # Thanks mr mark!
+        $InputObject.split(';') | ForEach-Object {
+            $split = $PSItem.Split('=')
+            $key = $split[0]
+            $value = $split[1]
+            if (-not $hash[$key]) {
+                $hash.Add($key,$value)
+            }
+        }
+        $displayname = $hash["display-name"]
+
         Write-Verbose $InputObject
         # format it
         switch ($command) {
+            "USERNOTICE" {
+                <#
+                @badge-info=subscriber/20;badges=moderator/1,subscriber/0;color=;display-name=danni_juhl;emotes=;flags=;id=12b7b085-b500-45da-b5fc-ca63e279823a;login=danni_j
+                uhl;mod=1;msg-id=raid;msg-param-displayName=danni_juhl;msg-param-login=danni_juhl;msg-param-profileImageURL=https://static-cdn.jtvnw.net/jtv_user_pictures/64
+                be776a-4ba1-476f-8ef2-b2a5251618d2-profile_image-70x70.png;msg-param-viewerCount=1;room-id=403789625;subscriber=1;system-msg=1\sraiders\sfrom\sdanni_juhl\sha
+                ve\sjoined!;tmi-sent-ts=1608913632659;user-id=431422221;user-type=mod :tmi.twitch.tv USERNOTICE #potatoqualitee
+                VERBOSE: [12/25/2020 17:28:44] command: USERNOTICE
+                VERBOSE: [12/25/2020 17:28:44] message:
+                #>
+                $user = $displayname
+
+                $sysmsg = $hash["system-msg"]
+                if ($sysmsg -match "raiders") {
+                    if ($script:cache[$user]) {
+                        $image = $script:cache[$user]
+                    } else {
+                        $avatar = Invoke-TvRequest -Path /users?login=$user
+                        $image = $avatar.data.profile_image_url
+                        $script:cache[$user] = $image
+                    }
+
+                    $text = $sysmsg.Replace("\s"," ").Replace("\n","")
+                    # 15\sraiders\sfrom\sTestChannel\shave\sjoined\n!
+                    $appicon = New-BTImage -Source 'https://img.redbull.com/images/c_fill,g_auto,w_860,h_860/q_auto,f_auto/redbullcom/2017/06/19/3965fbe6-3488-40f8-88bc-b82eb8d1a230/pogchamp-twitch.png' -AppLogoOverride
+
+                    $heroimage = New-BTImage -Source $image.Replace("300x300","70x70") -HeroImage
+
+                    $titletext = New-BTText -Text "$displayname HAS RAIDED!"
+                    $thankstext = New-BTText -Text $text
+
+                    $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+
+                    $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
+                    $visual = New-BTVisual -BindingGeneric $binding
+                    $content = New-BTContent -Visual $visual -Audio $audio
+                    Submit-BTNotification -Content $content
+                    Write-Verbose "GOT HERE"
+                }
+            }
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
-                        $hash = @{}
-                        # Thanks mr mark!
-                        $InputObject.split(';') | ForEach-Object {
-                            $split = $PSItem.Split('=')
-                            $key = $split[0]
-                            $value = $split[1]
-                            $hash.Add($key,$value)
-                        }
-                        $displayname = $hash["display-name"]
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
@@ -105,7 +142,7 @@ function Write-TvOutput {
                                             $visual = New-BTVisual -BindingGeneric $binding
                                             $content = New-BTContent -Visual $visual -Audio $audio
 
-                                            Submit-BTNotification -Content $content -Tag $id -Group $id
+                                            Submit-BTNotification -Content $content
                                             Remove-BTNotification -Tag $id -Group $id
                                             # parse out if they said more than just the bit so that you can show that
                                         } else {
