@@ -40,24 +40,59 @@ function Write-TvOutput {
         $params = $match.Groups[5].Value
         $message = $match.Groups[6].Value
 
+        $hash = @{}
+        # Thanks mr mark!
+        $InputObject.split(';') | ForEach-Object {
+            $split = $PSItem.Split('=')
+            $key = $split[0]
+            $value = $split[1]
+            if (-not $hash[$key]) {
+                $hash.Add($key,$value)
+            }
+        }
+        $displayname = $hash["display-name"]
+        $emote = $hash["emotes"]
+        $emoteonly = [bool]$hash["emote-only"]
+
         Write-Verbose $InputObject
         # format it
         switch ($command) {
+            "USERNOTICE" {
+                $user = $displayname
+                $sysmsg = $hash["system-msg"]
+                if ($sysmsg -match "raiders") {
+                    if ($script:cache[$user]) {
+                        $image = $script:cache[$user]
+                    } else {
+                        $avatar = Invoke-TvRequest -Path /users?login=$user
+                        $image = $avatar.data.profile_image_url
+                        $script:cache[$user] = $image
+                    }
+
+                    # 15\sraiders\sfrom\sTdanni_juhl\shave\sjoined\n!
+                    $text = $sysmsg.Replace("\s"," ").Replace("\n","")
+                    $appicon = New-BTImage -Source "$script:ModuleRoot\images\pog.gif" -AppLogoOverride
+
+                    $heroimage = New-BTImage -Source "$script:ModuleRoot\images\catparty.gif" -HeroImage
+
+                    $titletext = New-BTText -Text "$displayname HAS RAIDED!"
+                    $thankstext = New-BTText -Text $text
+
+                    $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+
+                    $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
+                    $visual = New-BTVisual -BindingGeneric $binding
+                    $content = New-BTContent -Visual $visual -Audio $audio
+                    Submit-BTNotification -Content $content -UniqueIdentifier $id
+                }
+            }
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
-                        $hash = @{}
-                        $InputObject.split(';') | ForEach-Object {
-                            $split = $PSItem.Split('=')
-                            $key = $split[0]
-                            $value = $split[1]
-                            $hash.Add($key,$value)
-                        }
-                        $displayname = $hash["display-name"]
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($Notify -contains "chat") {
+                        if ($Notify -contains "chat" -and $user -ne "WizeBot") {
                             if ($message) {
                                 try {
                                     # THANK YOU @vexx32!
@@ -73,11 +108,65 @@ function Write-TvOutput {
                                             $image = $avatar.data.profile_image_url
                                             $script:cache[$user] = $image
                                         }
+
+                                        Write-Verbose "EMOTE: $emote"
+                                        Write-Verbose "EMOTE ONLY: $emoteonly"
+
+                                        if ($emote) {
+                                            $emote, $location = $emote.Split(":")
+
+                                            if (-not $emoteonly) {
+                                                $location = $location.Split(",")
+                                                Write-Verbose "$location"
+                                                foreach ($match in $location) {
+                                                    $first, $last = $match.Split("-")
+                                                    # Thanks milb0!
+                                                    $remove = $message.Substring($first, $last - $first + 1)
+                                                    $string = $message.Replace($remove, "")
+                                                }
+                                            }
+                                            $theme = "dark"
+                                            if ((New-Object Windows.UI.ViewManagement.UISettings).GetColorValue("background").B -eq 255) {
+                                                $theme = "light"
+                                            }
+                                            Write-Verbose "THEME: $theme"
+                                            $image = "https://static-cdn.jtvnw.net/emoticons/v2/$emote/default/$theme/2.0"
+                                        }
+
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
                                         }
-                                        New-BurntToastNotification -AppLogo $image -Text $displayname, $string -UniqueIdentifier $id
+
+                                        $bigolbits = [int]$hash["bits"]
+
+                                        if ($bigolbits -gt 0) {
+                                            if ($bigolbits -eq 1) {
+                                                $bitword = "BIT"
+                                            } else {
+                                                $bitword = "BITS"
+                                            }
+                                            $appicon = New-BTImage -Source "$script:ModuleRoot\images\bits.gif" -AppLogoOverride
+                                            $heroimage = New-BTImage -Source "$script:ModuleRoot\images\vibecat.gif" -HeroImage
+
+                                            $titletext = New-BTText -Text "MERCI BEAUCOUP"
+                                            $thankstext = New-BTText -Text "THANK YOU FOR THE $bigolbits $bitword, $displayname!!"
+
+                                            $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+
+                                            $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
+                                            $visual = New-BTVisual -BindingGeneric $binding
+                                            $content = New-BTContent -Visual $visual -Audio $audio
+
+                                            Submit-BTNotification -Content $content -UniqueIdentifier $id
+                                            # parse out if they said more than just the bit so that you can show that
+                                        } else {
+                                            try {
+                                                New-BurntToastNotification -AppLogo $image -Text $displayname, $string -UniqueIdentifier $id -ErrorAction Stop
+                                            } catch {
+
+                                            }
+                                        }
                                     } else {
                                         $string = [System.Security.SecurityElement]::Escape($message)
                                         Send-OSNotification -Title $user -Body $string -Icon $image -ErrorAction Stop
@@ -90,7 +179,9 @@ function Write-TvOutput {
                     } else {
                         Write-Output "[$(Get-Date)] > $message"
                     }
-                    Invoke-TvCommand -InputObject $message -Channel $script:Channel -Owner $Owner -User $user
+                    if (-not $Notify -or $message -eq "!quit") {
+                        Invoke-TvCommand -InputObject $message -Channel $script:Channel -Owner $Owner -User $user
+                    }
                 }
             }
             "JOIN" {

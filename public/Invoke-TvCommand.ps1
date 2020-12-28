@@ -52,7 +52,7 @@ function Invoke-TvCommand {
         }
         if (-not $AdminCommand) {
             $AdminCommand = @{
-                quit = 'Disconnect-TvServer -Message "FINE!"'
+                quit = 'Disconnect-TvServer -Message "k bye 👋!"'
             }
         }
 
