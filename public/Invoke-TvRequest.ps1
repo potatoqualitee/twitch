@@ -37,6 +37,7 @@ function Invoke-TvRequest {
         if ($script:session) {
             $params.WebSession = $script:session
         } else {
+            # create web session and get follows/subs
             $headers = @{
                 "client-id"     = $ClientId
                 "Authorization" = "Bearer $Token"

@@ -51,21 +51,14 @@ function Write-TvOutput {
             }
         }
         $displayname = $hash["display-name"]
+        $emote = $hash["emotes"]
+        $emoteonly = [bool]$hash["emote-only"]
 
         Write-Verbose $InputObject
         # format it
         switch ($command) {
             "USERNOTICE" {
-                <#
-                @badge-info=subscriber/20;badges=moderator/1,subscriber/0;color=;display-name=danni_juhl;emotes=;flags=;id=12b7b085-b500-45da-b5fc-ca63e279823a;login=danni_j
-                uhl;mod=1;msg-id=raid;msg-param-displayName=danni_juhl;msg-param-login=danni_juhl;msg-param-profileImageURL=https://static-cdn.jtvnw.net/jtv_user_pictures/64
-                be776a-4ba1-476f-8ef2-b2a5251618d2-profile_image-70x70.png;msg-param-viewerCount=1;room-id=403789625;subscriber=1;system-msg=1\sraiders\sfrom\sdanni_juhl\sha
-                ve\sjoined!;tmi-sent-ts=1608913632659;user-id=431422221;user-type=mod :tmi.twitch.tv USERNOTICE #potatoqualitee
-                VERBOSE: [12/25/2020 17:28:44] command: USERNOTICE
-                VERBOSE: [12/25/2020 17:28:44] message:
-                #>
                 $user = $displayname
-
                 $sysmsg = $hash["system-msg"]
                 if ($sysmsg -match "raiders") {
                     if ($script:cache[$user]) {
@@ -76,11 +69,11 @@ function Write-TvOutput {
                         $script:cache[$user] = $image
                     }
 
+                    # 15\sraiders\sfrom\sTdanni_juhl\shave\sjoined\n!
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    # 15\sraiders\sfrom\sTestChannel\shave\sjoined\n!
-                    $appicon = New-BTImage -Source 'https://img.redbull.com/images/c_fill,g_auto,w_860,h_860/q_auto,f_auto/redbullcom/2017/06/19/3965fbe6-3488-40f8-88bc-b82eb8d1a230/pogchamp-twitch.png' -AppLogoOverride
+                    $appicon = New-BTImage -Source "$script:ModuleRoot\images\pog.gif" -AppLogoOverride
 
-                    $heroimage = New-BTImage -Source $image.Replace("300x300","70x70") -HeroImage
+                    $heroimage = New-BTImage -Source "$script:ModuleRoot\images\catparty.gif" -HeroImage
 
                     $titletext = New-BTText -Text "$displayname HAS RAIDED!"
                     $thankstext = New-BTText -Text $text
@@ -90,8 +83,7 @@ function Write-TvOutput {
                     $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
                     $visual = New-BTVisual -BindingGeneric $binding
                     $content = New-BTContent -Visual $visual -Audio $audio
-                    Submit-BTNotification -Content $content
-                    Write-Verbose "GOT HERE"
+                    Submit-BTNotification -Content $content -UniqueIdentifier $id
                 }
             }
             "PRIVMSG" {
@@ -100,7 +92,7 @@ function Write-TvOutput {
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($Notify -contains "chat") {
+                        if ($Notify -contains "chat" -and $user -ne "WizeBot") {
                             if ($message) {
                                 try {
                                     # THANK YOU @vexx32!
@@ -116,6 +108,31 @@ function Write-TvOutput {
                                             $image = $avatar.data.profile_image_url
                                             $script:cache[$user] = $image
                                         }
+
+                                        Write-Verbose "EMOTE: $emote"
+                                        Write-Verbose "EMOTE ONLY: $emoteonly"
+
+                                        if ($emote) {
+                                            $emote, $location = $emote.Split(":")
+
+                                            if (-not $emoteonly) {
+                                                $location = $location.Split(",")
+                                                Write-Verbose "$location"
+                                                foreach ($match in $location) {
+                                                    $first, $last = $match.Split("-")
+                                                    # Thanks milb0!
+                                                    $remove = $message.Substring($first, $last - $first + 1)
+                                                    $string = $message.Replace($remove, "")
+                                                }
+                                            }
+                                            $theme = "dark"
+                                            if ((New-Object Windows.UI.ViewManagement.UISettings).GetColorValue("background").B -eq 255) {
+                                                $theme = "light"
+                                            }
+                                            Write-Verbose "THEME: $theme"
+                                            $image = "https://static-cdn.jtvnw.net/emoticons/v2/$emote/default/$theme/2.0"
+                                        }
+
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
                                         if ($existingtoast) {
                                             Remove-BTNotification -Tag $id -Group $id
@@ -129,9 +146,8 @@ function Write-TvOutput {
                                             } else {
                                                 $bitword = "BITS"
                                             }
-                                            $appicon = New-BTImage -Source 'https://steamuserimages-a.akamaihd.net/ugc/910168207873457772/65EBE052D0B8DDB3F09F3034E28B6A2A2CA75DCB/' -AppLogoOverride
-
-                                            $heroimage = New-BTImage -Source $image.Replace("300x300","70x70") -HeroImage
+                                            $appicon = New-BTImage -Source "$script:ModuleRoot\images\bits.gif" -AppLogoOverride
+                                            $heroimage = New-BTImage -Source "$script:ModuleRoot\images\vibecat.gif" -HeroImage
 
                                             $titletext = New-BTText -Text "MERCI BEAUCOUP"
                                             $thankstext = New-BTText -Text "THANK YOU FOR THE $bigolbits $bitword, $displayname!!"
@@ -142,8 +158,7 @@ function Write-TvOutput {
                                             $visual = New-BTVisual -BindingGeneric $binding
                                             $content = New-BTContent -Visual $visual -Audio $audio
 
-                                            Submit-BTNotification -Content $content
-                                            Remove-BTNotification -Tag $id -Group $id
+                                            Submit-BTNotification -Content $content -UniqueIdentifier $id
                                             # parse out if they said more than just the bit so that you can show that
                                         } else {
                                             try {

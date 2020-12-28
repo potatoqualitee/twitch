@@ -19,7 +19,7 @@ function Watch-Events {
 
         $subs = (Invoke-TvRequest -Path /subscriptions?broadcaster_id=$id -Verbose).data
         $follows = (Invoke-TvRequest -Path /users/follows?to_id=$id).data
-        $follows
+        $subs
         return
 
 
