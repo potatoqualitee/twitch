@@ -36,7 +36,14 @@ function Watch-TvViewCount {
             [System.Drawing.Graphics]$surface = [System.Drawing.Graphics]::FromImage($image)
             #$surface.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
 
-            $color = [System.Drawing.Color]::White
+
+            if ((Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize).SystemUsesLightTheme -eq 1) {
+                $theme = "black"
+            } else {
+                $theme = "white"
+            }
+
+            $color = [System.Drawing.Color]::$theme
             $brush = [System.Drawing.SolidBrush]::New($color)
 
             if ([int]$viewcount -gt 99) {

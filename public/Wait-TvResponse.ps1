@@ -62,6 +62,8 @@ function Wait-TvResponse {
         $interactivedelay = 100
         $timerinterval = 0
 
+        Write-Verbose -Message "About to loop"
+
         while ($script:running) {
             if ($active) {
                 Start-Sleep -Milliseconds $interactivedelay

@@ -126,7 +126,7 @@ function Write-TvOutput {
                                                 }
                                             }
                                             $theme = "dark"
-                                            if ((New-Object Windows.UI.ViewManagement.UISettings).GetColorValue("background").B -eq 255) {
+                                            if ((Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize).SystemUsesLightTheme -eq 1) {
                                                 $theme = "light"
                                             }
                                             Write-Verbose "THEME: $theme"
