@@ -20,7 +20,7 @@ function Get-TvFollowed {
     process {
         if (-not $PSBoundParameters.UserName) {
             $params = @{
-                Name       = "follower"
+                Name       = "followed"
                 Path       = "/users/follows?from_id=$script:userid"
                 Next       = $Next
                 MaxResults = $MaxResults
@@ -30,7 +30,7 @@ function Get-TvFollowed {
             $users = Get-TvUser -UserName $UserName
             foreach ($user in $users) {
                 $params = @{
-                    Name       = "follower"
+                    Name       = "followed"
                     Path       = "/users/follows?from_id=$($user.id)"
                     Next       = $Next
                     MaxResults = $MaxResults
