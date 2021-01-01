@@ -1,4 +1,4 @@
-function Watch-TvViewCount {
+function Show-TvViewerCount {
     <#
     .SYNOPSIS
         Connects to a Twitch
@@ -22,28 +22,20 @@ function Watch-TvViewCount {
         [string]$Channel = "potatoqualitee"
     )
     begin {
-        # Add assemblies
-        Add-Type -AssemblyName PresentationFramework, System.Drawing, System.Windows.Forms
         function Update-ViewCount {
-            # THANKS VEXX!
-            $stream = Invoke-TvRequest -ClientId $ClientId -Secret $Token -Path /streams?user_login=$Channel
-            $viewcount = $stream.data.viewer_count
+
+            $viewcount = (Get-TvStream).viewer_count
             if (-not $viewcount) {
                 $viewcount = 0
             }
+
+            # THANKS VEXX!
             [System.Drawing.Bitmap]$image = [System.Drawing.Bitmap]::New(16, 16)
             $null = $image.SetResolution(96, 96)
             [System.Drawing.Graphics]$surface = [System.Drawing.Graphics]::FromImage($image)
-            #$surface.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
 
-
-            if ((Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize).SystemUsesLightTheme -eq 1) {
-                $theme = "black"
-            } else {
-                $theme = "white"
-            }
-
-            $color = [System.Drawing.Color]::$theme
+            $configcolor = (Get-TvSystemTheme).Color
+            $color = [System.Drawing.Color]::$configcolor
             $brush = [System.Drawing.SolidBrush]::New($color)
 
             if ([int]$viewcount -gt 99) {
@@ -53,8 +45,8 @@ function Watch-TvViewCount {
                 $fontsize = 12
                 $weight = "Bold"
             }
-
-            $font = [System.Drawing.Font]::New("Segoe UI", $fontsize, $weight, "Pixel")
+            $fontfamily = Get-TvConfigValue -Name DefaultFont
+            $font = [System.Drawing.Font]::New($fontfamily, $fontsize, $weight, "Pixel")
             $surface.DrawString($viewcount, $font, $brush, 0, 0)
             $surface.Flush()
 

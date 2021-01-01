@@ -108,7 +108,7 @@ function Start-TvBot {
                             [string]$ClientId,
                             [string]$Token
                         )
-                        Watch-TvViewCount -Client $ClientId -Token $Token
+                        Show-TvViewerCount -Client $ClientId -Token $Token
                     } -ArgumentList $ClientId, $Token
                 }
 

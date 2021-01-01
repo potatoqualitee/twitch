@@ -17,6 +17,16 @@ function Get-TvConfig {
         [string[]]$Name,
         [switch]$Force
     )
+    begin {
+        # maybe someone deleted their config file. If so, recreate it for them.
+        if (-not (Test-Path -Path $script:configfile)) {
+            New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
+            @{
+                ConfigFile  = $script:configfile
+                DefaultFont = "Segoe UI"
+            } | ConvertTo-Json | Set-Content -Path $script:configfile
+        }
+    }
     process {
         if ($PSBoundParameters.Name) {
             $results = Get-Content -Path $script:configfile | ConvertFrom-Json | Select-Object -Property $Name

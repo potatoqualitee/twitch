@@ -8,19 +8,15 @@ function Watch-Events {
         # raids - https://dev.twitch.tv/docs/irc#usernotice-twitch-tags
 #>
     [CmdletBinding()]
-    param
-    (
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Channel = "potatoqualitee"
-    )
+    param()
+    begin {
+        
+    }
     process {
-        Write-Verbose $Channel
-        $id = (Invoke-TvRequest -Path /users?login=$Channel).data.id
+        $id = (Get-TvUser).id
 
-        $subs = (Invoke-TvRequest -Path /subscriptions?broadcaster_id=$id -Verbose).data
-        $follows = (Invoke-TvRequest -Path /users/follows?to_id=$id).data
-        $subs
-        return
+        $subs = Get-TvSubscriber
+        $follows = Get-TvFollower
 
 
         $latestfollower = $script:follows | Select-Object -First 1

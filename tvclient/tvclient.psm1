@@ -32,14 +32,55 @@ switch ($PSVersionTable.Platform) {
 if (-not (Test-Path -Path $script:configfile)) {
     New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
     @{
-        ConfigFile = $script:configfile
+        ConfigFile  = $script:configfile
+        DefaultFont = "Segoe UI"
     } | ConvertTo-Json | Set-Content -Path $script:configfile
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $PSDefaultParameterValues["*:UseBasicParsing"] = $true
-
 $script:pagination = @{}
 
 Add-Type -AssemblyName System.Drawing
-$script:knowncolors = [Enum]::GetValues([System.Drawing.KnownColor]) | Where-Object { $PSItem -notmatch "Active|Workspace|Button|Control|Desktop|Highlight|Border|Caption|Menu|Scroll" }
+$script:knowncolors = [Enum]::GetValues([System.Drawing.KnownColor]) | Where-Object {
+    $PSItem -notmatch "Active|Workspace|Button|Control|Desktop|Highlight|Border|Caption|Menu|Scroll|Window"
+}
+
+$script:sounds = 'ms-winsoundevent:Notification.Default',
+'ms-winsoundevent:Notification.IM',
+'ms-winsoundevent:Notification.Mail',
+'ms-winsoundevent:Notification.Reminder',
+'ms-winsoundevent:Notification.SMS',
+'ms-winsoundevent:Notification.Looping.Alarm',
+'ms-winsoundevent:Notification.Looping.Alarm2',
+'ms-winsoundevent:Notification.Looping.Alarm3',
+'ms-winsoundevent:Notification.Looping.Alarm4',
+'ms-winsoundevent:Notification.Looping.Alarm5',
+'ms-winsoundevent:Notification.Looping.Alarm6',
+'ms-winsoundevent:Notification.Looping.Alarm7',
+'ms-winsoundevent:Notification.Looping.Alarm8',
+'ms-winsoundevent:Notification.Looping.Alarm9',
+'ms-winsoundevent:Notification.Looping.Alarm10',
+'ms-winsoundevent:Notification.Looping.Call',
+'ms-winsoundevent:Notification.Looping.Call2',
+'ms-winsoundevent:Notification.Looping.Call3',
+'ms-winsoundevent:Notification.Looping.Call4',
+'ms-winsoundevent:Notification.Looping.Call5',
+'ms-winsoundevent:Notification.Looping.Call6',
+'ms-winsoundevent:Notification.Looping.Call7',
+'ms-winsoundevent:Notification.Looping.Call8',
+'ms-winsoundevent:Notification.Looping.Call9',
+'ms-winsoundevent:Notification.Looping.Call10'
+
+Register-ArgumentCompleter -ParameterName NewSubcriberSound -CommandName Set-TvConfig -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $script:sounds | Where-Object { $PSitem -match $wordToComplete } | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+    }
+}
+Register-ArgumentCompleter -ParameterName NewFollowerSound -CommandName Set-TvConfig -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $script:sounds | Where-Object { $PSitem -match $wordToComplete } | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+    }
+}

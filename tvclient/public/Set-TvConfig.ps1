@@ -26,9 +26,22 @@ function Set-TvConfig {
         [string]$BotChannel,
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$BotOwner,
-        [ValidateSet("Transparent", "AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenrod", "DarkGray", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "DarkOrange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray", "DodgerBlue", "Firebrick", "FloralWhite", "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "Goldenrod", "Gray", "Green", "GreenYellow", "Honeydew", "HotPink", "IndianRed", "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenrodYellow", "LightGray", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquamarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenrod", "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen")]
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+                Get-ValidColor | Where-Object { $_ -like "$WordToComplete*" }
+            }
+        )]
         [string]$NotifyColor,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$DefaultFont,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [string]$DiscordToken,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$NewSubcriberSound,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$NewFollowerSound,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Force
     )
     begin {
@@ -36,11 +49,18 @@ function Set-TvConfig {
         if (-not (Test-Path -Path $script:configfile)) {
             New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
             @{
-                ConfigFile = $script:configfile
+                ConfigFile  = $script:configfile
+                DefaultFont = "Segoe UI"
             } | ConvertTo-Json | Set-Content -Path $script:configfile
         }
     }
     process {
+        if ($PSBoundParameters.DefaultFont) {
+            if ($DefaultFont -notin (New-Object System.Drawing.Text.InstalledFontCollection).Families) {
+                Write-Warning -Message "The font $DefaultFont is not installed, using Segoe UI instead"
+                $PSBoundParameters.DefaultFont = "Segoe UI"
+            }
+        }
         $config = Get-Content -Path $script:configfile | ConvertFrom-Json | ConvertTo-HashTable
 
         $ignore = [System.Management.Automation.PSCmdlet]::CommonParameters

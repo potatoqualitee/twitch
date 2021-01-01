@@ -1,4 +1,4 @@
-function Watch-TvViewCount {
+function Show-TvViewerCount {
     <#
     .SYNOPSIS
         Connects to a Twitch
