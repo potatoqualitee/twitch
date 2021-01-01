@@ -73,7 +73,7 @@ function Invoke-TvCommand {
             throw "Conversion for UserCommand and AdminCommand failed. Please check examples."
         }
 
-        $allowedregex = [Regex]::new("^$Key[a-zA-Z0-9\ ]+`$")
+        $allowedregex = [Regex]::new("^$([Regex]::Escape($Key))[a-zA-Z0-9\ ]+`$")
         $irctagregex = [Regex]::new('^(?:@([^ ]+) )?(?:[:]((?:(\w+)!)?\S+) )?(\S+)(?: (?!:)(.+?))?(?: [:](.+))?$')
 
         foreach ($object in $InputObject) {
