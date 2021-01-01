@@ -31,7 +31,11 @@
     PowerShellVersion  = '5.1'
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules    = @("PoshNotify","tvbot","tvclient")
+    RequiredModules    = @(
+        "PoshNotify",
+        "tvbot",
+        "tvclient"
+    )
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = @()
@@ -41,8 +45,7 @@
 
     # Functions to export from this module
     FunctionsToExport  = @(
-        'Start-TvNotify',
-        'Watch-TvViewCount'
+        'Get-TvSystemTheme'
     )
 
     # Cmdlets to export from this module

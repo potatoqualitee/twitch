@@ -32,7 +32,7 @@ switch ($PSVersionTable.Platform) {
 if (-not (Test-Path -Path $script:configfile)) {
     New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
     @{
-        Module = "tvclient"
+        ConfigFile = $script:configfile
     } | ConvertTo-Json | Set-Content -Path $script:configfile
 }
 
@@ -40,3 +40,6 @@ if (-not (Test-Path -Path $script:configfile)) {
 $PSDefaultParameterValues["*:UseBasicParsing"] = $true
 
 $script:pagination = @{}
+
+Add-Type -AssemblyName System.Drawing
+$script:knowncolors = [Enum]::GetValues([System.Drawing.KnownColor]) | Where-Object { $PSItem -notmatch "Active|Workspace|Button|Control|Desktop|Highlight|Border|Caption|Menu|Scroll" }

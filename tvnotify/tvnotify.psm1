@@ -31,3 +31,7 @@ if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+if ($PSVersionTable.Platform -ne "UNIX") {
+    Add-Type -AssemblyName PresentationFramework, System.Windows.Forms
+}

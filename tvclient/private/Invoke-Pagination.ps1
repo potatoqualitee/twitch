@@ -8,7 +8,7 @@ function Invoke-Pagination {
     )
     process {
         if (-not $script:pagination[$Name]) {
-            $script:pagination[$Name] = New-Object -TypeName System.Collections.ArrayList
+            $script:pagination[$Name] = $null
         }
 
         if ($Next) {
@@ -17,10 +17,16 @@ function Invoke-Pagination {
 
         $results = Invoke-TvRequest -Path "$Path&first=$MaxResults&after=$cursor" -Raw
 
-        if ($Next) {
-            $script:pagination[$Name] = $results.pagination.cursor
-        }
 
-        $results.data | ConvertFrom-RestResponse
+        $script:pagination[$Name] = $results.pagination.cursor
+        $data = $results | Get-Member -Name data
+
+        if ($data) {
+            if ($results.data) {
+                $results.data | ConvertFrom-RestResponse
+            }
+        } else {
+            $results | ConvertFrom-RestResponse
+        }
     }
 }

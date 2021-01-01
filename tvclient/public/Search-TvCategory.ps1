@@ -6,7 +6,8 @@ function Search-TvCategory {
     [CmdletBinding()]
     param
     (
-        [string]$Query
+        [string]$Query,
+        [int]$MaxResults = 10
     )
     process {
         $params = @{

@@ -56,14 +56,6 @@
                 } else {
                     return $Value
                 }
-            } elseif ([double]::TryParse($value,[ref]$null)) {
-                if ($Value -cnotlike "*T*") {
-                    return $script:origin.AddSeconds($Value).ToLocalTime()
-                } else {
-                    return [datetime]::ParseExact($Value, "yyyyMMddTHHmmss",
-                        [System.Globalization.CultureInfo]::InvariantCulture,
-                        [System.Globalization.DateTimeStyles]::None)
-                }
             } else {
                 return $Value
             }
