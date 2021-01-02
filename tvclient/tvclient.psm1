@@ -37,6 +37,7 @@ if (-not (Test-Path -Path $script:configfile)) {
 $PSDefaultParameterValues["*:UseBasicParsing"] = $true
 $script:pagination = @{}
 
+##################### Auto-complete setup #####################
 Add-Type -AssemblyName System.Drawing
 $script:knowncolors = [Enum]::GetValues([System.Drawing.KnownColor]) | Where-Object {
     $PSItem -notmatch "Active|Workspace|Button|Control|Desktop|Highlight|Border|Caption|Menu|Scroll|Window"
