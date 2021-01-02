@@ -64,7 +64,8 @@
         'Search-TvCategory',
         'Get-TvFollowed',
         'Start-TvCommercial',
-        'Edit-TvConfigFile'
+        'Edit-TvConfigFile',
+        'Reset-TvConfig'
     )
 
     # Cmdlets to export from this module

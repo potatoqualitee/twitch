@@ -13,23 +13,34 @@ function Get-TvSystemTheme {
     [CmdletBinding()]
     param ()
     process {
-        $reg = Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize
-
-        if ($reg.SystemUsesLightTheme) {
-            $theme = "light"
-            $color = "white"
+        if ($PSVersionTable.Platform -eq "UNIX") {
+            [pscustomobject]@{
+                Theme = "dark"
+                Color = "black"
+            }
         } else {
-            $theme = "dark"
-            $color = "black"
-        }
+            $reg = Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize
 
-        if ($configcolor = Get-TvConfigValue -Name NotifyColor -ErrorAction SilentlyContinue) {
-            $color = $configcolor
-        }
+            if ($reg.SystemUsesLightTheme) {
+                $theme = "light"
+                $color = "white"
+            } else {
+                $theme = "dark"
+                $color = "black"
+            }
 
-        [pscustomobject]@{
-            Theme = $theme
-            Color = $color
+            if ($script:configfile) {
+                if (Test-Path -Path $script:configfile) {
+                    if ($configcolor = Get-TvConfigValue -Name NotifyColor -ErrorAction SilentlyContinue) {
+                        $color = $configcolor
+                    }
+                }
+            }
+
+            [pscustomobject]@{
+                Theme = $theme
+                Color = $color
+            }
         }
     }
 }

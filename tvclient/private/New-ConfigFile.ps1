@@ -16,6 +16,7 @@ function New-ConfigFile {
             $color = "Black"
         }
 
+        Write-Verbose "Writing config to $script:configfile"
         @{
             ConfigFile         = $script:configfile
             DefaultFont        = "Segoe UI"
