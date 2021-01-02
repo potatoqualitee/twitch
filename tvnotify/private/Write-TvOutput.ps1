@@ -100,7 +100,7 @@ function Write-TvOutput {
                                     $id = "tvbot"
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
-                                    if ($script:burnt) {
+                                    if ($script:toast) {
                                         if ($script:cache[$user]) {
                                             $image = $script:cache[$user]
                                         } else {

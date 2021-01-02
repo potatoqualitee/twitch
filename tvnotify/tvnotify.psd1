@@ -45,8 +45,9 @@
 
     # Functions to export from this module
     FunctionsToExport  = @(
-        'Get-TvSystemTheme'
-        'Show-TvViewerCount'
+        'Get-TvSystemTheme',
+        'Show-TvViewerCount',
+        'Send-TvDiscordMessage'
     )
 
     # Cmdlets to export from this module

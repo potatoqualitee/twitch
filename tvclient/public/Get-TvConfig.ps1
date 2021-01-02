@@ -20,11 +20,7 @@ function Get-TvConfig {
     begin {
         # maybe someone deleted their config file. If so, recreate it for them.
         if (-not (Test-Path -Path $script:configfile)) {
-            New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
-            @{
-                ConfigFile  = $script:configfile
-                DefaultFont = "Segoe UI"
-            } | ConvertTo-Json | Set-Content -Path $script:configfile
+            $null = New-ConfigFile
         }
     }
     process {
@@ -34,6 +30,9 @@ function Get-TvConfig {
             $results = Get-Content -Path $script:configfile | ConvertFrom-Json
         }
 
+        if ($results.BotsToIgnore) {
+            $results.BotsToIgnore = $results.BotsToIgnore -split ", "
+        }
         # Order columns by column name
         $fields = $results | Get-Member -Type NoteProperty | Sort-Object Name | Select-Object -ExpandProperty Name
 
@@ -42,10 +41,10 @@ function Get-TvConfig {
         $callstack = Get-PSCallStack
 
         if (($callstack).Count -eq 2 -or $callstack[1].Command -eq 'Set-TvConfig' -and -not $Force) {
-            $hidden = "ClientID", "Token", "DiscordToken", "BotClientId", "BotToken"
+            $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
             foreach ($item in $hidden) {
                 if ($results.$item) {
-                    $results.$item = "*****"
+                    $results.$item = "**************"
                 }
             }
             $results | Select-Object -Property $fields

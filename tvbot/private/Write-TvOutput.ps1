@@ -61,24 +61,18 @@ function Write-TvOutput {
                 $user = $displayname
                 $sysmsg = $hash["system-msg"]
                 if ($sysmsg -match "raiders") {
-                    if ($script:cache[$user]) {
-                        $image = $script:cache[$user]
-                    } else {
-                        $avatar = Invoke-TvRequest -Path /users?login=$user
-                        $image = $avatar.data.profile_image_url
-                        $script:cache[$user] = $image
-                    }
+                    $image = Get-Avatar
 
                     # 15\sraiders\sfrom\sTdanni_juhl\shave\sjoined\n!
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    $appicon = New-BTImage -Source "$script:ModuleRoot\images\pog.gif" -AppLogoOverride
+                    $appicon = New-BTImage -Source (Get-TvConfigValue -Name RaidIcon) -AppLogoOverride
 
-                    $heroimage = New-BTImage -Source "$script:ModuleRoot\images\catparty.gif" -HeroImage
+                    $heroimage = New-BTImage -Source (Get-TvConfigValue -Name RaidImage) -HeroImage
 
-                    $titletext = New-BTText -Text "$displayname HAS RAIDED!"
+                    $titletext = New-BTText -Text "$displayname $(Get-TvConfigValue -Name RaidText)"
                     $thankstext = New-BTText -Text $text
 
-                    $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+                    $audio = New-BTAudio -Source (Get-TvConfigValue -Name RaidSound)
 
                     $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
                     $visual = New-BTVisual -BindingGeneric $binding
@@ -92,7 +86,7 @@ function Write-TvOutput {
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($Notify -contains "chat" -and $user -ne "WizeBot") {
+                        if ($Notify -contains "chat" -and $user -notin (Get-TvConfigValue -Name BotsToIgnore)) {
                             if ($message) {
                                 try {
                                     # THANK YOU @vexx32!
@@ -100,14 +94,8 @@ function Write-TvOutput {
                                     $id = "tvbot"
                                     $image = (Resolve-Path "$script:ModuleRoot\icon.png")
 
-                                    if ($script:burnt) {
-                                        if ($script:cache[$user]) {
-                                            $image = $script:cache[$user]
-                                        } else {
-                                            $avatar = Invoke-TvRequest -Path /users?login=$user
-                                            $image = $avatar.data.profile_image_url
-                                            $script:cache[$user] = $image
-                                        }
+                                    if ($script:toast) {
+                                        $image = Get-Avatar
 
                                         Write-Verbose "EMOTE: $emote"
                                         Write-Verbose "EMOTE ONLY: $emoteonly"
@@ -125,12 +113,8 @@ function Write-TvOutput {
                                                     $string = $message.Replace($remove, "")
                                                 }
                                             }
-                                            $theme = "dark"
-                                            if ((Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize).SystemUsesLightTheme -eq 1) {
-                                                $theme = "light"
-                                            }
-                                            Write-Verbose "THEME: $theme"
-                                            $image = "https://static-cdn.jtvnw.net/emoticons/v2/$emote/default/$theme/2.0"
+
+                                            $image = Get-TvEmote -Id $emote
                                         }
 
                                         $existingtoast = Get-BTHistory -UniqueIdentifier $id
@@ -146,13 +130,13 @@ function Write-TvOutput {
                                             } else {
                                                 $bitword = "BITS"
                                             }
-                                            $appicon = New-BTImage -Source "$script:ModuleRoot\images\bits.gif" -AppLogoOverride
-                                            $heroimage = New-BTImage -Source "$script:ModuleRoot\images\vibecat.gif" -HeroImage
+                                            $appicon = New-BTImage -Source (Get-TvConfigValue -Name BitsIcon) -AppLogoOverride
+                                            $heroimage = New-BTImage -Source (Get-TvConfigValue -Name BitsImage) -HeroImage
 
-                                            $titletext = New-BTText -Text "MERCI BEAUCOUP"
-                                            $thankstext = New-BTText -Text "THANK YOU FOR THE $bigolbits $bitword, $displayname!!"
+                                            $titletext = New-BTText -Text (Get-TvConfigValue -Name BitsTitle)
+                                            $thankstext = New-BTText -Text "$(Get-TvConfigValue -Name BitsText) $bigolbits $bitword, $displayname!"
 
-                                            $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+                                            $audio = New-BTAudio -Source (Get-TvConfigValue -Name BitsSound)
 
                                             $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
                                             $visual = New-BTVisual -BindingGeneric $binding

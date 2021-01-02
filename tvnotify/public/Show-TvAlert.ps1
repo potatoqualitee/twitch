@@ -16,7 +16,7 @@ function Show-TvAlert {
         $PSDefaultParameterValues["*:ErrorAction"] = "Stop"
     }
     process {
-        if ($script:burnt) {
+        if ($script:toast) {
             try {
                 $startingsubs = Get-TvSubscriber
                 $startingFollows = Get-TvFollower

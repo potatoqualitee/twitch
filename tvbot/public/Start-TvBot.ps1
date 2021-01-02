@@ -92,7 +92,7 @@ function Start-TvBot {
         if ($PSBoundParameters.ClientId -and $PSBoundParameters.Token) {
             $null = Invoke-TvRequest -ClientId $ClientId -Token $Token
 
-            if ($script:burnt) {
+            if ($script:toast) {
                 try {
                     $id = (Invoke-TvRequest -Path /users?login=$Channel -ErrorAction Stop).data.id
                     $subs = (Invoke-TvRequest -Path /subscriptions?broadcaster_id=$id -ErrorAction Stop).data

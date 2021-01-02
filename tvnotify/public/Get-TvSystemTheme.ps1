@@ -23,7 +23,7 @@ function Get-TvSystemTheme {
             $color = "black"
         }
 
-        if ($configcolor = Get-TvConfigValue -Name NotifyColor) {
+        if ($configcolor = Get-TvConfigValue -Name NotifyColor -ErrorAction SilentlyContinue) {
             $color = $configcolor
         }
 

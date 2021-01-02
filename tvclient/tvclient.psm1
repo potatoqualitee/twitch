@@ -30,11 +30,7 @@ switch ($PSVersionTable.Platform) {
 }
 
 if (-not (Test-Path -Path $script:configfile)) {
-    New-Item -ItemType Directory -Path (Split-Path -Path $script:configfile) -ErrorAction SilentlyContinue
-    @{
-        ConfigFile  = $script:configfile
-        DefaultFont = "Segoe UI"
-    } | ConvertTo-Json | Set-Content -Path $script:configfile
+    $null = New-ConfigFile
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

@@ -64,6 +64,16 @@ function Show-TvViewerCount {
         }
     }
     process {
+        Write-Output "Please wait one moment while we perform the initial population of data"
+        Write-Output "
+  _____                       _____ _          _ _
+ |  __ \                     / ____| |        | | |
+ | |__) |____      _____ _ __ (___ | |__   ___| | |
+ |  ___/ _ \ \ /\ / / _ \ '__\___ \| '_ \ / _ \ | |
+ | |  | (_) \ V  V /  __/ |  ____) | | | |  __/ | |
+ |_|   \___/ \_/\_/ \___|_| |_____/|_| |_|\___|_|_|
+
+"
         # Create notifyicon, and right-click -> Exit menu
         $script:notifyicon = New-Object System.Windows.Forms.NotifyIcon
         $script:notifyicon.Icon = Update-ViewCount
