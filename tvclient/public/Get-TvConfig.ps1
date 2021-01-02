@@ -30,9 +30,13 @@ function Get-TvConfig {
             $results = Get-Content -Path $script:configfile | ConvertFrom-Json
         }
 
-        if ($results.BotsToIgnore) {
-            $results.BotsToIgnore = $results.BotsToIgnore -split ", "
+        $arrays = "BotsToIgnore", "NotifyType", "BotOwner"
+        foreach ($value in $arrays) {
+            if ($results.$value) {
+                $results.$value = $results.$value -split ", "
+            }
         }
+
         # Order columns by column name
         $fields = $results | Get-Member -Type NoteProperty | Sort-Object Name | Select-Object -ExpandProperty Name
 

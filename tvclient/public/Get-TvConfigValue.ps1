@@ -17,6 +17,6 @@ function Get-TvConfigValue {
         [string]$Name
     )
     process {
-        Get-Content -Path $script:configfile | ConvertFrom-Json | Select-Object -ExpandProperty $Name
+        Get-TvConfig -Name $Name | Select-Object -ExpandProperty $Name
     }
 }

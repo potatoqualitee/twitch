@@ -63,6 +63,15 @@ function Set-TvConfig {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$BitsSound,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$BotKey,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$AdminCommandFile,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$UserCommandFile,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateSet("chat", "leave", "join")]
+        [string[]]$NotifyType,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Force
     )
     begin {
@@ -88,14 +97,21 @@ function Set-TvConfig {
         $ignore = [System.Management.Automation.PSCmdlet]::CommonParameters
 
         foreach ($key in $PSBoundParameters.Keys) {
+            $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
+
             if ($key -ne "Force" -and $key -notin $ignore) {
-                if ($key -eq "BotsToIgnore") {
+                if ($key -in "BotsToIgnore", "NotifyType", "BotOwner") {
                     $value = $PSBoundParameters.$key -join ", "
                     $config[$key] = $value
                 } else {
                     $value = $PSBoundParameters.$key
                     $config[$key] = $value
+
+                    if ($key -in $hidden -and -not $Force) {
+                        $value = "********************** (Use -Force to see)"
+                    }
                 }
+                Write-Verbose -Message "Set $key to $value"
             }
         }
 

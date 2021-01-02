@@ -10,7 +10,7 @@ function Watch-Events {
     [CmdletBinding()]
     param()
     begin {
-        
+
     }
     process {
         $id = (Get-TvUser).id

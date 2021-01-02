@@ -2,9 +2,14 @@ function New-ConfigFile {
     [CmdletBinding()]
     param()
     process {
-        $dir = Split-Path -Path $script:configfile
-        New-Item -ItemType Directory -Path $dir -ErrorAction SilentlyContinue
 
+        ######### Create directories
+        $dir = Split-Path -Path $script:configfile
+        if (-not (Test-Path -Path $dir)) {
+            New-Item -ItemType Directory -Path $dir -ErrorAction SilentlyContinue
+        }
+
+        ######### Set variables and write to file
         if ((Get-TvSystemTheme).Theme -eq "dark") {
             $color = "White"
         } else {
@@ -34,7 +39,10 @@ function New-ConfigFile {
             DiscordWebhook     = $null
             NewSubscriberSound = "ms-winsoundevent:Notification.Mail"
             NewFollowerSound   = "ms-winsoundevent:Notification.Mail"
-
+            UserCommandFile    = $userfile
+            AdminCommandFile   = $adminfile
+            NotifyType         = "chat"
+            BotKey             = "!"
         } | ConvertTo-Json | Set-Content -Path $script:configfile
     }
 }

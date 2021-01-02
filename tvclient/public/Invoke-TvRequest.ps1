@@ -19,14 +19,13 @@ function Invoke-TvRequest {
         [Alias("Secret")]
         [string]$Token = (Get-TvConfigValue -Name Token),
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Path = "search/channels?query=powershell",
+        [string]$Path = "users",
         [ValidateSet("GET","POST")]
         [string]$Method = "GET",
         [psobject]$Body,
         [switch]$Raw
     )
     process {
-
         if (-not $script:session -and -not $ClientId -and -not $Token) {
             Write-Error -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig"
         }

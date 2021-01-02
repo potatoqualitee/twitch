@@ -27,68 +27,36 @@ function Invoke-TvCommand {
     #>
     [CmdletBinding()]
     Param (
-        [string]$Channel = $script:Channel,
-        [parameter(Mandatory)]
-        [string[]]$InputObject,
-        [string[]]$Owner = $script:Owner,
-        [string]$Key = "!",
-        [string]$User,
-        [object]$UserCommand = $script:UserCommand,
-        [object]$AdminCommand = $script:AdminCommand,
-        [ValidateSet("chat", "leave", "join")]
-        [string[]]$Notify
+        [parameter(Mandatory,ValueFromPipeline)]
+        [string[]]$InputObject
     )
     process {
         if (-not $writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
-        # some defaults
-        if (-not $UserCommand) {
-            $UserCommand = @{
-                ping = 'Send-TvMessage -Message "$user, pong"'
-                pwd  = 'Send-TvMessage -Message $(Get-Location)'
-            }
-        }
-        if (-not $AdminCommand) {
-            $AdminCommand = @{
-                quit = 'Disconnect-TvServer -Message "k bye 👋!"'
-            }
+        # automatically set variables
+        $config = Get-TvConfig
+        foreach ($name in ($config | Get-Member -MemberType NoteProperty).Name) {
+            $null = Set-Variable -Name $name -Value $config.$name -Scope Local
         }
 
-        try {
-            if ($UserCommand -isnot [hashtable]) {
-                if ((Test-Path -Path $UserCommand -ErrorAction SilentlyContinue)) {
-                    $UserCommand = Get-Content -Raw -Path $UserCommand | ConvertFrom-Json
-                }
-                $UserCommand = $UserCommand | ConvertTo-HashTable -ErrorAction Stop
-            }
-            if ($AdminCommand -isnot [hashtable]) {
-                if ((Test-Path -Path $AdminCommand -ErrorAction SilentlyContinue)) {
-                    $AdminCommand = Get-Content -Raw -Path $AdminCommand | ConvertFrom-Json
-                }
-                $AdminCommand = $AdminCommand | ConvertTo-HashTable -ErrorAction Stop
-            }
-        } catch {
-            Write-Error -ErrorAction Stop -Message "Conversion for UserCommand and AdminCommand failed. Please check examples."
-        }
+        $usercommand = Get-UserCommand
+        $admincommand = Get-AdminCommand
 
-        $allowedregex = [Regex]::new("^$([Regex]::Escape($Key))[a-zA-Z0-9\ ]+`$")
+        $allowedregex = [Regex]::new("^$([Regex]::Escape($botkey))[a-zA-Z0-9\ ]+`$")
         $irctagregex = [Regex]::new('^(?:@([^ ]+) )?(?:[:]((?:(\w+)!)?\S+) )?(\S+)(?: (?!:)(.+?))?(?: [:](.+))?$')
 
         foreach ($object in $InputObject) {
             $match = $irctagregex.Match($object)
-
-            if (-not $user) {
-                $user = $match.Groups[3].Value
-            }
-            if ($user -and $object.StartsWith($Key) -and $allowedregex.Matches($object)) {
+            $user = $match.Groups[3].Value
+            if ($user -and $object.StartsWith($botkey) -and $allowedregex.Matches($object)) {
                 $index = $object.Trim().Substring(1).Split(" ", [System.StringSplitOptions]::RemoveEmptyEntries)
 
                 if ($index) {
-                    $code = $UserCommand[$index[0]]
-                    if (-not $code -and $user -in $Owner) {
-                        $code = $AdminCommand[$index[0]]
+                    $code = $usercommand[$index[0]]
+                    if (-not $code -and $user -in $botowner) {
+                        $code = $admincommand[$index[0]]
                     }
 
                     try {
@@ -96,21 +64,13 @@ function Invoke-TvCommand {
                             Invoke-Expression $code
                         }
                     } catch {
-                        Send-TvMessage -Channel $Channel -Message "$($_.Exception.Message)"
+                        Send-TvMessage -Message "$($_.Exception.Message)"
                         Write-Output $_.Exception
                     }
                 }
             } else {
-                if ($PSBoundParameters.Notify) {
-                    Write-TvOutput -InputObject $object -Channel $Channel -Notify $Notify
-                } else {
-                    Write-TvOutput -InputObject $object -Channel $Channel
-                }
+                Write-TvOutput -InputObject $object
             }
         }
-    }
-    end {
-        # clear out user
-        $user = $null
     }
 }

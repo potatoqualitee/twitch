@@ -11,7 +11,7 @@ function Send-TvMessage {
     #>
     [CmdletBinding()]
     param (
-        [string]$Channel = $script:Channel,
+        [string]$Channel,
         [string]$Message
     )
 
@@ -20,9 +20,9 @@ function Send-TvMessage {
     }
 
     if ($null -ne $writer.BaseStream) {
-        foreach ($chan in $Channel) {
-            Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$chan :$Message"
-            Send-Server -Message "PRIVMSG #$chan :$Message"
+        foreach ($room in $Channel) {
+            Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$room :$Message"
+            Send-Server -Message "PRIVMSG #$room :$Message"
         }
         if (-not $PSBoundParameters.Channel) {
             Write-Verbose -Message "[$(Get-Date)] PRIVMSG :$Message"

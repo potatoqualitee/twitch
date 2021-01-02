@@ -11,21 +11,20 @@ function Join-TvChannel {
         The name of the channel.
 
     .EXAMPLE
-        PS> Join-TvChannel -Channel mychannel
+        PS> Join-TvChannel
     #>
     [CmdletBinding()]
-    Param (
-        [parameter(Mandatory)]
-        [string]$Channel
-    )
+    param ()
     if (-not $writer.BaseStream) {
         Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
-    $script:Channel = $Channel
-    foreach ($chan in $Channel) {
-        if ($chan -notmatch '\#') {
-            $chan = "#$chan"
+
+    $channels = Get-TvConfigValue -Name BotChannel
+
+    foreach ($channel in $channels) {
+        if ($channel -notmatch '\#') {
+            $channel = "#$channel"
         }
-        Send-Server -Message "JOIN $chan"
+        Send-Server -Message "JOIN $channel"
     }
 }

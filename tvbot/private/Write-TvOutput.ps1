@@ -21,15 +21,17 @@ function Write-TvOutput {
     [CmdletBinding()]
     Param (
         [parameter(Mandatory)]
-        [string]$InputObject,
-        [string]$Channel = $script:Channel,
-        [string[]]$Owner = $script:Owner,
-        [ValidateSet("chat", "leave", "join")]
-        [string[]]$Notify
+        [string]$InputObject
     )
     process {
         if (-not $writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
+        }
+
+        # automatically set variables
+        $config = Get-TvConfig
+        foreach ($name in ($config | Get-Member -MemberType NoteProperty).Name) {
+            $null = Set-Variable -Name $name -Value $config.$name -Scope Local
         }
 
         $irctagregex = [Regex]::new('^(?:@([^ ]+) )?(?:[:]((?:(\w+)!)?\S+) )?(\S+)(?: (?!:)(.+?))?(?: [:](.+))?$')
@@ -65,14 +67,14 @@ function Write-TvOutput {
 
                     # 15\sraiders\sfrom\sTdanni_juhl\shave\sjoined\n!
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    $appicon = New-BTImage -Source (Get-TvConfigValue -Name RaidIcon) -AppLogoOverride
+                    $appicon = New-BTImage -Source $raidicon -AppLogoOverride
 
-                    $heroimage = New-BTImage -Source (Get-TvConfigValue -Name RaidImage) -HeroImage
+                    $heroimage = New-BTImage -Source $raidimage -HeroImage
 
-                    $titletext = New-BTText -Text "$displayname $(Get-TvConfigValue -Name RaidText)"
+                    $titletext = New-BTText -Text "$displayname $raidtext"
                     $thankstext = New-BTText -Text $text
 
-                    $audio = New-BTAudio -Source (Get-TvConfigValue -Name RaidSound)
+                    $audio = New-BTAudio -Source $raidsound
 
                     $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
                     $visual = New-BTVisual -BindingGeneric $binding
@@ -86,7 +88,7 @@ function Write-TvOutput {
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($Notify -contains "chat" -and $user -notin (Get-TvConfigValue -Name BotsToIgnore)) {
+                        if ($notifytype -contains "chat" -and $user -notin $botstoignore) {
                             if ($message) {
                                 try {
                                     # THANK YOU @vexx32!
@@ -130,13 +132,13 @@ function Write-TvOutput {
                                             } else {
                                                 $bitword = "BITS"
                                             }
-                                            $appicon = New-BTImage -Source (Get-TvConfigValue -Name BitsIcon) -AppLogoOverride
-                                            $heroimage = New-BTImage -Source (Get-TvConfigValue -Name BitsImage) -HeroImage
+                                            $appicon = New-BTImage -Source $bitsicon -AppLogoOverride
+                                            $heroimage = New-BTImage -Source $bitsimage -HeroImage
 
-                                            $titletext = New-BTText -Text (Get-TvConfigValue -Name BitsTitle)
-                                            $thankstext = New-BTText -Text "$(Get-TvConfigValue -Name BitsText) $bigolbits $bitword, $displayname!"
+                                            $titletext = New-BTText -Text $bitstitle
+                                            $thankstext = New-BTText -Text "$bitstext $bigolbits $bitword, $displayname!"
 
-                                            $audio = New-BTAudio -Source (Get-TvConfigValue -Name BitsSound)
+                                            $audio = New-BTAudio -Source $bitssound
 
                                             $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
                                             $visual = New-BTVisual -BindingGeneric $binding
@@ -163,22 +165,22 @@ function Write-TvOutput {
                     } else {
                         Write-Output "[$(Get-Date)] > $message"
                     }
-                    if (-not $Notify -or $message -eq "!quit") {
-                        Invoke-TvCommand -InputObject $message -Channel $script:Channel -Owner $Owner -User $user
+                    if (-not $notifytype -or $message -eq "!quit") {
+                        Invoke-TvCommand -InputObject $message -Channel $botchannel -Owner $botowner -User $user
                     }
                 }
             }
             "JOIN" {
-                Write-Output "[$(Get-Date)] *** $user has joined #$script:Channel"
+                Write-Output "[$(Get-Date)] *** $user has joined #$botchannel"
 
-                if ($Notify -contains "join") {
+                if ($notifytype -contains "join") {
                     Send-OSNotification -Title $user -Body "$user has joined" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
                 }
             }
             "PART" {
-                Write-Output "[$(Get-Date)] *** $user has left #$script:Channel"
+                Write-Output "[$(Get-Date)] *** $user has left #$botchannel"
 
-                if ($Notify -contains "leave") {
+                if ($notifytype -contains "leave") {
                     Send-OSNotification -Title $user -Body "$user has has left" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
                 }
             }

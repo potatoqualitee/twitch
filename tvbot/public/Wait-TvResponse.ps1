@@ -6,45 +6,11 @@ function Wait-TvResponse {
     .DESCRIPTION
         Waits for the IRC Server to send data.
 
-    .PARAMETER Channel
-        Optional channel to listen in
-
-    .PARAMETER Key
-        The chracter for the bot to listen for. Exclamation point by default.
-
-        !likethis
-        >likethis
-        ?likethis
-
-    .PARAMETER UserCommand
-        The commands that users can use. Input can be JSON, a filename with JSON or a hashtable.
-
-    .PARAMETER AdminCommand
-        The commands that admins can use. Input can be JSON, a filename with JSON or a hashtable.
-
     .EXAMPLE
-        PS> $params = @{
-            UserCommand  = "C:\temp\user-commands.json"
-            AdminCommand = "C:\temp\admin-commands.json"
-            Channel      = "mypsbot"
-            Key          = ">"
-        }
-
-        Wait-TvResponse  @params
+        PS>
     #>
     [CmdletBinding()]
-    param (
-        [string]$Channel = $script:Channel,
-        [string]$Key = "!",
-        [object]$UserCommand = $script:UserCommand,
-        [object]$AdminCommand = $script:AdminCommand,
-        [ValidateSet("chat", "leave", "join")]
-        [string[]]$Notify
-    )
-    begin {
-        $script:UserCommand = $UserCommand
-        $script:AdminCommand = $AdminCommand
-    }
+    param ()
     process {
         if (-not $script:line) {
             continue
@@ -58,21 +24,20 @@ function Wait-TvResponse {
         $active = $false
         $lasttick = $script:ping = [DateTime]::Now
 
-        $inactivedelay = 1000
-        $interactivedelay = 100
-        $timerinterval = 0
 
         Write-Verbose -Message "About to loop"
 
         while ($script:running) {
             if ($active) {
+                $interactivedelay = 100
                 Start-Sleep -Milliseconds $interactivedelay
             } else {
+                $inactivedelay = 1000
                 Start-Sleep -Milliseconds $inactivedelay
             }
 
             $active = $false
-
+            $timerinterval = 0
             if ($script:running -and $timerinterval) {
                 if ((New-TimeSpan $lasttick ([DateTime]::Now)).TotalMilliseconds -gt $timerinterval) {
                     Send-Server -Message "PING"
@@ -82,29 +47,19 @@ function Wait-TvResponse {
                 $lasttick = [DateTime]::Now
             }
 
+            # Reconnect
             if ($script:ping -lt (Get-Date).AddMinutes(-20)) {
-                # Reconnect
-                Wait-TvResponse @PSBoundParameters
+                Start-TvBot @script:startboundparams
             }
+
             while ($script:running -and ($script:bot.GetStream().DataAvailable -or $reader.Peek() -ne -1)) {
                 try {
                     $script:line = $reader.ReadLine()
                     $active = $true
-                    $params = @{
-                        InputObject  = $script:line
-                        Owner        = $script:Owner
-                        UserCommand  = $script:UserCommand
-                        AdminCommand = $script:AdminCommand
-                        Channel      = $Channel
-                        Key          = $Key
-                    }
-                    if ($PSBoundParameters.Notify) {
-                        $params.Notify = $Notify
-                    }
-                    Invoke-TvCommand @params
+                    Invoke-TvCommand -InputObject $script:line
                 } catch {
-                    if ($PSBoundParameters.Notify -and $script:startboundparams -and $script:reconnect) {
-                        Start-TVBot @script:startboundparams
+                    if ($script:startboundparams -and $script:reconnect) {
+                        Start-TvBot @script:startboundparams
                     } else {
                         Write-Error -ErrorAction Stop -Message "Cannot read stream: $_"
                     }

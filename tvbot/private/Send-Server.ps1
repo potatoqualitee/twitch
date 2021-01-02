@@ -6,8 +6,7 @@ function Send-Server {
     param(
         [Parameter(Mandatory)]
         [string[]]$Message,
-        [string]$Channel,
-        [string[]]$Owner = $script:Owner
+        [string]$Channel
     )
 
     if (-not $writer.BaseStream) {

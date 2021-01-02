@@ -22,7 +22,7 @@ function Disconnect-TvServer {
     }
 
     if ($Message) {
-        Send-TvMessage -Message $Message -Channel $script:Channel
+        Send-TvMessage -Message $Message
     }
 
     $writer.WriteLine("QUIT")
@@ -31,6 +31,5 @@ function Disconnect-TvServer {
     $script:bot.Close()
     $script:channel = $script:line = $script:writer = $null
     $script:reader = $script:sslstream = $script:bot = $null
-    $script:owner = $null
     Write-Output "*** Disconnected"
 }

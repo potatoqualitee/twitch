@@ -15,18 +15,16 @@ function Split-TvChannel {
     #>
     [CmdletBinding()]
     Param (
-        [string]$Channel = $script:Channel
+        [string]$Channel
     )
     if (-not $writer.BaseStream) {
         Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
-    foreach ($chan in $script:Channel) {
-        if ($chan -notmatch '\#') {
-            $chan = "#$chan"
+    foreach ($room in $Channel) {
+        if ($room -notmatch '\#') {
+            $room = "#$room"
         }
         Send-TvMessage -Message "Leaving"
-        Send-Server -Message "LEAVE $chan"
+        Send-Server -Message "LEAVE $room"
     }
-
-    $script:Channel = $null
 }

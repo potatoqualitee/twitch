@@ -30,16 +30,25 @@ function Connect-TvServer {
     #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory)]
-        [string]$Name,
-        [string]$Token,
         [string]$Server = "irc.chat.twitch.tv",
-        [int]$Port = 6697,
-        [Parameter(Mandatory)]
-        [string[]]$Owner
+        [int]$Port = 6697
     )
     process {
-        $script:Owner = $Owner
+        # automatically set variables
+        $config = Get-TvConfig
+        foreach ($name in ($config | Get-Member -MemberType NoteProperty).Name) {
+            $null = Set-Variable -Name $name -Value $config.$name -Scope Local
+        }
+
+        if (-not $botclientid -and -not $bottoken) {
+            Write-Error -ErrorAction Stop -Message "BotClientId and BotToken not set. Please use Set-TvConfig to proceed."
+        }
+
+        $botname = (Invoke-TvRequest -ClientId $botclientid -Token $bottoken -Path /users).Login
+
+        if (-not $botchannel) {
+            $null = Set-TvConfig -BotChannel $botname
+        }
 
         try {
             $script:bot = New-Object System.Net.Sockets.TcpClient
@@ -60,13 +69,13 @@ function Connect-TvServer {
             $script:reader = New-Object System.IO.StreamReader $sslstream
 
             # allow user to pass in a token starting or not starting with oauth:
-            $string1 = "PASS oauth:$($token.Replace('oauth:', ''))"
-            $string2 = "NICK $Name"
+            $auth = "PASS oauth:$($bottoken.Replace('oauth:', ''))"
+            $nick = "NICK $botname"
 
             # enble extra features from twitch
-            $string3 = "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"
+            $capabilities = "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"
 
-            Send-Server -Message $string1, $string2, $string3
+            Send-Server -Message $auth, $nick, $capabilities
         } catch {
             Write-Error -ErrorAction Stop -Message $_
         }
