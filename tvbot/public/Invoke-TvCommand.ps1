@@ -40,7 +40,7 @@ function Invoke-TvCommand {
     )
     process {
         if (-not $writer.BaseStream) {
-            throw "Have you connected to a server using Connect-TvServer?"
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
         # some defaults
@@ -70,7 +70,7 @@ function Invoke-TvCommand {
                 $AdminCommand = $AdminCommand | ConvertTo-HashTable -ErrorAction Stop
             }
         } catch {
-            throw "Conversion for UserCommand and AdminCommand failed. Please check examples."
+            Write-Error -ErrorAction Stop -Message "Conversion for UserCommand and AdminCommand failed. Please check examples."
         }
 
         $allowedregex = [Regex]::new("^$([Regex]::Escape($Key))[a-zA-Z0-9\ ]+`$")
