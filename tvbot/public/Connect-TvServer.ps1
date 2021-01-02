@@ -77,7 +77,7 @@ function Connect-TvServer {
 
             Send-Server -Message $auth, $nick, $capabilities
         } catch {
-            Write-Error -ErrorAction Stop -Message $_
+            Write-Error -ErrorRecord $_ -ErrorAction Stop -Message $_
         }
     }
 }

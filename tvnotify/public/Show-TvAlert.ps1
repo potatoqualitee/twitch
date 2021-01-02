@@ -21,7 +21,7 @@ function Show-TvAlert {
                 $startingsubs = Get-TvSubscriber
                 $startingFollows = Get-TvFollower
             } catch {
-                Write-Error -ErrorAction Stop -Message "Error from webserver: $PSItem. Subs and follows will not be shown."
+                Write-Error -ErrorRecord $_ -ErrorAction Stop -Message "Error from webserver: $PSItem. Subs and follows will not be shown."
             }
 
             if (-not (Get-Job -Name tvbotviewers -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
