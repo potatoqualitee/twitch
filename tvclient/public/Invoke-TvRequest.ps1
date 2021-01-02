@@ -28,7 +28,7 @@ function Invoke-TvRequest {
     process {
 
         if (-not $script:session -and -not $ClientId -and -not $Token) {
-            throw "You must set a ClientId and Token using Set-TvConfig"
+            Write-Error -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig"
         }
 
         $Path = $Path.TrimStart("/")
@@ -63,7 +63,7 @@ function Invoke-TvRequest {
                 $results
             }
         } catch {
-            throw $_
+            Write-Error -ErrorAction Stop -Message $_
         }
 
         if (-not $script:session) {

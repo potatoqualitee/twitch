@@ -29,7 +29,7 @@ function Write-TvOutput {
     )
     process {
         if (-not $writer.BaseStream) {
-            throw "Have you connected to a server using Connect-TvServer?"
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
         $irctagregex = [Regex]::new('^(?:@([^ ]+) )?(?:[:]((?:(\w+)!)?\S+) )?(\S+)(?: (?!:)(.+?))?(?: [:](.+))?$')

@@ -51,7 +51,7 @@ function Wait-TvResponse {
         }
 
         if (-not $writer.BaseStream) {
-            throw "Have you connected to a server using Connect-TvServer?"
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
         $script:running = $true
@@ -106,7 +106,7 @@ function Wait-TvResponse {
                     if ($PSBoundParameters.Notify -and $script:startboundparams -and $script:reconnect) {
                         Start-TVBot @script:startboundparams
                     } else {
-                        throw "Cannot read stream: $_"
+                        Write-Error -ErrorAction Stop -Message "Cannot read stream: $_"
                     }
                 }
             }

@@ -68,7 +68,7 @@ function Connect-TvServer {
 
             Send-Server -Message $string1, $string2, $string3
         } catch {
-            throw $_
+            Write-Error -ErrorAction Stop -Message $_
         }
     }
 }

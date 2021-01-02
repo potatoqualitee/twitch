@@ -85,7 +85,7 @@ function Start-TvBot {
             if ($Owner.Count -eq 1) {
                 $Channel = "$Owner"
             } else {
-                throw "You must specify a Channel when assigning multiple owners"
+                Write-Error -ErrorAction Stop -Message "You must specify a Channel when assigning multiple owners"
             }
         }
 

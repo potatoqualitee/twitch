@@ -16,7 +16,7 @@ function Send-TvMessage {
     )
 
     if (-not $writer.BaseStream) {
-        throw "Have you connected to a server using Connect-TvServer?"
+        Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
 
     if ($null -ne $writer.BaseStream) {
@@ -29,6 +29,6 @@ function Send-TvMessage {
             Send-Server -Message "PRIVMSG :$Message"
         }
     } else {
-        throw "Disconnected?"
+        Write-Error -ErrorAction Stop -Message "Disconnected?"
     }
 }

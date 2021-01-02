@@ -18,7 +18,7 @@ function Split-TvChannel {
         [string]$Channel = $script:Channel
     )
     if (-not $writer.BaseStream) {
-        throw "Have you connected to a server using Connect-TvServer?"
+        Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
     foreach ($chan in $script:Channel) {
         if ($chan -notmatch '\#') {

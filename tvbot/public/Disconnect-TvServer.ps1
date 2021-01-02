@@ -18,7 +18,7 @@ function Disconnect-TvServer {
     )
 
     if (-not $script:bot.GetStream()) {
-        throw "*** Already disconnected 😊"
+        Write-Error -ErrorAction Stop -Message "*** Already disconnected 😊"
     }
 
     if ($Message) {

@@ -19,7 +19,7 @@ function Join-TvChannel {
         [string]$Channel
     )
     if (-not $writer.BaseStream) {
-        throw "Have you connected to a server using Connect-TvServer?"
+        Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
     $script:Channel = $Channel
     foreach ($chan in $Channel) {

@@ -11,7 +11,7 @@ function Send-Server {
     )
 
     if (-not $writer.BaseStream) {
-        throw "Have you connected to a server using Connect-TvServer?"
+        Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
 
     foreach ($msg in $Message) {
