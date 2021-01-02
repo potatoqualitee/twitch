@@ -34,6 +34,7 @@ function Write-TvOutput {
             $null = Set-Variable -Name $name -Value $config.$name -Scope Local
         }
 
+        # parse the return from the server
         $irctagregex = [Regex]::new('^(?:@([^ ]+) )?(?:[:]((?:(\w+)!)?\S+) )?(\S+)(?: (?!:)(.+?))?(?: [:](.+))?$')
         $match = $irctagregex.Match($InputObject) #tags = 1
         $prefix = $match.Groups[2].Value
@@ -42,8 +43,9 @@ function Write-TvOutput {
         $params = $match.Groups[5].Value
         $message = $match.Groups[6].Value
 
-        $hash = @{}
+        # Gather additional information
         # Thanks mr mark!
+        $hash = @{}
         $InputObject.split(';') | ForEach-Object {
             $split = $PSItem.Split('=')
             $key = $split[0]
@@ -165,8 +167,8 @@ function Write-TvOutput {
                     } else {
                         Write-Output "[$(Get-Date)] > $message"
                     }
-                    if (-not $notifytype -or $message -eq "!quit") {
-                        Invoke-TvCommand -InputObject $message -Channel $botchannel -Owner $botowner -User $user
+                    if ($notifytype -ne "none" -or $message -eq "!quit") {
+                        Invoke-TvCommand -InputObject $message -User $user
                     }
                 }
             }

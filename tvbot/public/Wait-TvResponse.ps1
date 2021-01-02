@@ -61,7 +61,7 @@ function Wait-TvResponse {
                     if ($script:startboundparams -and $script:reconnect) {
                         Start-TvBot @script:startboundparams
                     } else {
-                        Write-Error -ErrorAction Stop -Message "Cannot read stream: $_"
+                        throw "Cannot read stream: $_"
                     }
                 }
             }

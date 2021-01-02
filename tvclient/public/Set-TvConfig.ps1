@@ -69,7 +69,7 @@ function Set-TvConfig {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$UserCommandFile,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateSet("chat", "leave", "join")]
+        [ValidateSet("chat", "leave", "join", "none")]
         [string[]]$NotifyType,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Force
@@ -115,7 +115,7 @@ function Set-TvConfig {
             }
         }
 
-        $config | ConvertTo-Json | Set-Content -Path $script:configfile
+        $config | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
         Get-TvConfig -Force:$Force
     }
 }

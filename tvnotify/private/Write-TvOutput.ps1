@@ -180,7 +180,7 @@ function Write-TvOutput {
                         Write-Output "[$(Get-Date)] > $message"
                     }
                     if (-not $Notify -or $message -eq "!quit") {
-                        Invoke-TvCommand -InputObject $message -Channel $script:Channel -Owner $Owner -User $user
+                        Invoke-TvCommand -InputObject $message #-Channel $script:Channel -Owner $Owner -User $user
                     }
                 }
             }

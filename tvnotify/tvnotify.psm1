@@ -66,4 +66,7 @@ if (-not $config.BitsImage) {
     $params.BitsImage = "$dir\images\vibecat.gif"
 }
 
+if ($config.NotifyType -eq "none") {
+    $params.NotifyType = "chat"
+}
 $null = Set-TvConfig @params

@@ -24,7 +24,7 @@ function Split-TvChannel {
         if ($room -notmatch '\#') {
             $room = "#$room"
         }
-        Send-TvMessage -Message "Leaving"
+        Write-TvChannelMessage -Message "Leaving"
         Send-Server -Message "LEAVE $room"
     }
 }

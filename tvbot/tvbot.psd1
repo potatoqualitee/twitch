@@ -46,7 +46,7 @@
         'Get-TvStatusList',
         'Invoke-TvCommand',
         'Join-TvChannel',
-        'Send-TvMessage',
+        'Write-TvChannelMessage',
         'Split-TvChannel',
         'Start-TvBot',
         'Wait-TvResponse'

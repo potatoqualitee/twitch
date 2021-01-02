@@ -41,8 +41,8 @@ function New-ConfigFile {
             NewFollowerSound   = "ms-winsoundevent:Notification.Mail"
             UserCommandFile    = $userfile
             AdminCommandFile   = $adminfile
-            NotifyType         = "chat"
+            NotifyType         = "none"
             BotKey             = "!"
-        } | ConvertTo-Json | Set-Content -Path $script:configfile
+        } | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
     }
 }

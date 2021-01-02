@@ -62,7 +62,7 @@ function Invoke-TvRequest {
                 $results
             }
         } catch {
-            Write-Error -ErrorRecord $_ -ErrorAction Stop -Message $_
+            throw $_
         }
 
         if (-not $script:session) {

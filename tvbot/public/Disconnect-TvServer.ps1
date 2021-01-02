@@ -22,7 +22,7 @@ function Disconnect-TvServer {
     }
 
     if ($Message) {
-        Send-TvMessage -Message $Message
+        Write-TvChannelMessage -Message $Message
     }
 
     $writer.WriteLine("QUIT")

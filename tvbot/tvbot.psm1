@@ -34,15 +34,15 @@ $userfile = Join-Path -Path $dir -ChildPath "user-commands.json"
 if (-not (Test-Path -Path $adminfile)) {
     @{
         quit = 'Disconnect-TvServer -Message "k bye 👋!"'
-    } | ConvertTo-Json | Set-Content -Path $adminfile
+    } | ConvertTo-Json | Set-Content -Path $adminfile -Encoding Unicode
     Set-TvConfig -AdminCommandFile $adminfile
 }
 
 ######### Create user command files
 if (-not (Test-Path -Path $userfile)) {
     @{
-        ping = 'Send-TvMessage -Message "$user, pong"'
-        pwd  = 'Send-TvMessage -Message $(Get-Location)'
-    } | ConvertTo-Json | Set-Content -Path $userfile
+        ping = 'Write-TvChannelMessage -Message "$user, pong"'
+        pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
+    } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
     Set-TvConfig -UserCommandFile $userfile
 }

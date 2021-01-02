@@ -5,8 +5,7 @@ function Send-Server {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string[]]$Message,
-        [string]$Channel
+        [string[]]$Message
     )
 
     if (-not $writer.BaseStream) {
@@ -33,11 +32,7 @@ function Send-Server {
         do {
             $script:line = $reader.ReadLine()
             if ($script:line) {
-                if ($Channel) {
-                    Write-TvOutput -InputObject $script:line -Channel $Channel
-                } else {
-                    Write-TvOutput -InputObject $script:line
-                }
+                Write-TvOutput -InputObject $script:line
             }
         } while ($reader.Peek() -ne -1)
     }

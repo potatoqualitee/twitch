@@ -1,4 +1,4 @@
-function Send-TvMessage {
+function Write-TvChannelMessage {
     <#
     .SYNOPSIS
         Writes a message to a channel.
@@ -7,11 +7,10 @@ function Send-TvMessage {
         Writes a message to a channel.
 
     .EXAMPLE
-        PS> Send-TvMessage -Channel mychannel -Message "Test!"
+        PS> Write-TvChannelMessage -Message "Test!"
     #>
     [CmdletBinding()]
     param (
-        [string]$Channel,
         [string]$Message
     )
 
@@ -19,14 +18,12 @@ function Send-TvMessage {
         Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
 
+    $botchannel = Get-TvConfigValue -Name BotChannel
+
     if ($null -ne $writer.BaseStream) {
-        foreach ($room in $Channel) {
-            Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$room :$Message"
-            Send-Server -Message "PRIVMSG #$room :$Message"
-        }
-        if (-not $PSBoundParameters.Channel) {
-            Write-Verbose -Message "[$(Get-Date)] PRIVMSG :$Message"
-            Send-Server -Message "PRIVMSG :$Message"
+        foreach ($channel in $botchannel) {
+            Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$channel :$Message"
+            Send-Server -Message "PRIVMSG #$channel :$Message"
         }
     } else {
         Write-Error -ErrorAction Stop -Message "Disconnected?"

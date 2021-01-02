@@ -23,12 +23,13 @@ function Invoke-TvCommand {
         The commands for admins
 
     .EXAMPLE
-        PS> Invoke-TvCommand -Channel mychannel -Message "Test!"
+        PS> Invoke-TvCommand -Message "Test!"
     #>
     [CmdletBinding()]
     Param (
         [parameter(Mandatory,ValueFromPipeline)]
-        [string[]]$InputObject
+        [string[]]$InputObject,
+        [string]$User
     )
     process {
         if (-not $writer.BaseStream) {
@@ -49,7 +50,9 @@ function Invoke-TvCommand {
 
         foreach ($object in $InputObject) {
             $match = $irctagregex.Match($object)
-            $user = $match.Groups[3].Value
+            if (-not $PSBoundParameters.User) {
+                $User = $match.Groups[3].Value
+            }
             if ($user -and $object.StartsWith($botkey) -and $allowedregex.Matches($object)) {
                 $index = $object.Trim().Substring(1).Split(" ", [System.StringSplitOptions]::RemoveEmptyEntries)
 
@@ -61,10 +64,10 @@ function Invoke-TvCommand {
 
                     try {
                         if ($code) {
-                            Invoke-Expression $code
+                            Invoke-Expression -Command $code
                         }
                     } catch {
-                        Send-TvMessage -Message "$($_.Exception.Message)"
+                        Write-TvChannelMessage -Message "$($_.Exception.Message)" -Channel $botchannel
                         Write-Output $_.Exception
                     }
                 }
