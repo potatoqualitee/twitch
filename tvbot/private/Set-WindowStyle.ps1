@@ -22,6 +22,6 @@ function Set-WindowStyle {
     $null = $asyncwindow::ShowWindowAsync($handle, $styles[$Style])
     # Restore if it's minimized
     if ($Style -eq "Show") {
-        $null = $asyncwindow::ShowWindowAsync($handle, 1)
+        $null = $asyncwindow::ShowWindowAsync($handle, 10)
     }
 }
