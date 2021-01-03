@@ -27,9 +27,14 @@ function Start-TvBot {
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
         [switch]$AutoReconnect,
-        [switch]$NoTrayIcon
+        [switch]$NoTrayIcon,
+        [parameter(DontShow)]
+        [int]$PrimaryPid
     )
     process {
+        if ($PrimaryPid) {
+            $script:primarypid = $PrimaryPid
+        }
         $script:startboundparams = $PSBoundParameters
         if ($AutoReconnect) { $script:reconnect = $true }
 
@@ -106,11 +111,11 @@ function Start-TvBot {
                 })
 
             # Make PowerShell Disappear
-            $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot @PSBoundParameters -NoTrayIcon" -PassThru
+            $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot @PSBoundParameters -NoTrayIcon -PrimaryPid $PID" -PassThru
 
             $script:hidden = $true
-            Set-WindowStyle -Style Hide
             Set-WindowStyle -Process $script:newprocess -Style Hide
+            #Set-WindowStyle -Style Hide
 
             # Force garbage collection just to start slightly lower RAM usage.
             [System.GC]::Collect()
@@ -120,6 +125,11 @@ function Start-TvBot {
             $appContext = New-Object System.Windows.Forms.ApplicationContext
             $null = [System.Windows.Forms.Application]::Run($appContext)
         } else {
+            if ($NoTrayIcon) {
+                if ((Get-Host).UI.RawUI.WindowTitle) {
+                    (Get-Host).UI.RawUI.WindowTitle = "tvbot"
+                }
+            }
             Connect-TvServer
             Join-TvChannel
             Wait-TvResponse
