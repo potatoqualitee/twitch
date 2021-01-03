@@ -37,4 +37,8 @@ function Disconnect-TvServer {
         $script:notifyicon.Visible = $false
         $script:notifyicon.dispose()
     }
+
+    if ($script:primarypid) {
+        Stop-Process -Id $PID, $script:primarypid
+    }
 }
