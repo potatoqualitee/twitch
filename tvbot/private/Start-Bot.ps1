@@ -114,10 +114,12 @@ function Start-Bot {
         })
 
     # Make PowerShell Disappear
+    $null = Switch-WindowStyle
+
+    # Start bot
     $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
 
-    Start-Sleep -Seconds 1
-    #$null = Switch-WindowStyle
+    Start-Sleep -Seconds 3
     $null = Switch-WindowStyle -Process $script:newprocess
 
     # Force garbage collection just to start slightly lower RAM usage.
