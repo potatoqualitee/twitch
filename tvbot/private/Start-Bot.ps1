@@ -1,5 +1,13 @@
 function Start-Bot {
-    Add-Type -AssemblyName PresentationFramework, System.Drawing, System.Windows.Forms
+    Add-Type -AssemblyName PresentationFramework, System.Drawing, System.Windows.Forms, UIAutomationClient
+
+    # hide helpers
+    $windowcode = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'
+    $script:asyncwindow = Add-Type -MemberDefinition $windowcode -Name Win32ShowWindowAsync -Namespace Win32Functions -PassThru
+
+    $mincode = '[DllImport("user32.dll")] public static extern bool IsWindowVisible(int hwnd);'
+    $script:mindetect = Add-Type -MemberDefinition $mincode -Name Win32ShowMinimized -Namespace Win32Functions -PassThru
+
     # Create bitmapimage to enable streaming
     $boticon = Get-TvConfigValue -Name BotIcon
     $script:bitmap = New-Object System.Windows.Media.Imaging.BitmapImage
@@ -54,13 +62,7 @@ function Start-Bot {
     # Add Event to exit example
     $script:notifyicon.add_Click( {
             if ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-                if ($script:hidden) {
-                    $script:hidden = $false
-                    Set-WindowStyle -Process $script:newprocess -Style Show
-                } else {
-                    $script:hidden = $true
-                    Set-WindowStyle -Process $script:newprocess -Style Hide
-                }
+                Switch-WindowStyle -Process $script:newprocess
             }
         })
 
@@ -76,16 +78,15 @@ function Start-Bot {
     $menurestart.add_Click( {
             Stop-Process $script:newprocess.Id
             $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
-            $script:hidden = $true
-            Set-WindowStyle -Process $script:newprocess -Style Hide
+            Switch-WindowStyle -Process $script:newprocess
         })
 
     # Make PowerShell Disappear
     $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
 
-    $script:hidden = $true
-    Set-WindowStyle -Style Hide
-    Set-WindowStyle -Process $script:newprocess -Style Hide
+    Start-Sleep -Seconds 1
+    Switch-WindowStyle
+    Switch-WindowStyle -Process $script:newprocess
 
     # Force garbage collection just to start slightly lower RAM usage.
     [System.GC]::Collect()
