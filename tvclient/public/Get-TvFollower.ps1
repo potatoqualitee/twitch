@@ -25,7 +25,20 @@ function Get-TvFollower {
                 Next       = $Next
                 MaxResults = $MaxResults
             }
-            Invoke-Pagination @params
+            if (-not $PSBoundParameters.Since) {
+                Invoke-Pagination @params
+            } else {
+                if ($Since -eq "StreamStart") {
+                    $online = Get-TvStream
+                    if (-not $online) {
+                        $lastvod = Get-TvVideo -MaxResults 1 | Select-Object -ExpandProperty Created
+                        if (-not $lastvod) {
+                            Write-Warning -Message "Twitter doesn't offer a way to detect this info"
+                        }
+                    }
+                }
+            }
+
         } else {
             $users = Get-TvUser -UserName $UserName
             foreach ($user in $users) {

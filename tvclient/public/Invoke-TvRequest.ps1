@@ -57,9 +57,9 @@ function Invoke-TvRequest {
         try {
             $results = Invoke-RestMethod @params -ErrorAction Stop
             if ($results.data -and -not $Raw) {
-                $results.data
+                $results.data | ConvertFrom-RestResponse
             } else {
-                $results
+                $results | ConvertFrom-RestResponse
             }
         } catch {
             throw $_

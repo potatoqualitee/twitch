@@ -13,6 +13,6 @@ function Get-TvLeaderboard {
         [string]$Period = "all"
     )
     process {
-        Invoke-TvRequest -Path "/bits/leaderboard?count=$MaxResults&period=$Period" | ConvertFrom-RestResponse
+        Invoke-TvRequest -Path "/bits/leaderboard?count=$MaxResults&period=$Period"
     }
 }

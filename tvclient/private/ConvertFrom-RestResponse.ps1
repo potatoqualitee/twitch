@@ -50,6 +50,10 @@
                 [string]$Key,
                 $Value
             )
+            if ($value -match '\b[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\b') {
+                $datetime = ([DateTime]$value).ToUniversalTime()
+                return [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId($datetime, (Get-TimeZone).Id)
+            }
             if ($Key -notmatch 'date' -and $Key -notmatch 'time' -or $Key -match 'Updates') {
                 if ("$Value".StartsWith("@") -or "$Value".StartsWith("{")) {
                     return $Value | ConvertFrom-RestResponse -NoUri

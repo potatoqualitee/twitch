@@ -23,10 +23,10 @@ function Invoke-Pagination {
 
         if ($data) {
             if ($results.data) {
-                $results.data | ConvertFrom-RestResponse
+                $results.data
             }
         } else {
-            $results | ConvertFrom-RestResponse
+            $results
         }
     }
 }
