@@ -90,6 +90,7 @@ function Show-TvViewerCount {
         $menuitem.add_Click( {
                 $script:notifyicon.Visible = $false
                 $window.Close()
+                $script:notifyicon.dispose()
                 Stop-Process $pid
             })
 

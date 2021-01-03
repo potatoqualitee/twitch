@@ -5,6 +5,7 @@ function New-ConfigFile {
 
         ######### Create directories
         $dir = Split-Path -Path $script:configfile
+
         if (-not (Test-Path -Path $dir)) {
             New-Item -ItemType Directory -Path $dir -ErrorAction SilentlyContinue
         }
@@ -37,6 +38,8 @@ function New-ConfigFile {
             BotChannel         = $null
             BotOwner           = $null
             NotifyColor        = $color
+            BotIconColor       = $color
+            BotIcon            = $null
             DiscordWebhook     = $null
             NewSubscriberSound = "ms-winsoundevent:Notification.Mail"
             NewFollowerSound   = "ms-winsoundevent:Notification.Mail"

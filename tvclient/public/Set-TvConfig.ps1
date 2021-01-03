@@ -69,6 +69,10 @@ function Set-TvConfig {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$UserCommandFile,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$BotIcon,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$BotIconColor,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet("chat", "leave", "join", "none")]
         [string[]]$NotifyType,
         [Parameter(ValueFromPipelineByPropertyName)]

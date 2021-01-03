@@ -46,3 +46,18 @@ if (-not (Test-Path -Path $userfile)) {
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
     Set-TvConfig -UserCommandFile $userfile
 }
+
+Enum ShowStates {
+    Hide = 0
+    Normal = 1
+    Minimized = 2
+    Maximized = 3
+    ShowNoActivateRecentPosition = 4
+    Show = 5
+    MinimizeActivateNext = 6
+    MinimizeNoActivate = 7
+    ShowNoActivate = 8
+    Restore = 9
+    ShowDefault = 10
+    ForceMinimize = 11
+}

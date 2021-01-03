@@ -67,7 +67,6 @@ function Connect-TvServer {
             $script:writer = New-Object System.IO.StreamWriter $sslstream
             $writer.NewLine = "`r`n"
             $script:reader = New-Object System.IO.StreamReader $sslstream
-
             # allow user to pass in a token starting or not starting with oauth:
             $auth = "PASS oauth:$($bottoken.Replace('oauth:', ''))"
             $nick = "NICK $botname"

@@ -45,25 +45,32 @@ if (-not $config.RaidIcon) {
     if (-not (Test-Path -Path "$dir\pog.png")) {
         Copy-Item "$script:ModuleRoot\images\pog.png" -Destination "$dir\pog.png"
     }
-    $params.RaidIcon = "$dir\images\pog.png"
+    $params.RaidIcon = "$dir\pog.png"
 }
 if (-not $config.RaidImage) {
     if (-not (Test-Path -Path "$dir\catparty.gif")) {
         Copy-Item "$script:ModuleRoot\images\catparty.gif" -Destination "$dir\catparty.gif"
     }
-    $params.RaidImage = "$dir\images\catparty.gif"
+    $params.RaidImage = "$dir\catparty.gif"
 }
 if (-not $config.BitsIcon) {
     if (-not (Test-Path -Path "$dir\bits.gif")) {
         Copy-Item "$script:ModuleRoot\images\bits.gif" -Destination "$dir\bits.gif"
     }
-    $params.BitsIcon = "$dir\images\bits.gif"
+    $params.BitsIcon = "$dir\bits.gif"
 }
 if (-not $config.BitsImage) {
     if (-not (Test-Path -Path "$dir\vibecat.gif")) {
         Copy-Item "$script:ModuleRoot\images\vibecat.gif" -Destination "$dir\vibecat.gif"
     }
-    $params.BitsImage = "$dir\images\vibecat.gif"
+    $params.BitsImage = "$dir\vibecat.gif"
+}
+
+if (-not $config.BotIcon) {
+    if (-not (Test-Path -Path "$dir\robo.png")) {
+        Copy-Item "$script:ModuleRoot\images\robo.png" -Destination "$dir\robo.png"
+    }
+    $params.BotIcon = "$dir\robo.png"
 }
 
 if ($config.NotifyType -eq "none") {

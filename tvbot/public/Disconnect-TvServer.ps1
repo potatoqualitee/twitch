@@ -32,4 +32,9 @@ function Disconnect-TvServer {
     $script:channel = $script:line = $script:writer = $null
     $script:reader = $script:sslstream = $script:bot = $null
     Write-Output "*** Disconnected"
+
+    if ($script:notifyicon) {
+        $script:notifyicon.Visible = $false
+        $script:notifyicon.dispose()
+    }
 }
