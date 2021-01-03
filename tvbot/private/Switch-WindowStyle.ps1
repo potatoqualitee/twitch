@@ -29,23 +29,26 @@ function Switch-WindowStyle {
         If (-not $script:mindetect::IsWindowVisible($handle) -or $state -eq "Minimized") {
             # show and really show, even when minimized
             <#
-        'FORCEMINIMIZE'   = 11
-        'HIDE'            = 0
-        'MAXIMIZE'        = 3
-        'MINIMIZE'        = 6
-        'RESTORE'         = 9
-        'SHOW'            = 5
-        'SHOWDEFAULT'     = 10
-        'SHOWMAXIMIZED'   = 3
-        'SHOWMINIMIZED'   = 2
-        'SHOWMINNOACTIVE' = 7
-        'SHOWNA'          = 8
-        'SHOWNOACTIVATE'  = 4
-        'SHOWNORMAL'      = 1
-        #>
-
+            'FORCEMINIMIZE'   = 11
+            'HIDE'            = 0
+            'MAXIMIZE'        = 3
+            'MINIMIZE'        = 6
+            'RESTORE'         = 9
+            'SHOW'            = 5
+            'SHOWDEFAULT'     = 10
+            'SHOWMAXIMIZED'   = 3
+            'SHOWMINIMIZED'   = 2
+            'SHOWMINNOACTIVE' = 7
+            'SHOWNA'          = 8
+            'SHOWNOACTIVATE'  = 4
+            'SHOWNORMAL'      = 1
+            #>
+            Write-Verbose "Setting to show using restore cuz it's awesome"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 9)
+            Write-Verbose "Setting to foreground just to be sure"
+            $null = $script:foreground::SetForegroundWindow($handle)
         } else {
+            Write-Verbose "Setting to hide"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 0)
         }
     }

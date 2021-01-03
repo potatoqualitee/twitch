@@ -25,6 +25,15 @@ function Start-Bot {
     $mincode = '[DllImport("user32.dll")] public static extern bool IsWindowVisible(int hwnd);'
     $script:mindetect = Add-Type -MemberDefinition $mincode -Name Win32ShowMinimized -Namespace Win32Functions -PassThru
 
+    $forecode = 'using System;
+                using System.Runtime.InteropServices;
+                public class Win32Foreground {
+                    [DllImport("user32.dll")]
+                    [return: MarshalAs(UnmanagedType.Bool)]
+                    public static extern bool SetForegroundWindow(IntPtr hWnd);
+                }'
+    $script:foreground = Add-Type -TypeDefinition $forecode -PassThru
+
     ############################## repaint the bot icon ##############################
 
     # Create bitmapimage to enable streaming
@@ -108,7 +117,7 @@ function Start-Bot {
     $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
 
     Start-Sleep -Seconds 1
-    $null = Switch-WindowStyle
+    #$null = Switch-WindowStyle
     $null = Switch-WindowStyle -Process $script:newprocess
 
     # Force garbage collection just to start slightly lower RAM usage.
