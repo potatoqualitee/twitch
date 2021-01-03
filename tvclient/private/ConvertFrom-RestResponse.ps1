@@ -172,10 +172,10 @@
             # IF EVERY ONE HAS MULTIPLES INSIDE
             if ($fields.Count -eq 0) {
                 Write-Verbose "Found no inner objects"
-                if ($object.StartsWith("{")) {
+                if ($object.ToString().StartsWith("{")) {
                     $object = $object.Replace("\","\\") | ConvertFrom-Json
                     $fields = $object | Get-Member -Type NoteProperty
-                } elseif ($object.StartsWith("@{")) {
+                } elseif ($object.ToString().StartsWith("@{")) {
                     $object = $object.Substring(2, $object.Length - 3) -split ';' | ConvertFrom-StringData | ConvertTo-PSCustomObject
                     $fields = $object | Get-Member -Type NoteProperty
                 } else {
