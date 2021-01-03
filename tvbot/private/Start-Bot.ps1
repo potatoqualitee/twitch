@@ -1,12 +1,31 @@
 function Start-Bot {
+    <#
+        .SYNOPSIS
+            Starts the bot
+
+        .DESCRIPTION
+            There's a lot to unpack here! This command
+
+            - Creates a notify icon that sits near the clock. This is used to control the bot
+            - The notifyicon is then "painted" to the setting of BotIconColor
+            - It also opens a new window to run the bot
+            - Both the control powershell host process and the new window that actually runs the bot are automatically hidden
+            - When the bot notifyicon is left-clicked, the bot window will be activated/appear if the bot is minimized or hidden. If the window is already visible, it will be hidden
+            - If the notify is right-clicked, you'll be offered the option to quit or restart the bot (sometimes it just fails ¯\_(ツ)_/¯)
+
+    #>
+    # add all the GUI assemblies
     Add-Type -AssemblyName PresentationFramework, System.Drawing, System.Windows.Forms, UIAutomationClient
 
-    # hide helpers
+    # window show/hide helper
     $windowcode = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'
     $script:asyncwindow = Add-Type -MemberDefinition $windowcode -Name Win32ShowWindowAsync -Namespace Win32Functions -PassThru
 
+    # determine if bot window is minimized
     $mincode = '[DllImport("user32.dll")] public static extern bool IsWindowVisible(int hwnd);'
     $script:mindetect = Add-Type -MemberDefinition $mincode -Name Win32ShowMinimized -Namespace Win32Functions -PassThru
+
+    ############################## repaint the bot icon ##############################
 
     # Create bitmapimage to enable streaming
     $boticon = Get-TvConfigValue -Name BotIcon
@@ -44,13 +63,16 @@ function Start-Bot {
     $icon = [System.Drawing.Icon]::FromHandle($newimage.GetHicon())
 
     # Create NotificationIcon and set its default values
-    # Create notifyicon, and right-click -> Exit menu
     $script:notifyicon = New-Object System.Windows.Forms.NotifyIcon
     $script:notifyicon.Icon = $icon
     $script:notifyicon.Visible = $true
 
+    ############################## add support for clicks ##############################
+
+    # Create right-click -> Exit menu
     $menuexit = New-Object System.Windows.Forms.MenuItem
     $menuexit.Text = "Exit"
+    # Create right-click -> Restart bot
     $menurestart = New-Object System.Windows.Forms.MenuItem
     $menurestart.Text = "Restart bot"
 
@@ -59,10 +81,10 @@ function Start-Bot {
     $script:notifyicon.contextMenu.MenuItems.AddRange($menurestart)
     $script:notifyicon.contextMenu.MenuItems.AddRange($menuexit)
 
-    # Add Event to exit example
+    # Show/Hide bot window on left-click
     $script:notifyicon.add_Click( {
             if ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-                Switch-WindowStyle -Process $script:newprocess
+                $null = Switch-WindowStyle -Process $script:newprocess
             }
         })
 
@@ -78,15 +100,16 @@ function Start-Bot {
     $menurestart.add_Click( {
             Stop-Process $script:newprocess.Id
             $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
-            Switch-WindowStyle -Process $script:newprocess
+            Start-Sleep -Seconds 3
+            $null = Switch-WindowStyle -Process $script:newprocess
         })
 
     # Make PowerShell Disappear
     $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
 
     Start-Sleep -Seconds 1
-    Switch-WindowStyle
-    Switch-WindowStyle -Process $script:newprocess
+    $null = Switch-WindowStyle
+    $null = Switch-WindowStyle -Process $script:newprocess
 
     # Force garbage collection just to start slightly lower RAM usage.
     [System.GC]::Collect()

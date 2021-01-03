@@ -5,11 +5,6 @@ function Switch-WindowStyle {
         [System.Diagnostics.Process]$Process
     )
     process {
-        $styles = @{
-            Show = 5
-            Hide = 0
-        }
-
         if (-not $Process) {
             $Process = Get-Process -Id $PID
         }
@@ -32,10 +27,26 @@ function Switch-WindowStyle {
         }
 
         If (-not $script:mindetect::IsWindowVisible($handle) -or $state -eq "Minimized") {
-            $null = $script:asyncwindow::ShowWindowAsync($handle, $styles["Show"])
-            $null = $asyncwindow::ShowWindowAsync($handle, 10)
+            # show and really show, even when minimized
+            <#
+        'FORCEMINIMIZE'   = 11
+        'HIDE'            = 0
+        'MAXIMIZE'        = 3
+        'MINIMIZE'        = 6
+        'RESTORE'         = 9
+        'SHOW'            = 5
+        'SHOWDEFAULT'     = 10
+        'SHOWMAXIMIZED'   = 3
+        'SHOWMINIMIZED'   = 2
+        'SHOWMINNOACTIVE' = 7
+        'SHOWNA'          = 8
+        'SHOWNOACTIVATE'  = 4
+        'SHOWNORMAL'      = 1
+        #>
+
+            $null = $script:asyncwindow::ShowWindowAsync($handle, 9)
         } else {
-            $null = $script:asyncwindow::ShowWindowAsync($handle, $styles["Hide"])
+            $null = $script:asyncwindow::ShowWindowAsync($handle, 0)
         }
     }
 }
