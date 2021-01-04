@@ -44,6 +44,10 @@ function Show-Alert {
         }
     }
     process {
+        if ($PSVersionTable.Platform -eq "Win32NT" -and $PSVersionTable.PSEdition -eq "Core") {
+            Write-Warning "Notifications not supported on Windows PowerShell Core. Use 5.1 instead."
+            return
+        }
         if ($Type -eq "Message") {
             if (-not $PSBoundParameters.Message) {
                 throw "You must specify -Message when the -Type is Message"
@@ -130,9 +134,12 @@ function Show-Alert {
                 if (Get-BTHistory -UniqueIdentifier tvbot) {
                     Remove-BTNotification -Tag tvbot -Group tvbot
                 }
+
                 try {
                     Submit-BTNotification -Content $content -UniqueIdentifier tvbot -ErrorAction Stop
                     if ($Type -ne $Message) {
+                        # Don't allow chats to disrupt notifications
+                        # Let the notification run for at least 5 seconds
                         Start-Sleep 5
                     }
                 } catch {

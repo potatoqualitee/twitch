@@ -10,7 +10,7 @@ function Set-TvConfig {
         PS C:\>
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param
     (
         [string]$BitsIcon,
@@ -53,6 +53,7 @@ function Set-TvConfig {
         [string]$RaidSound,
         [string]$RaidText,
         [string]$RaidTitle,
+        [parameter(DontShow)]
         [ValidateSet("Enabled", "Disabled")]
         [string]$Sound,
         [string]$SubGiftedText,
@@ -95,7 +96,7 @@ function Set-TvConfig {
         foreach ($key in $PSBoundParameters.Keys) {
             $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
 
-            if ($key -notin $ignorecommonargs -and $key -notin "Append", "Force") {
+            if ($key -notin $ignorecommonargs -and $key -notin "Append", "Force", "WhatIf", "Confirm") {
                 if ($key -in "UsersToIgnore", "NotifyType", "BotOwner") {
                     if ($Append) {
                         $value = @(Get-TvConfigValue -Name $key)
@@ -104,7 +105,9 @@ function Set-TvConfig {
                     } else {
                         $value = $PSBoundParameters.$key -join ", "
                     }
-                    $config[$key] = $value
+                    if ($PSCmdlet.ShouldProcess($script:configfile, "Set $key to $value")) {
+                        $config[$key] = $value
+                    }
                 } else {
                     $value = $PSBoundParameters.$key
                     $config[$key] = $value
@@ -112,12 +115,16 @@ function Set-TvConfig {
                     if ($key -in $hidden -and -not $Force) {
                         $value = "********************** (Use -Force to see)"
                     }
+                    if ($PSCmdlet.ShouldProcess($script:configfile, "Set $key to $value")) {
+                        # couldn't figure out how to do this lol
+                    }
                 }
-                Write-Verbose -Message "Set $key to $value"
             }
         }
 
-        $config | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
-        Get-TvConfig -Force:$Force
+        if ($PSCmdlet.ShouldProcess($script:configfile, "Writing config file")) {
+            $config | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
+            Get-TvConfig -Force:$Force
+        }
     }
 }
