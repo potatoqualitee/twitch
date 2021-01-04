@@ -33,7 +33,7 @@ function New-ConfigFile {
             BotKey           = "!"
             BotOwner         = $null
             BotToken         = $null
-            BotsToIgnore     = $null
+            UsersToIgnore    = $null
             ClientId         = $null
             Token            = $null
             DefaultFont      = "Segoe UI"
@@ -41,8 +41,8 @@ function New-ConfigFile {
             FollowIcon       = $null
             FollowImage      = $null
             FollowSound      = "ms-winsoundevent:Notification.Mail"
-            FollowText       = "THANK YOU FOR THE FOLLOW, <<username>>"
-            FollowTitle      = "NEW FOLLOW!"
+            FollowText       = "THANKS SO MUCH!"
+            FollowTitle      = "WHAT UP, <<username>> HAS FOLLOWED!"
             NotifyColor      = $color
             NotifyType       = "none"
             RaidIcon         = $null
@@ -51,7 +51,7 @@ function New-ConfigFile {
             RaidText         = "<<username>> HAS RAIDED!"
             RaidTitle        = "IT'S A RAID!"
             Sound            = "Enabled"
-            SubGiftedText    = "Thank you so very much for gifting a tier <<tier>> sub, <<gifter>>!"
+            SubGiftedText    = "Thank you so very much for gifting a Tier <<tier>> sub, <<gifter>>!"
             SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
             SubGiftedIcon    = $null
             SubGiftedImage   = $null

@@ -25,7 +25,7 @@ function Set-TvConfig {
         [string]$BotKey,
         [string]$BotOwner,
         [string]$BotToken,
-        [string[]]$BotsToIgnore,
+        [string[]]$UsersToIgnore,
         [string]$ClientId,
         [Alias("Secret")]
         [string]$Token,
@@ -67,6 +67,7 @@ function Set-TvConfig {
         [string]$SubTitle,
         [string]$AdminCommandFile,
         [string]$UserCommandFile,
+        [switch]$Append,
         [switch]$Force
     )
     begin {
@@ -89,14 +90,20 @@ function Set-TvConfig {
         }
         $config = Get-Content -Path $script:configfile | ConvertFrom-Json | ConvertTo-HashTable
 
-        $ignore = [System.Management.Automation.PSCmdlet]::CommonParameters
+        $ignorecommonargs = [System.Management.Automation.PSCmdlet]::CommonParameters
 
         foreach ($key in $PSBoundParameters.Keys) {
             $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
 
-            if ($key -ne "Force" -and $key -notin $ignore) {
-                if ($key -in "BotsToIgnore", "NotifyType", "BotOwner") {
-                    $value = $PSBoundParameters.$key -join ", "
+            if ($key -notin $ignorecommonargs -and $key -notin "Append", "Force") {
+                if ($key -in "UsersToIgnore", "NotifyType", "BotOwner") {
+                    if ($Append) {
+                        $value = @(Get-TvConfigValue -Name $key)
+                        $value += $PSBoundParameters.$key
+                        $value = $value -join ", "
+                    } else {
+                        $value = $PSBoundParameters.$key -join ", "
+                    }
                     $config[$key] = $value
                 } else {
                     $value = $PSBoundParameters.$key

@@ -34,11 +34,11 @@ function Get-TvConfig {
 
         foreach ($value in $columns) {
             if ($results.$value) {
-                $results.$value = $results.$value.Replace("\\","\")
+                $results.$value = $results.$value.ToString().Replace("\\","\")
             }
         }
 
-        $arrays = "BotsToIgnore", "NotifyType", "BotOwner"
+        $arrays = "UsersToIgnore", "NotifyType", "BotOwner"
         foreach ($value in $arrays) {
             if ($results.$value) {
                 $results.$value = $results.$value -split ", "

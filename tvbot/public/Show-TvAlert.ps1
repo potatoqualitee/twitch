@@ -17,13 +17,6 @@ function Show-TvAlert {
     }
     process {
         if ($script:toast) {
-            try {
-                $StartingSubs = Get-TvSubscriber
-                $startingFollows = Get-TvFollower
-            } catch {
-                throw "Error from webserver: $PSItem. Subs and follows will not be shown."
-            }
-
             if (-not (Get-Job -Name tvbotviewers -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
                 $null = Start-Job -Name tvbotviewers -ScriptBlock {
                     Show-TvViewerCount
@@ -32,11 +25,9 @@ function Show-TvAlert {
 
             if (-not (Get-Job -Name tvbotsubsfollows -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
                 $null = Start-Job -Name tvbotsubsfollows -ScriptBlock {
-                    param (
-                        [psobject[]]$StartingSubs,
-                        [psobject[]]$StartingFollows,
-                        [string]$ModuleRoot
-                    )
+                    $StartingSubs = Get-TvSubscriber
+                    $startingFollows = Get-TvFollower
+
                     while ($true) {
                         Start-Sleep -Seconds 3
 
@@ -49,49 +40,22 @@ function Show-TvAlert {
 
                         foreach ($follower in $newfollowers.FromName) {
                             Show-Alert -UserName $follower -Type Follow
-                            Start-Sleep 5
                         }
 
                         foreach ($sub in $newsubs) {
-                            <#
-                            UserName        : TonyPzzzy
-                            BroadcasterId   : 403789625
-                            BroadcasterName : potatoqualitee
-                            GifterId        : 237082391
-                            GifterName      : MarvRobot
-                            IsGift          : True
-                            PlanName        : Channel Subscription (potatoqualitee)
-                            Tier            : 1000
-                            UserId          : 77563512
-
-                            UserName        : NickTheFirstOne
-                            BroadcasterId   : 403789625
-                            BroadcasterName : potatoqualitee
-                            GifterId        : 274598607
-                            GifterName      : AnAnonymousGifter
-                            IsGift          : True
-                            PlanName        : Channel Subscription (potatoqualitee)
-                            Tier            : 1000
-                            UserId          : 42402976
-
-                            Select UserName, Tier, GifterName
-                            #>
                             $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
 
                             if ($sub.GifterName) {
-                                $username = $sub.GifterName
-                                $message = ""
-                                Show-Alert -UserName $username -Type Sub -Tier $tier -Title $message
+                                Show-Alert -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
                             } else {
-                                $username = $sub.UserName
-                                Show-Alert -UserName $username -Type Sub -Tier $tier
+                                Show-Alert -UserName $sub.UserName -Type Sub -MiscNumber $tier
                             }
                         }
 
                         $StartingSubs = $subupdate
                         $startingFollows = $followerupdate
                     }
-                } -ArgumentList $StartingSubs, $startingFollows, $script:ModuleRoot
+                }
             }
         }
     }

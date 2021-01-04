@@ -7,34 +7,39 @@ function Show-Alert {
         [parameter(Mandatory)]
         [string]$UserName,
         [parameter(Mandatory)]
-        [ValidateSet("Bits","Follow","Raid","GiftedSub","Sub","Message")]
+        [ValidateSet("Bits","Follow","Raid","SubGifted","Sub","Message")]
         [string]$Type,
         [string]$Message,
         [string]$Title,
-        [int]$Bits,
-        [int]$Tier,
+        [int]$MiscNumber,
+        [string]$MiscString,
         [int]$Emote
     )
     begin {
-        <#
-
-            SubGiftedText    = "Thank you so very much for gifting a tier <<tier>> sub, <<gifter>>!"
-            SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
-            #>
         function Get-TransformedValue {
             param($Value)
 
             $Value = $Value.Replace("<<username>>",$UserName)
-            $Value = $Value.Replace("<<tier>>",$Tier)
 
-            if ($Type -eq "Bits") {
-                if ($Bits -eq 1) {
-                    $bitword = "BIT"
-                } else {
-                    $bitword = "BITS"
+            switch ($Type) {
+                "Bits" {
+                    if ($MiscNumber -eq 1) {
+                        $bitword = "BIT"
+                    } else {
+                        $bitword = "BITS"
+                    }
+                    $Value = $Value.Replace("<<bitcount>>", "$MiscNumber $bitword")
                 }
-                $Value = $Value.Replace("<<bitcount>>", "$Bits $bitword")
+                "Sub" {
+                    $Value = $Value.Replace("<<tier>>", $MiscNumber)
+                }
+                "SubGifted" {
+                    $Value = $Value.Replace("<<gifter>>", $UserName)
+                    $Value = $Value.Replace("<<tier>>", $MiscNumber)
+                    $Value = $Value.Replace("<<giftee>>", $MiscString)
+                }
             }
+
             $Value
         }
     }
@@ -46,9 +51,10 @@ function Show-Alert {
         } else {
             $icon = Get-TvConfigValue -Name ($Type, "icon" -join "")
             $image = Get-TvConfigValue -Name ($Type, "image" -join "")
-            $Title = Get-TvConfigValue -Name ($Type, "title" -join "")
-            if (-not $Title) {
+            if ($PSBoundParameters.Title) {
                 $Title = $PSBoundParameters.Title
+            } else {
+                $Title = Get-TvConfigValue -Name ($Type, "title" -join "")
             }
             if (-not $Message) {
                 $Message = Get-TvConfigValue -Name ($Type, "text" -join "")
@@ -59,6 +65,7 @@ function Show-Alert {
             $Title = $UserName
         }
         $Title = Get-TransformedValue -Value $Title
+
         $Message = Get-TransformedValue -Value $message
 
         if (-not $image) {
@@ -125,6 +132,9 @@ function Show-Alert {
                 }
                 try {
                     Submit-BTNotification -Content $content -UniqueIdentifier tvbot -ErrorAction Stop
+                    if ($Type -ne $Message) {
+                        Start-Sleep 5
+                    }
                 } catch {
                     Write-Verbose "Failure $_"
                 }

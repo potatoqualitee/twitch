@@ -68,6 +68,7 @@ function Write-TvOutput {
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
                     Show-Alert -Type Message -UserName $displayname -Message $text
                 }
+                Write-Verbose "[$(Get-Date)] $sysmessage"
             }
             "PRIVMSG" {
                 if ($message) {
@@ -75,11 +76,11 @@ function Write-TvOutput {
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($notifytype -contains "chat" -and $user -notin $botstoignore) {
+                        if ($notifytype -contains "chat" -and $user -notin $UsersToIgnore) {
                             $bigolbits = [int]$hash["bits"]
 
                             if ($bigolbits -gt 0) {
-                                Show-Alert -Type Bits -UserName $displayname -Bits $bigolbits
+                                Show-Alert -Type Bits -UserName $displayname -MiscNumber $bigolbits
                             }
 
                             if ($emote) {
