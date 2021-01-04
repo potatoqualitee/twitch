@@ -19,9 +19,6 @@ function Reset-TvConfig {
         New-ConfigFile
 
         # importing the module sets up pics and stuff too
-        if (Get-Module -Name tvnotify) {
-            Import-Module tvnotify -Force
-        }
         if (Get-Module -Name tvbot) {
             Import-Module tvbot -Force
         }

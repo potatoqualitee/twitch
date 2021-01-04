@@ -44,11 +44,14 @@
         'Connect-TvServer',
         'Disconnect-TvServer',
         'Get-TvStatusList',
+        'Get-TvSystemTheme',
         'Invoke-TvCommand',
         'Join-TvChannel',
-        'Write-TvChannelMessage',
+        'Show-TvViewerCount',
+        'Send-TvDiscordMessage',
         'Split-TvChannel',
         'Start-TvBot',
+        'Write-TvChannelMessage',
         'Wait-TvResponse'
     )
 

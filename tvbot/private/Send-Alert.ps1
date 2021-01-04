@@ -1,4 +1,7 @@
 function Send-Alert {
+    <#Should base it on this
+    https://github.com/potatoqualitee/twitch/blob/9495ef024cf4a7b8da7be8dd63439a27564f7edf/private/Write-TvOutput.ps1
+    #>
     [CmdletBinding()]
     param (
         [parameter(Mandatory)]
@@ -56,44 +59,64 @@ function Send-Alert {
             try {
                 Send-OSNotification -Title $title -Body $string -Icon $image -ErrorAction Stop
             } catch {
-                Write-Warning "Failure $_"
+                Write-Verbose "Failure $_"
             }
         } else {
             # Emotes can only be loaded by BurntToast
             if ($Emote) {
                 $image = Get-TvEmote -Id $emote
             }
-            $image = Get-Avatar -UserName $UserName
-            $bticon = New-BTImage -Source $icon -AppLogoOverride
-            $btimage = New-BTImage -Source $image -HeroImage
-            $bttitle = New-BTText -Text $Title
-            $bttext = New-BTText -Text $Message
 
-            $sound = Get-TvConfigValue -Name ($Type, "sound" -join "")
-            $soundenabled = Get-TvConfigValue -Name Sound
-            if ($sound -and $soundenabled -eq "Enabled") {
-                $audio = New-BTAudio -Source $sound
-            }
+            if ($Type -eq "Message") {
+                $image = Get-Avatar -UserName $UserName
+                if (Get-BTHistory -UniqueIdentifier tvbot) {
+                    Remove-BTNotification -Tag tvbot -Group tvbot
+                }
+                try {
+                    New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop
+                } catch {
+                    Write-Verbose "Failure $_"
+                }
+            } else {
+                if ($Type -in "Sub","Follow") {
+                    $icon = Get-Avatar -UserName $UserName
+                }
+                $bticon = New-BTImage -Source $icon -AppLogoOverride
+                $btimage = New-BTImage -Source $image -HeroImage
+                $bttitle = New-BTText -Text $Title
+                $bttext = New-BTText -Text $Message
 
-            $binding = New-BTBinding -Children $bttitle, $bttext -HeroImage $btimage -AppLogoOverride $bticon
-            $visual = New-BTVisual -BindingGeneric $binding
+                $sound = Get-TvConfigValue -Name ($Type, "sound" -join "")
+                $soundenabled = Get-TvConfigValue -Name Sound
+                if ($sound -and $soundenabled -eq "Enabled") {
+                    $audio = New-BTAudio -Source $sound
+                }
 
-            $params = @{
-                Visual = $visual
-            }
-            if ($audio) {
-                $params.Audio = $audio
-            }
+                Write-Verbose "Username: $UserName"
+                Write-Verbose "Icon: $icon"
+                Write-Verbose "Image: $image"
+                Write-Verbose "Title: $Title"
+                Write-Verbose "Message: $Message"
+                Write-Verbose "Sound: $sound"
 
-            $content = New-BTContent @params
+                $binding = New-BTBinding -Children $bttitle, $bttext -HeroImage $btimage -AppLogoOverride $bticon
 
-            if (Get-BTHistory -UniqueIdentifier tvbot) {
-                Remove-BTNotification -Tag tvbot -Group tvbot
-            }
-            try {
-                Submit-BTNotification -Content $content -UniqueIdentifier tvbot -ErrorAction Stop
-            } catch {
-                Write-Warning "Failure $_"
+                $visual = New-BTVisual -BindingGeneric $binding
+
+                if ($audio) {
+                    $content = New-BTContent -Visual $visual -Audio $audio
+                } else {
+                    $content = New-BTContent -Visual $visual
+                }
+
+                if (Get-BTHistory -UniqueIdentifier tvbot) {
+                    Remove-BTNotification -Tag tvbot -Group tvbot
+                }
+                try {
+                    Submit-BTNotification -Content $content -UniqueIdentifier tvbot -ErrorAction Stop
+                } catch {
+                    Write-Verbose "Failure $_"
+                }
             }
         }
     }

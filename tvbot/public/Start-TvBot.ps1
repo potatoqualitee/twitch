@@ -27,7 +27,7 @@ function Start-TvBot {
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
         [switch]$AutoReconnect,
-        [switch]$NoTrayIcon,
+        [switch]$NoHide,
         [parameter(DontShow)]
         [int]$PrimaryPid
     )
@@ -52,7 +52,7 @@ function Start-TvBot {
 
         if ($AutoReconnect) { $script:reconnect = $true }
 
-        if (-not $PSBoundParameters.NoTrayIcon -and $PSVersionTable.Platform -ne "UNIX") {
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.Platform -ne "UNIX") {
             Start-Bot
         } else {
             if ($PrimaryPid) {
