@@ -10,7 +10,8 @@ function Get-TvFollower {
         [string[]]$UserName,
         [ValidateRange(1,100)]
         [int]$MaxResults = 10,
-        [switch]$Next
+        [switch]$Next,
+        [psobject]$Since
     )
     begin {
         if (-not $script:userid) {
@@ -28,13 +29,33 @@ function Get-TvFollower {
             if (-not $PSBoundParameters.Since) {
                 Invoke-Pagination @params
             } else {
-                if ($Since -eq "StreamStart") {
-                    $online = Get-TvStream
-                    if (-not $online) {
-                        $lastvod = Get-TvVideo -MaxResults 1 | Select-Object -ExpandProperty Created
-                        if (-not $lastvod) {
-                            Write-Warning -Message "Twitch doesn't offer a way to detect this info"
+                # Get max
+                $params.MaxResults = 100
+                switch ($Since) {
+                    "StreamStart" {
+                        $started = (Get-TvStream).StartedAt
+                        if (-not $started) {
+                            Write-Warning -Message "Stream not started ¯\_(ツ)_/¯"
+                            return
                         }
+                        Invoke-Pagination @params | Where-Object FollowedAt -lt $started
+                    }
+                    "LastStream" {
+                        $lastvod = (Get-TvVideo -MaxResults 1).CreatedAt
+
+                        if (-not $lastvod) {
+                            Write-Warning -Message "No VODs found :("
+                            return
+                        }
+
+                        Invoke-Pagination @params | Where-Object FollowedAt -gt $lastvod
+                    }
+                    default {
+                        if ($since -isnot [datetime]) {
+                            Write-Warning -Message "$Since is not a a datetime (Get-Date) or StreamStart or LastStream"
+                            return
+                        }
+                        Invoke-Pagination @params | Where-Object FollowedAt -gt $Since
                     }
                 }
             }

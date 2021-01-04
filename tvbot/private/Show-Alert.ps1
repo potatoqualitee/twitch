@@ -94,6 +94,10 @@ function Show-Alert {
                 if (Get-BTHistory -UniqueIdentifier tvbot) {
                     Remove-BTNotification -Tag tvbot -Group tvbot
                 }
+                if ($Emote) {
+                    $theme = (Get-TvSystemTheme).Theme
+                    $image = (Get-TvEmote -Id $emote).$theme
+                }
                 try {
                     New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop
                 } catch {

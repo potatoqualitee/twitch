@@ -56,10 +56,13 @@ function Invoke-TvRequest {
 
         try {
             $results = Invoke-RestMethod @params -ErrorAction Stop
+            if ($results.data.Count -eq 0 -and $results.Pagination.Count -eq 1 -and -not $Raw) {
+                return
+            }
             if ($results.data -and -not $Raw) {
                 $results.data | ConvertFrom-RestResponse
             } else {
-                $results | ConvertFrom-RestResponse
+                $results
             }
         } catch {
             throw $_

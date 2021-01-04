@@ -81,3 +81,9 @@ Register-ArgumentCompleter -ParameterName FollowSound -CommandName Set-TvConfig 
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }
+Register-ArgumentCompleter -ParameterName Since -CommandName Get-TvFollower -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    "StreamStart", "LastStream" | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+    }
+}
