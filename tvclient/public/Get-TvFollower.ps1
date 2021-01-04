@@ -33,7 +33,7 @@ function Get-TvFollower {
                     if (-not $online) {
                         $lastvod = Get-TvVideo -MaxResults 1 | Select-Object -ExpandProperty Created
                         if (-not $lastvod) {
-                            Write-Warning -Message "Twitter doesn't offer a way to detect this info"
+                            Write-Warning -Message "Twitch doesn't offer a way to detect this info"
                         }
                     }
                 }

@@ -70,42 +70,49 @@ $config = Get-TvConfig
 $dir = Split-Path -Path $config.ConfigFile
 $params = @{}
 
-if (-not $config.RaidIcon) {
-    if (-not (Test-Path -Path "$dir\pog.png")) {
-        Copy-Item "$script:ModuleRoot\images\pog.png" -Destination "$dir\pog.png"
+$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "pog.png", "pog-hero.png"
+foreach ($pic in $pics) {
+    if (-not (Test-Path -Path "$dir\$pic")) {
+        Copy-Item "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
     }
-    $params.RaidIcon = "$dir\pog.png"
-    $params.SubIcon = "$dir\pog.png"
 }
-if (-not $config.RaidImage) {
-    if (-not (Test-Path -Path "$dir\catparty.gif")) {
-        Copy-Item "$script:ModuleRoot\images\catparty.gif" -Destination "$dir\catparty.gif"
+
+$settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\pog.png"
     }
-    $params.RaidImage = "$dir\catparty.gif"
-    $params.SubImage = "$dir\catparty.gif"
 }
+
+$settings = "RaidImage", "SubImage", "SubGiftedImage"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\catparty.gif"
+    }
+}
+
 if (-not $config.BitsIcon) {
-    if (-not (Test-Path -Path "$dir\bits.gif")) {
-        Copy-Item "$script:ModuleRoot\images\bits.gif" -Destination "$dir\bits.gif"
-    }
     $params.BitsIcon = "$dir\bits.gif"
 }
-if (-not $config.BitsImage) {
-    if (-not (Test-Path -Path "$dir\vibecat.gif")) {
-        Copy-Item "$script:ModuleRoot\images\vibecat.gif" -Destination "$dir\vibecat.gif"
+
+
+$settings = "BitsImage", "FollowImage"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\vibecat.gif"
     }
-    $params.BitsImage = "$dir\vibecat.gif"
-    $params.FollowImage = "$dir\vibecat.gif"
+}
+
+#placeholder
+$settings = $null
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\pog-hero.png"
+    }
 }
 
 if (-not $config.BotIcon) {
-    if (-not (Test-Path -Path "$dir\robo.png")) {
-        Copy-Item "$script:ModuleRoot\images\robo.png" -Destination "$dir\robo.png"
-    }
     $params.BotIcon = "$dir\robo.png"
 }
 
-if ($config.NotifyType -eq "none") {
-    $params.NotifyType = "chat"
-}
 $null = Set-TvConfig @params

@@ -51,10 +51,15 @@ function New-ConfigFile {
             RaidText         = "<<username>> HAS RAIDED!"
             RaidTitle        = "IT'S A RAID!"
             Sound            = "Enabled"
+            SubGiftedText    = "Thank you so very much for gifting a tier <<tier>> sub, <<gifter>>!"
+            SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
+            SubGiftedIcon    = $null
+            SubGiftedImage   = $null
+            SubGiftedSound   = "ms-winsoundevent:Notification.Mail"
             SubIcon          = $null
             SubImage         = $null
             SubSound         = "ms-winsoundevent:Notification.Mail"
-            SubText          = "Thank you so very much for the sub, <<username>>!"
+            SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>>!"
             SubTitle         = "AWESOME!!"
             UserCommandFile  = $userfile
         } | ConvertFrom-RestResponse | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode

@@ -17,16 +17,15 @@ function Invoke-Pagination {
 
         $results = Invoke-TvRequest -Path "$Path&first=$MaxResults&after=$cursor" -Raw
 
-
         $script:pagination[$Name] = $results.pagination.cursor
         $data = $results | Get-Member -Name data
 
         if ($data) {
             if ($results.data) {
-                $results.data
+                $results.data | ConvertFrom-RestResponse
             }
         } else {
-            $results
+            $results | ConvertFrom-RestResponse
         }
     }
 }

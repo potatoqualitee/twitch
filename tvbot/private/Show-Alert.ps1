@@ -1,4 +1,4 @@
-function Send-Alert {
+function Show-Alert {
     <#Should base it on this
     https://github.com/potatoqualitee/twitch/blob/9495ef024cf4a7b8da7be8dd63439a27564f7edf/private/Write-TvOutput.ps1
     #>
@@ -7,17 +7,25 @@ function Send-Alert {
         [parameter(Mandatory)]
         [string]$UserName,
         [parameter(Mandatory)]
-        [ValidateSet("Bits","Follow","Raid","Sub", "Message")]
+        [ValidateSet("Bits","Follow","Raid","GiftedSub","Sub","Message")]
         [string]$Type,
         [string]$Message,
+        [string]$Title,
         [int]$Bits,
+        [int]$Tier,
         [int]$Emote
     )
     begin {
+        <#
+
+            SubGiftedText    = "Thank you so very much for gifting a tier <<tier>> sub, <<gifter>>!"
+            SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
+            #>
         function Get-TransformedValue {
             param($Value)
 
             $Value = $Value.Replace("<<username>>",$UserName)
+            $Value = $Value.Replace("<<tier>>",$Tier)
 
             if ($Type -eq "Bits") {
                 if ($Bits -eq 1) {
@@ -37,17 +45,20 @@ function Send-Alert {
             }
         } else {
             $icon = Get-TvConfigValue -Name ($Type, "icon" -join "")
-            $title = Get-TvConfigValue -Name ($Type, "title" -join "")
             $image = Get-TvConfigValue -Name ($Type, "image" -join "")
+            $Title = Get-TvConfigValue -Name ($Type, "title" -join "")
+            if (-not $Title) {
+                $Title = $PSBoundParameters.Title
+            }
             if (-not $Message) {
                 $Message = Get-TvConfigValue -Name ($Type, "text" -join "")
             }
         }
 
-        if (-not $title) {
-            $title = $UserName
+        if (-not $Title) {
+            $Title = $UserName
         }
-        $title = Get-TransformedValue -Value $title
+        $Title = Get-TransformedValue -Value $Title
         $Message = Get-TransformedValue -Value $message
 
         if (-not $image) {
@@ -57,7 +68,7 @@ function Send-Alert {
         if (-not $script:toast) {
             $string = [System.Security.SecurityElement]::Escape($Message)
             try {
-                Send-OSNotification -Title $title -Body $string -Icon $image -ErrorAction Stop
+                Send-OSNotification -Title $Title -Body $string -Icon $image -ErrorAction Stop
             } catch {
                 Write-Verbose "Failure $_"
             }

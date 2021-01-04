@@ -18,7 +18,7 @@ function Show-TvAlert {
     process {
         if ($script:toast) {
             try {
-                $startingsubs = Get-TvSubscriber
+                $StartingSubs = Get-TvSubscriber
                 $startingFollows = Get-TvFollower
             } catch {
                 throw "Error from webserver: $PSItem. Subs and follows will not be shown."
@@ -33,7 +33,7 @@ function Show-TvAlert {
             if (-not (Get-Job -Name tvbotsubsfollows -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
                 $null = Start-Job -Name tvbotsubsfollows -ScriptBlock {
                     param (
-                        [psobject[]]$Startingsubs,
+                        [psobject[]]$StartingSubs,
                         [psobject[]]$StartingFollows,
                         [string]$ModuleRoot
                     )
@@ -45,57 +45,53 @@ function Show-TvAlert {
                         $followerupdate = Get-TvFollower
 
                         $newfollowers = $followerupdate | Where-Object FromName -notin $startingFollows.FromName
-                        $newsubs = $subupdate | Where-Object Username -notin $startingsubs.UserName
+                        $newsubs = $subupdate | Where-Object Username -notin $StartingSubs.UserName
 
                         foreach ($follower in $newfollowers.FromName) {
-                            $avatar = Get-TvUser -UserName $follower
-                            $appicon = New-BTImage -Source $avatar.ProfileImageUrl -AppLogoOverride
-                            $heroimage = New-BTImage -Source "$ModuleRoot\images\catparty.gif" -HeroImage
-
-                            $titletext = New-BTText -Text "NEW FOLLOWER!"
-                            $thankstext = New-BTText -Text "THANK YOU FOR THE FOLLOW, $follower!!"
-
-                            $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
-
-                            $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
-                            $visual = New-BTVisual -BindingGeneric $binding
-                            $content = New-BTContent -Visual $visual -Audio $audio
-
-                            Submit-BTNotification -Content $content -UniqueIdentifier $id
-                            Write-Warning WAITING
+                            Show-Alert -UserName $follower -Type Follow
                             Start-Sleep 5
                         }
 
                         foreach ($sub in $newsubs) {
-                            $subscriber = $sub.user_name
                             <#
-                                        gifter_name      :
-                                        is_gift          : False
-                                        plan_name        : Channel Subscription (potatoqualitee)
-                                        tier             : 1000
-                                        user_id          : 210963797
-                                        user_name        : owenkbcodes
-                                    #>
-                            $avatar = Invoke-TvRequest -Path /users?login=$subscriber
-                            $appicon = New-BTImage -Source $avatar.data.profile_image_url -AppLogoOverride
-                            $heroimage = New-BTImage -Source "$ModuleRoot\images\catparty.gif" -HeroImage
+                            UserName        : TonyPzzzy
+                            BroadcasterId   : 403789625
+                            BroadcasterName : potatoqualitee
+                            GifterId        : 237082391
+                            GifterName      : MarvRobot
+                            IsGift          : True
+                            PlanName        : Channel Subscription (potatoqualitee)
+                            Tier            : 1000
+                            UserId          : 77563512
 
-                            $titletext = New-BTText -Text "NEW SUB!"
-                            $thankstext = New-BTText -Text "THANK YOU FOR THE subscription, $subscriber!!"
+                            UserName        : NickTheFirstOne
+                            BroadcasterId   : 403789625
+                            BroadcasterName : potatoqualitee
+                            GifterId        : 274598607
+                            GifterName      : AnAnonymousGifter
+                            IsGift          : True
+                            PlanName        : Channel Subscription (potatoqualitee)
+                            Tier            : 1000
+                            UserId          : 42402976
 
-                            $audio = New-BTAudio -Source 'ms-winsoundevent:Notification.Mail'
+                            Select UserName, Tier, GifterName
+                            #>
+                            $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
 
-                            $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
-                            $visual = New-BTVisual -BindingGeneric $binding
-                            $content = New-BTContent -Visual $visual -Audio $audio
-
-                            Submit-BTNotification -Content $content -UniqueIdentifier $id
+                            if ($sub.GifterName) {
+                                $username = $sub.GifterName
+                                $message = ""
+                                Show-Alert -UserName $username -Type Sub -Tier $tier -Title $message
+                            } else {
+                                $username = $sub.UserName
+                                Show-Alert -UserName $username -Type Sub -Tier $tier
+                            }
                         }
 
-                        $startingsubs = $subupdate
+                        $StartingSubs = $subupdate
                         $startingFollows = $followerupdate
                     }
-                } -ArgumentList $startingsubs, $startingFollows, $script:ModuleRoot
+                } -ArgumentList $StartingSubs, $startingFollows, $script:ModuleRoot
             }
         }
     }

@@ -55,6 +55,11 @@ function Set-TvConfig {
         [string]$RaidTitle,
         [ValidateSet("Enabled", "Disabled")]
         [string]$Sound,
+        [string]$SubGiftedText,
+        [string]$SubGiftedTitle,
+        [string]$SubGiftedIcon,
+        [string]$SubGiftedImage,
+        [string]$SubGiftedSound,
         [string]$SubIcon,
         [string]$SubImage,
         [string]$SubSound,

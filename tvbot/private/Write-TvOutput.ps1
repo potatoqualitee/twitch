@@ -66,7 +66,7 @@ function Write-TvOutput {
                 if ($sysmsg -match "raiders") {
                     # $sysmsg = '15\sraiders\sfrom\sdanni_juhl\shave\sjoined\n!'
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    Send-Alert -Type Message -UserName $displayname -Message $text
+                    Show-Alert -Type Message -UserName $displayname -Message $text
                 }
             }
             "PRIVMSG" {
@@ -79,7 +79,7 @@ function Write-TvOutput {
                             $bigolbits = [int]$hash["bits"]
 
                             if ($bigolbits -gt 0) {
-                                Send-Alert -Type Bits -UserName $displayname -Bits $bigolbits
+                                Show-Alert -Type Bits -UserName $displayname -Bits $bigolbits
                             }
 
                             if ($emote) {
@@ -98,13 +98,13 @@ function Write-TvOutput {
                                         $message = $message.Replace($remove, "")
                                     }
                                 }
-                                Send-Alert -Type Message -UserName $displayname -Message $message -Emote $emote
+                                Show-Alert -Type Message -UserName $displayname -Message $message -Emote $emote
                             }
 
                             if ($message) {
                                 # THANK YOU @vexx32!
                                 $message = ($message -replace '\x01').Replace("ACTION ", "")
-                                Send-Alert -Type Message -UserName $displayname -Message $message
+                                Show-Alert -Type Message -UserName $displayname -Message $message
                             }
                         }
                     } else {
@@ -119,14 +119,14 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] *** $user has joined #$botchannel"
 
                 if ($notifytype -contains "join") {
-                    Send-Alert -UserName $displayname -Message "$user has joined" -Type Message
+                    Show-Alert -UserName $displayname -Message "$user has joined" -Type Message
                 }
             }
             "PART" {
                 Write-Output "[$(Get-Date)] *** $user has left #$botchannel"
 
                 if ($notifytype -contains "leave") {
-                    Send-Alert -UserName $displayname -Message "$user has has left" -Type Message
+                    Show-Alert -UserName $displayname -Message "$user has has left" -Type Message
                 }
             }
             "PING" {
