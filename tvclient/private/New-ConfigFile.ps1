@@ -19,34 +19,44 @@ function New-ConfigFile {
 
         Write-Verbose "Writing config to $script:configfile"
         [PSCustomObject]@{
+            AdminCommandFile = $adminfile
             ConfigFile       = $script:configfile.Replace("\\","\")
-            DefaultFont      = "Segoe UI"
-            RaidIcon         = $null
-            RaidImage        = $null
-            RaidText         = "HAS RAIDED!"
-            RaidSound        = "ms-winsoundevent:Notification.IM"
             BitsIcon         = $null
             BitsImage        = $null
-            BitsTitle        = "MERCI BEAUCOUP"
-            BitsText         = "THANK YOU FOR THE"
             BitsSound        = "ms-winsoundevent:Notification.Mail"
+            BitsText         = "THANK YOU FOR THE <<bitcount>>, <<username>>!"
+            BitsTitle        = "MERCI BEAUCOUP, <<username>>!"
+            BotClientId      = $null
+            BotChannel       = $null
+            BotIcon          = $null
+            BotIconColor     = $color
+            BotKey           = "!"
+            BotOwner         = $null
+            BotToken         = $null
             BotsToIgnore     = $null
             ClientId         = $null
             Token            = $null
-            BotClientId      = $null
-            BotToken         = $null
-            BotChannel       = $null
-            BotOwner         = $null
-            NotifyColor      = $color
-            BotIconColor     = $color
-            BotIcon          = $null
+            DefaultFont      = "Segoe UI"
             DiscordWebhook   = $null
-            SubscriberSound  = "ms-winsoundevent:Notification.Mail"
-            FollowerSound    = "ms-winsoundevent:Notification.Mail"
-            UserCommandFile  = $userfile
-            AdminCommandFile = $adminfile
+            FollowIcon       = $null
+            FollowImage      = $null
+            FollowSound      = "ms-winsoundevent:Notification.Mail"
+            FollowText       = "THANK YOU FOR THE FOLLOW, <<username>>"
+            FollowTitle      = "NEW FOLLOW!"
+            NotifyColor      = $color
             NotifyType       = "none"
-            BotKey           = "!"
+            RaidIcon         = $null
+            RaidImage        = $null
+            RaidSound        = "ms-winsoundevent:Notification.IM"
+            RaidText         = "<<username>> HAS RAIDED!"
+            RaidTitle        = "IT'S A RAID!"
+            Sound            = "Enabled"
+            SubIcon          = $null
+            SubImage         = $null
+            SubSound         = "ms-winsoundevent:Notification.Mail"
+            SubText          = "Thank you so very much for the sub, <<username>>!"
+            SubTitle         = "AWESOME!!"
+            UserCommandFile  = $userfile
         } | ConvertFrom-RestResponse | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
     }
 }

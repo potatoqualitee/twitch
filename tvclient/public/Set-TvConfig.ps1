@@ -13,19 +13,29 @@ function Set-TvConfig {
     [CmdletBinding()]
     param
     (
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$BitsIcon,
+        [string]$BitsImage,
+        [string]$BitsSound,
+        [string]$BitsText,
+        [string]$BitsTitle,
+        [string]$BotClientId,
+        [string]$BotChannel,
+        [string]$BotIcon,
+        [string]$BotIconColor,
+        [string]$BotKey,
+        [string]$BotOwner,
+        [string]$BotToken,
+        [string[]]$BotsToIgnore,
         [string]$ClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
         [Alias("Secret")]
         [string]$Token,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotToken,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotChannel,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotOwner,
+        [string]$DefaultFont,
+        [string]$DiscordWebhook,
+        [string]$FollowIcon,
+        [string]$FollowImage,
+        [string]$FollowSound,
+        [string]$FollowText,
+        [string]$FollowTitle,
         # do this to avoid a huge list of colors AND ALSO
         # to ensure that the autocomplete works as expected
         # with partial matches
@@ -36,46 +46,22 @@ function Set-TvConfig {
             }
         )]
         [string]$NotifyColor,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$DefaultFont,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$DiscordWebhook,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$NewSubcriberSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$NewFollowerSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$BotsToIgnore,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidImage,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidText,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsImage,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsTitle,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotKey,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$AdminCommandFile,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$UserCommandFile,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotIconColor,
-        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet("chat", "leave", "join", "none")]
         [string[]]$NotifyType,
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$RaidIcon,
+        [string]$RaidImage,
+        [string]$RaidSound,
+        [string]$RaidText,
+        [string]$RaidTitle,
+        [ValidateSet("Enabled", "Disabled")]
+        [string]$Sound,
+        [string]$SubIcon,
+        [string]$SubImage,
+        [string]$SubSound,
+        [string]$SubText,
+        [string]$SubTitle,
+        [string]$AdminCommandFile,
+        [string]$UserCommandFile,
         [switch]$Force
     )
     begin {

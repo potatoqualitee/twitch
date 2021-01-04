@@ -35,7 +35,7 @@ if (-not (Test-Path -Path $adminfile)) {
     @{
         quit = 'Disconnect-TvServer -Message "k bye 👋!"'
     } | ConvertTo-Json | Set-Content -Path $adminfile -Encoding Unicode
-    Set-TvConfig -AdminCommandFile $adminfile
+    $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
 ######### Create user command files
@@ -44,20 +44,10 @@ if (-not (Test-Path -Path $userfile)) {
         ping = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
-    Set-TvConfig -UserCommandFile $userfile
+    $null = Set-TvConfig -UserCommandFile $userfile
 }
 
-Enum ShowStates {
-    Hide = 0
-    Normal = 1
-    Minimized = 2
-    Maximized = 3
-    ShowNoActivateRecentPosition = 4
-    Show = 5
-    MinimizeActivateNext = 6
-    MinimizeNoActivate = 7
-    ShowNoActivate = 8
-    Restore = 9
-    ShowDefault = 10
-    ForceMinimize = 11
+if (-not (Get-TvConfig -Name BotIcon)) {
+    $botico = Join-Path -Path $PSScriptRoot -ChildPath "bot.ico"
+    $null = Set-TvConfig -BotIcon $botico
 }
