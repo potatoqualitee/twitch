@@ -7,7 +7,7 @@ function Search-TvCategory {
     param
     (
         [string]$Query,
-        [int]$MaxResults = 10
+        [int]$MaxResults = 50
     )
     process {
         $params = @{

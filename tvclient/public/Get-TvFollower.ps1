@@ -9,7 +9,7 @@ function Get-TvFollower {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$UserName,
         [ValidateRange(1,100)]
-        [int]$MaxResults = 10,
+        [int]$MaxResults = 50,
         [switch]$Next,
         [psobject]$Since
     )
@@ -30,7 +30,7 @@ function Get-TvFollower {
                 Invoke-Pagination @params
             } else {
                 # Get max
-                $params.MaxResults = 100
+                $params.MaxResults = 500
                 switch ($Since) {
                     "StreamStart" {
                         $started = (Get-TvStream).StartedAt

@@ -8,7 +8,7 @@ function Get-TvLeaderboard {
     (
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateRange(1,100)]
-        [int]$MaxResults = 10,
+        [int]$MaxResults = 50,
         [ValidateSet("day","week", "month", "year", "all")]
         [string]$Period = "all"
     )

@@ -91,6 +91,7 @@ function Show-Alert {
 
             if ($Type -eq "Message") {
                 $image = Get-Avatar -UserName $UserName
+
                 if (Get-BTHistory -UniqueIdentifier tvbot) {
                     Remove-BTNotification -Tag tvbot -Group tvbot
                 }
@@ -99,7 +100,12 @@ function Show-Alert {
                     $image = (Get-TvEmote -Id $emote).$theme
                 }
                 try {
-                    New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop
+                    $uid = "archivechat$(Get-Date -Format FileDateTime)"
+                    New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier $uid -ErrorAction Stop -SuppressPopup
+                    New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop -ExpirationTime (Get-Date).AddSeconds(5)
+                    if ($Emote) {
+                        Start-Sleep 5
+                    }
                 } catch {
                     Write-Verbose "Failure $_"
                 }
@@ -140,7 +146,8 @@ function Show-Alert {
                 }
 
                 try {
-                    Submit-BTNotification -Content $content -UniqueIdentifier tvbot -ErrorAction Stop
+                    $uid = "tvparty$(Get-Date -Format FileDateTime)"
+                    Submit-BTNotification -Content $content -UniqueIdentifier $uid -ErrorAction Stop
                     if ($Type -ne $Message) {
                         # Don't allow chats to disrupt notifications
                         # Let the notification run for at least 5 seconds
