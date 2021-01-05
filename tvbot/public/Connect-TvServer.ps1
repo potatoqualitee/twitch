@@ -72,9 +72,9 @@ function Connect-TvServer {
             $nick = "NICK $botname"
 
             # enble extra features from twitch
-            #$capabilities = "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"
+            $capabilities = "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"
 
-            Send-Server -Message $auth, $nick
+            Send-Server -Message $auth, $nick, $capabilities
         } catch {
             throw $_
         }
