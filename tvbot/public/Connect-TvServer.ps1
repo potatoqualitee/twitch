@@ -44,7 +44,7 @@ function Connect-TvServer {
             Write-Error -ErrorAction Stop -Message "BotClientId and BotToken not set. Please use Set-TvConfig to proceed."
         }
 
-        $botname = (Invoke-TvRequest -ClientId $botclientid -Token $bottoken -Path /users).Login
+        $script:botname = (Invoke-TvRequest -ClientId $botclientid -Token $bottoken -Path /users).Login
 
         if (-not $botchannel) {
             $null = Set-TvConfig -BotChannel $botname
