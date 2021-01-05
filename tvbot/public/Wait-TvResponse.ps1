@@ -12,11 +12,13 @@ function Wait-TvResponse {
     [CmdletBinding()]
     param ()
     process {
-        # Wait 3 seconds
+        # Wait 1 second
         Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        # this is where it fails when it mysteriously fails. it used to be a continue.
         if (-not $script:line) {
-            continue
+            Write-Verbose "[$(Get-Date)] Weird, it didn't have any input. Let's try to get one"
+            $script:line = $script:reader.ReadLine()
         }
 
         if (-not $writer.BaseStream) {

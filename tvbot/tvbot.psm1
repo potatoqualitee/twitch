@@ -38,12 +38,19 @@ if (-not (Test-Path -Path $adminfile)) {
     $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
+if (-not (Get-TvConfigValue -Name AdminCommandFile)) {
+    $null = Set-TvConfig -AdminCommandFile $userfile
+}
+
 ######### Create user command files
 if (-not (Test-Path -Path $userfile)) {
     @{
         ping = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
+}
+
+if (-not (Get-TvConfigValue -Name UserCommandFile)) {
     $null = Set-TvConfig -UserCommandFile $userfile
 }
 
