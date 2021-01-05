@@ -12,8 +12,13 @@ function Wait-TvResponse {
     [CmdletBinding()]
     param ()
     process {
+        # Wait 1 second
+        Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
+        Start-Sleep -Seconds 1
+        # this is where it fails when it mysteriously fails. it used to be a continue.
         if (-not $script:line) {
-            continue
+            Write-Verbose "[$(Get-Date)] Weird, it didn't have any input. Let's try to get one"
+            $script:line = $script:reader.ReadLine()
         }
 
         if (-not $writer.BaseStream) {
@@ -25,7 +30,7 @@ function Wait-TvResponse {
         $lasttick = $script:ping = [DateTime]::Now
 
 
-        Write-Verbose -Message "About to loop"
+        Write-Verbose -Message "[$(Get-Date)] Waiting for input by starting wait loop"
 
         while ($script:running) {
             if ($active) {
@@ -58,7 +63,8 @@ function Wait-TvResponse {
                     $active = $true
                     Invoke-TvCommand -InputObject $script:line
                 } catch {
-                    if ($script:startboundparams -and $script:reconnect) {
+                    if ($script:startboundparams -and $script:running) {
+                        Write-Verbose "[$(Get-Date)] Something went wrong, reconnecting"
                         Start-TvBot @script:startboundparams
                     } else {
                         throw "Cannot read stream: $_"

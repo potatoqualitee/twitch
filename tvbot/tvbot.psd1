@@ -49,6 +49,7 @@
         'Get-TvSystemTheme',
         'Invoke-TvCommand',
         'Join-TvChannel',
+        'Show-TvAlert',
         'Show-TvViewerCount',
         'Send-TvDiscordMessage',
         'Split-TvChannel',

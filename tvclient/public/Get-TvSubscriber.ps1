@@ -8,7 +8,7 @@ function Get-TvSubscriber {
     (
         [switch]$Next,
         [ValidateRange(1,100)]
-        [int]$MaxResults = 50
+        [int]$MaxResults = 100
     )
     begin {
         if (-not $script:userid) {
