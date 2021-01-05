@@ -38,7 +38,7 @@ function Get-TvConfig {
             }
         }
 
-        $arrays = "UsersToIgnore", "NotifyType", "BotOwner"
+        $arrays = "UsersToIgnore", "NotifyType", "BotOwner", "ScriptsToProcess"
         foreach ($value in $arrays) {
             if ($results.$value) {
                 $results.$value = $results.$value -split ", "

@@ -19,7 +19,7 @@ function New-ConfigFile {
 
         Write-Verbose "Writing config to $script:configfile"
         [PSCustomObject]@{
-            AdminCommandFile = $adminfile
+            AdminCommandFile = $null # set during load of tvbot
             ConfigFile       = $script:configfile.Replace("\\","\")
             BitsIcon         = $null
             BitsImage        = $null
@@ -61,7 +61,8 @@ function New-ConfigFile {
             SubSound         = "ms-winsoundevent:Notification.Mail"
             SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>>!"
             SubTitle         = "AWESOME!!"
-            UserCommandFile  = $userfile
+            ScriptsToProcess = $null
+            UserCommandFile  = $null # set during load of tvbot
         } | ConvertFrom-RestResponse | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
     }
 }

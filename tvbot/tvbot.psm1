@@ -35,22 +35,34 @@ if (-not (Test-Path -Path $adminfile)) {
     @{
         quit = 'Disconnect-TvServer -Message "k bye 👋!"'
     } | ConvertTo-Json | Set-Content -Path $adminfile -Encoding Unicode
-    $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
 if (-not (Get-TvConfigValue -Name AdminCommandFile)) {
-    $null = Set-TvConfig -AdminCommandFile $userfile
+    $null = Set-TvConfig -AdminCommandFile $adminfile
+}
+
+$cmd = Get-TvConfigValue -Name ScriptsToProcess
+
+if ($cmd) {
+    if ((Test-Path -Path $cmd)) {
+        $script:scriptstoprocess = $cmd
+    } else {
+        Write-Warning -Message "ScriptsToProcess is set but does not exist"
+    }
+}
+
+# set during load of tvbot
+if ((Get-TvConfigValue -Name UserCommandFile)) {
+    $null = Set-TvConfig -UserCommandFile $userfile
 }
 
 ######### Create user command files
 if (-not (Test-Path -Path $userfile)) {
     @{
-        ping = 'Write-TvChannelMessage -Message "$user, pong"'
-        pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
-        psversion  = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
-        talk = 'Write-TvChannelMessage -Message "Okie dok"'
-        LEL      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
-        L3L      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
+        ping      = 'Write-TvChannelMessage -Message "$user, pong"'
+        pwd       = 'Write-TvChannelMessage -Message $(Get-Location)'
+        psversion = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
+        hello     = 'Write-TvChannelMessage -Message "Hey,how is it going?"'
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
 }
 

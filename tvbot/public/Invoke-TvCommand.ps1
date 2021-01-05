@@ -59,11 +59,13 @@ function Invoke-TvCommand {
                 if ($index) {
                     $code = $usercommand[$index[0]]
                     if (-not $code -and $user -in $botowner) {
+                        Write-Verbose "Getting admin command"
                         $code = $admincommand[$index[0]]
                     }
 
                     try {
                         if ($code) {
+                            Write-Verbose -Message "Executing $code"
                             Invoke-Expression -Command $code
                         }
                     } catch {

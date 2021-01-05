@@ -107,6 +107,18 @@ function Write-TvOutput {
                                 $message = ($message -replace '\x01').Replace("ACTION ", "")
                                 Show-TvAlert -Type Message -UserName $displayname -Message $message
                             }
+
+                            # Allow a person to custom code
+                            # Use Get-Variable to see all of the variables that
+                            # are available. displayname and message are probably
+                            # the most useful
+                            if ($script:scriptstoprocess) {
+                                foreach ($file in $script:scriptstoprocess) {
+                                    Write-Verbose -Message "Executing $file"
+                                    $externalcode = Get-Content -Path $file -Raw
+                                    Invoke-Expression -Command $externalcode
+                                }
+                            }
                         }
                     } else {
                         Write-Output "[$(Get-Date)] > $message"

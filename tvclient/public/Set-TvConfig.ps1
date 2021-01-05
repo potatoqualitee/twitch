@@ -67,6 +67,7 @@ function Set-TvConfig {
         [string]$SubText,
         [string]$SubTitle,
         [string]$AdminCommandFile,
+        [string[]]$ScriptsToProcess,
         [string]$UserCommandFile,
         [switch]$Append,
         [switch]$Force
@@ -97,7 +98,7 @@ function Set-TvConfig {
             $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
 
             if ($key -notin $ignorecommonargs -and $key -notin "Append", "Force", "WhatIf", "Confirm") {
-                if ($key -in "UsersToIgnore", "NotifyType", "BotOwner") {
+                if ($key -in "UsersToIgnore", "NotifyType", "BotOwner", "ScriptsToProcess") {
                     if ($Append) {
                         $value = @(Get-TvConfigValue -Name $key)
                         $value += $PSBoundParameters.$key
