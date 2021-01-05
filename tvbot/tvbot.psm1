@@ -47,7 +47,7 @@ if (-not (Test-Path -Path $userfile)) {
     @{
         ping = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
-        psversion  = 'Write-TvChannelMessage -Message $PSVersionTable'
+        psversion  = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
         talk = 'Write-TvChannelMessage -Message "Okie dok"'
         LEL      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
         L3L      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'

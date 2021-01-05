@@ -44,6 +44,14 @@ function Show-TvAlert {
         }
     }
     process {
+        # i can probably just get-tvconifg once instead
+        if ($Message) {
+            $key = Get-TvConfigValue -Name BotKey
+            if ($Message.StartsWith($key)) {
+                # dont show
+                return
+            }
+        }
         if ($PSVersionTable.Platform -eq "Win32NT" -and $PSVersionTable.PSEdition -eq "Core") {
             Write-Warning "Notifications not supported on Windows PowerShell Core. Use 5.1 instead."
             return

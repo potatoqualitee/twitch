@@ -34,6 +34,8 @@ function Send-Server {
             if ($script:line) {
                 Write-TvOutput -InputObject $script:line
             }
+            # maybe
+            $script:writer.Flush()
         } while ($script:reader.Peek() -ne -1)
     }
 }
