@@ -12,6 +12,9 @@ function Wait-TvResponse {
     [CmdletBinding()]
     param ()
     process {
+        # Wait 3 seconds
+        Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
+        Start-Sleep -Seconds 3
         if (-not $script:line) {
             continue
         }
@@ -25,7 +28,7 @@ function Wait-TvResponse {
         $lasttick = $script:ping = [DateTime]::Now
 
 
-        Write-Verbose -Message "About to loop"
+        Write-Verbose -Message "[$(Get-Date)] Waiting for input by starting wait loop"
 
         while ($script:running) {
             if ($active) {
@@ -58,7 +61,8 @@ function Wait-TvResponse {
                     $active = $true
                     Invoke-TvCommand -InputObject $script:line
                 } catch {
-                    if ($script:startboundparams -and $script:reconnect) {
+                    if ($script:startboundparams -and $script:running) {
+                        Write-Verbose "[$(Get-Date)] Something went wrong, reconnecting"
                         Start-TvBot @script:startboundparams
                     } else {
                         throw "Cannot read stream: $_"
