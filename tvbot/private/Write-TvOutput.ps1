@@ -66,7 +66,7 @@ function Write-TvOutput {
                 if ($sysmsg -match "raiders") {
                     # $sysmsg = '15\sraiders\sfrom\sdanni_juhl\shave\sjoined\n!'
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    Show-Alert -Type Message -UserName $displayname -Message $text
+                    Show-TvAlert -Type Message -UserName $displayname -Message $text
                 }
                 Write-Verbose "[$(Get-Date)] $sysmessage"
             }
@@ -80,7 +80,7 @@ function Write-TvOutput {
                             $bigolbits = [int]$hash["bits"]
 
                             if ($bigolbits -gt 0) {
-                                Show-Alert -Type Bits -UserName $displayname -MiscNumber $bigolbits
+                                Show-TvAlert -Type Bits -UserName $displayname -MiscNumber $bigolbits
                             }
 
                             if ($emote) {
@@ -99,13 +99,13 @@ function Write-TvOutput {
                                         $message = $message.Replace($remove, "")
                                     }
                                 }
-                                Show-Alert -Type Message -UserName $displayname -Message $message -Emote $emote
+                                Show-TvAlert -Type Message -UserName $displayname -Message $message -Emote $emote
                             }
 
                             if ($message) {
                                 # THANK YOU @vexx32!
                                 $message = ($message -replace '\x01').Replace("ACTION ", "")
-                                Show-Alert -Type Message -UserName $displayname -Message $message
+                                Show-TvAlert -Type Message -UserName $displayname -Message $message
                             }
                         }
                     } else {
@@ -120,14 +120,14 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] *** $user has joined #$botchannel"
 
                 if ($notifytype -contains "join") {
-                    Show-Alert -UserName $displayname -Message "$user has joined" -Type Message
+                    Show-TvAlert -UserName $displayname -Message "$user has joined" -Type Message
                 }
             }
             "PART" {
                 Write-Output "[$(Get-Date)] *** $user has left #$botchannel"
 
                 if ($notifytype -contains "leave") {
-                    Show-Alert -UserName $displayname -Message "$user has has left" -Type Message
+                    Show-TvAlert -UserName $displayname -Message "$user has has left" -Type Message
                 }
             }
             "PING" {
