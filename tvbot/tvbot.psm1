@@ -47,6 +47,10 @@ if (-not (Test-Path -Path $userfile)) {
     @{
         ping = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
+        psversion  = 'Write-TvChannelMessage -Message $PSVersionTable'
+        talk = 'Write-TvChannelMessage -Message "Okie dok"'
+        LEL      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
+        L3L      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
 }
 
