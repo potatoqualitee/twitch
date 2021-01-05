@@ -8,7 +8,7 @@ function Send-Server {
         [string[]]$Message
     )
 
-    if (-not $script:writer.BaseStream) {
+    if (-not $writer.BaseStream) {
         Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
 
@@ -18,22 +18,22 @@ function Send-Server {
         } else {
             Write-Verbose "[$(Get-Date)] $msg"
         }
-        $script:writer.WriteLine($msg)
+        $writer.WriteLine($msg)
     }
 
     try {
-        $script:writer.Flush()
+        $writer.Flush()
     } catch {
         Write-Warning "Whoops! $_"
     }
 
     # Ping and pong do not return output it seems so no need to read the stream
-    if ($script:reader.BaseStream.CanRead -and $Message -notin "PING", "PONG") {
+    if ($reader.BaseStream.CanRead -and $Message -notin "PING", "PONG") {
         do {
-            $script:line = $script:reader.ReadLine()
+            $script:line = $reader.ReadLine()
             if ($script:line) {
                 Write-TvOutput -InputObject $script:line
             }
-        } while ($script:reader.Peek() -ne -1)
+        } while ($reader.Peek() -ne -1)
     }
 }

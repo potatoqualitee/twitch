@@ -22,6 +22,7 @@ function Write-TvChannelMessage {
 
     if ($null -ne $writer.BaseStream) {
         foreach ($channel in $botchannel) {
+            Write-Verbose -Message "[$(Get-Date)] PRIVMSG #$channel :$Message"
             Send-Server -Message "PRIVMSG #$channel :$Message"
         }
     } else {
