@@ -69,15 +69,21 @@ $script:sounds = 'ms-winsoundevent:Notification.Default',
 'ms-winsoundevent:Notification.Looping.Call9',
 'ms-winsoundevent:Notification.Looping.Call10'
 
-Register-ArgumentCompleter -ParameterName NewSubcriberSound -CommandName Set-TvConfig -ScriptBlock {
+Register-ArgumentCompleter -ParameterName SubSound -CommandName Set-TvConfig -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
     $script:sounds | Where-Object { $PSitem -match $wordToComplete } | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }
-Register-ArgumentCompleter -ParameterName NewFollowerSound -CommandName Set-TvConfig -ScriptBlock {
+Register-ArgumentCompleter -ParameterName FollowSound -CommandName Set-TvConfig -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
     $script:sounds | Where-Object { $PSitem -match $wordToComplete } | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+    }
+}
+Register-ArgumentCompleter -ParameterName Since -CommandName Get-TvFollower -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    "StreamStart", "LastStream" | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }

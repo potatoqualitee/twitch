@@ -108,7 +108,7 @@ function Start-Bot {
     # When Restart is clicked, close everything and kill the PowerShell process
     $menurestart.add_Click( {
             Stop-Process $script:newprocess.Id
-            $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
+            $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
             Start-Sleep -Seconds 3
             $null = Switch-WindowStyle -Process $script:newprocess
         })
@@ -117,7 +117,7 @@ function Start-Bot {
     $null = Switch-WindowStyle
 
     # Start bot
-    $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoTrayIcon -PrimaryPid $PID @script:startboundparams" -PassThru
+    $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
 
     Start-Sleep -Seconds 3
     $null = Switch-WindowStyle -Process $script:newprocess

@@ -50,6 +50,10 @@
                 [string]$Key,
                 $Value
             )
+            if ($value -match '\b[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\b') {
+                $datetime = ([DateTime]$value).ToUniversalTime()
+                return [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId($datetime, (Get-TimeZone).Id)
+            }
             if ($Key -notmatch 'date' -and $Key -notmatch 'time' -or $Key -match 'Updates') {
                 if ("$Value".StartsWith("@") -or "$Value".StartsWith("{")) {
                     return $Value | ConvertFrom-RestResponse -NoUri
@@ -108,9 +112,9 @@
                             $value = Convert-Value -Key $column -Value $row.$column
                             $hash["Modified"] = $value
                         }
-                        { $PSItem -match "Creat" } {
+                        { $PSItem -match "Create" } {
                             $value = Convert-Value -Key $column -Value $row.$column
-                            $hash["Created"] = $value
+                            $hash["CreatedAt"] = $value
                         }
                         { $PSItem -match "Last.Login" -or $PSItem -eq "LastLogin" } {
                             $value = $script:origin.AddSeconds($row.$column).ToLocalTime()
@@ -172,10 +176,10 @@
             # IF EVERY ONE HAS MULTIPLES INSIDE
             if ($fields.Count -eq 0) {
                 Write-Verbose "Found no inner objects"
-                if ($object.StartsWith("{")) {
+                if ($object.ToString().StartsWith("{")) {
                     $object = $object.Replace("\","\\") | ConvertFrom-Json
                     $fields = $object | Get-Member -Type NoteProperty
-                } elseif ($object.StartsWith("@{")) {
+                } elseif ($object.ToString().StartsWith("@{")) {
                     $object = $object.Substring(2, $object.Length - 3) -split ';' | ConvertFrom-StringData | ConvertTo-PSCustomObject
                     $fields = $object | Get-Member -Type NoteProperty
                 } else {

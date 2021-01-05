@@ -27,7 +27,7 @@ function Start-TvBot {
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
         [switch]$AutoReconnect,
-        [switch]$NoTrayIcon,
+        [switch]$NoHide,
         [parameter(DontShow)]
         [int]$PrimaryPid
     )
@@ -36,9 +36,23 @@ function Start-TvBot {
             $script:primarypid = $PrimaryPid
         }
         $script:startboundparams = $PSBoundParameters
+
+        # this could be done a lot better
+        # but @script:startboundparams isnt working
+        $array = @()
+        foreach ($key in $PSBoundParameters.Keys) {
+            $value = $PSBoundParameters[$key]
+            if ($value -in $true, $false) {
+                $array += "-$($key):`$$value"
+            } else {
+                $array += "-$($key):'$value'"
+            }
+        }
+        $script:flatparams = $array -join " "
+
         if ($AutoReconnect) { $script:reconnect = $true }
 
-        if (-not $PSBoundParameters.NoTrayIcon -and $PSVersionTable.Platform -ne "UNIX") {
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.Platform -ne "UNIX") {
             Start-Bot
         } else {
             if ($PrimaryPid) {

@@ -9,7 +9,7 @@ function Get-TvFollowed {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$UserName,
         [ValidateRange(1,100)]
-        [int]$MaxResults = 10,
+        [int]$MaxResults = 50,
         [switch]$Next
     )
     begin {

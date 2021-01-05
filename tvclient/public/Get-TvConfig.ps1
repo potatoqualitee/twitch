@@ -30,7 +30,15 @@ function Get-TvConfig {
             $results = Get-Content -Path $script:configfile | ConvertFrom-Json
         }
 
-        $arrays = "BotsToIgnore", "NotifyType", "BotOwner"
+        $columns = $results | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
+
+        foreach ($value in $columns) {
+            if ($results.$value) {
+                $results.$value = $results.$value.ToString().Replace("\\","\")
+            }
+        }
+
+        $arrays = "UsersToIgnore", "NotifyType", "BotOwner"
         foreach ($value in $arrays) {
             if ($results.$value) {
                 $results.$value = $results.$value -split ", "

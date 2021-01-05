@@ -62,27 +62,13 @@ function Write-TvOutput {
         # format it
         switch ($command) {
             "USERNOTICE" {
-                $user = $displayname
                 $sysmsg = $hash["system-msg"]
                 if ($sysmsg -match "raiders") {
-                    $image = Get-Avatar
-
-                    # 15\sraiders\sfrom\sTdanni_juhl\shave\sjoined\n!
+                    # $sysmsg = '15\sraiders\sfrom\sdanni_juhl\shave\sjoined\n!'
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
-                    $appicon = New-BTImage -Source $raidicon -AppLogoOverride
-
-                    $heroimage = New-BTImage -Source $raidimage -HeroImage
-
-                    $titletext = New-BTText -Text "$displayname $raidtext"
-                    $thankstext = New-BTText -Text $text
-
-                    $audio = New-BTAudio -Source $raidsound
-
-                    $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
-                    $visual = New-BTVisual -BindingGeneric $binding
-                    $content = New-BTContent -Visual $visual -Audio $audio
-                    Submit-BTNotification -Content $content -UniqueIdentifier $id
+                    Show-Alert -Type Message -UserName $displayname -Message $text
                 }
+                Write-Verbose "[$(Get-Date)] $sysmessage"
             }
             "PRIVMSG" {
                 if ($message) {
@@ -90,78 +76,36 @@ function Write-TvOutput {
                         Write-Verbose "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
-                        if ($notifytype -contains "chat" -and $user -notin $botstoignore) {
-                            if ($message) {
-                                try {
-                                    # THANK YOU @vexx32!
-                                    $string = ($message -replace '\x01').Replace("ACTION ", "")
-                                    $id = "tvbot"
-                                    $image = (Resolve-Path "$script:ModuleRoot\icon.png")
+                        if ($notifytype -contains "chat" -and $user -notin $UsersToIgnore) {
+                            $bigolbits = [int]$hash["bits"]
 
-                                    if ($script:toast) {
-                                        $image = Get-Avatar
+                            if ($bigolbits -gt 0) {
+                                Show-Alert -Type Bits -UserName $displayname -MiscNumber $bigolbits
+                            }
 
-                                        Write-Verbose "EMOTE: $emote"
-                                        Write-Verbose "EMOTE ONLY: $emoteonly"
+                            if ($emote) {
+                                # @badge-info=;badges=premium/1;color=#0089FF;display-name=potatoqualitee;emote-only=1;emotes=425618:0-2;flags=;id=0902c83d
+                                Write-Verbose "EMOTE: $emote"
+                                Write-Verbose "EMOTE ONLY: $emoteonly"
+                                $emote, $location = $emote.Split(":")
 
-                                        if ($emote) {
-                                            $emote, $location = $emote.Split(":")
-
-                                            if (-not $emoteonly) {
-                                                $location = $location.Split(",")
-                                                Write-Verbose "$location"
-                                                foreach ($match in $location) {
-                                                    $first, $last = $match.Split("-")
-                                                    # Thanks milb0!
-                                                    $remove = $message.Substring($first, $last - $first + 1)
-                                                    $string = $message.Replace($remove, "")
-                                                }
-                                            }
-
-                                            $image = Get-TvEmote -Id $emote
-                                        }
-
-                                        $existingtoast = Get-BTHistory -UniqueIdentifier $id
-                                        if ($existingtoast) {
-                                            Remove-BTNotification -Tag $id -Group $id
-                                        }
-
-                                        $bigolbits = [int]$hash["bits"]
-
-                                        if ($bigolbits -gt 0) {
-                                            if ($bigolbits -eq 1) {
-                                                $bitword = "BIT"
-                                            } else {
-                                                $bitword = "BITS"
-                                            }
-                                            $appicon = New-BTImage -Source $bitsicon -AppLogoOverride
-                                            $heroimage = New-BTImage -Source $bitsimage -HeroImage
-
-                                            $titletext = New-BTText -Text $bitstitle
-                                            $thankstext = New-BTText -Text "$bitstext $bigolbits $bitword, $displayname!"
-
-                                            $audio = New-BTAudio -Source $bitssound
-
-                                            $binding = New-BTBinding -Children $titletext, $thankstext -HeroImage $heroimage -AppLogoOverride $appicon
-                                            $visual = New-BTVisual -BindingGeneric $binding
-                                            $content = New-BTContent -Visual $visual -Audio $audio
-
-                                            Submit-BTNotification -Content $content -UniqueIdentifier $id
-                                            # parse out if they said more than just the bit so that you can show that
-                                        } else {
-                                            try {
-                                                New-BurntToastNotification -AppLogo $image -Text $displayname, $string -UniqueIdentifier $id -ErrorAction Stop
-                                            } catch {
-
-                                            }
-                                        }
-                                    } else {
-                                        $string = [System.Security.SecurityElement]::Escape($message)
-                                        Send-OSNotification -Title $user -Body $string -Icon $image -ErrorAction Stop
+                                if (-not $emoteonly) {
+                                    $location = $location.Split(",")
+                                    Write-Verbose "$location"
+                                    foreach ($match in $location) {
+                                        $first, $last = $match.Split("-")
+                                        # Thanks milb0!
+                                        $remove = $message.Substring($first, $last - $first + 1)
+                                        $message = $message.Replace($remove, "")
                                     }
-                                } catch {
-                                    $_
                                 }
+                                Show-Alert -Type Message -UserName $displayname -Message $message -Emote $emote
+                            }
+
+                            if ($message) {
+                                # THANK YOU @vexx32!
+                                $message = ($message -replace '\x01').Replace("ACTION ", "")
+                                Show-Alert -Type Message -UserName $displayname -Message $message
                             }
                         }
                     } else {
@@ -176,14 +120,14 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] *** $user has joined #$botchannel"
 
                 if ($notifytype -contains "join") {
-                    Send-OSNotification -Title $user -Body "$user has joined" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                    Show-Alert -UserName $displayname -Message "$user has joined" -Type Message
                 }
             }
             "PART" {
                 Write-Output "[$(Get-Date)] *** $user has left #$botchannel"
 
                 if ($notifytype -contains "leave") {
-                    Send-OSNotification -Title $user -Body "$user has has left" -Icon (Resolve-Path "$script:ModuleRoot\icon.png")
+                    Show-Alert -UserName $displayname -Message "$user has has left" -Type Message
                 }
             }
             "PING" {

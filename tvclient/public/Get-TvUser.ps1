@@ -11,10 +11,10 @@ function Get-TvUser {
     )
     process {
         if (-not $PSBoundParameters.UserName) {
-            Invoke-TvRequest -Path /users | ConvertFrom-RestResponse
+            Invoke-TvRequest -Path /users
         } else {
             $users = $UserName -join "&login="
-            Invoke-TvRequest -Path /users?login=$users | ConvertFrom-RestResponse
+            Invoke-TvRequest -Path /users?login=$users
         }
     }
 }

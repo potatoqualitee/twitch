@@ -1,6 +1,7 @@
 function Get-Avatar {
     [CmdletBinding()]
     param(
+        [parameter(Mandatory)]
         [string]$UserName
     )
     process {

@@ -27,7 +27,7 @@ function Invoke-TvRequest {
     )
     process {
         if (-not $script:session -and -not $ClientId -and -not $Token) {
-            Write-Error -ErrorRecord $_ -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig"
+            Write-Error -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig"
         }
 
         $Path = $Path.TrimStart("/")
@@ -56,8 +56,11 @@ function Invoke-TvRequest {
 
         try {
             $results = Invoke-RestMethod @params -ErrorAction Stop
+            if ($results.data.Count -eq 0 -and $results.Pagination.Count -eq 1 -and -not $Raw) {
+                return
+            }
             if ($results.data -and -not $Raw) {
-                $results.data
+                $results.data | ConvertFrom-RestResponse
             } else {
                 $results
             }

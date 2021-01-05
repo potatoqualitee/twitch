@@ -42,13 +42,18 @@
     # Functions to export from this module
     FunctionsToExport  = @(
         'Connect-TvServer',
+        'Disable-TvAlertSound',
         'Disconnect-TvServer',
+        'Enable-TvAlertSound',
         'Get-TvStatusList',
+        'Get-TvSystemTheme',
         'Invoke-TvCommand',
         'Join-TvChannel',
-        'Write-TvChannelMessage',
+        'Show-TvViewerCount',
+        'Send-TvDiscordMessage',
         'Split-TvChannel',
         'Start-TvBot',
+        'Write-TvChannelMessage',
         'Wait-TvResponse'
     )
 

@@ -10,22 +10,32 @@ function Set-TvConfig {
         PS C:\>
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param
     (
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$BitsIcon,
+        [string]$BitsImage,
+        [string]$BitsSound,
+        [string]$BitsText,
+        [string]$BitsTitle,
+        [string]$BotClientId,
+        [string]$BotChannel,
+        [string]$BotIcon,
+        [string]$BotIconColor,
+        [string]$BotKey,
+        [string]$BotOwner,
+        [string]$BotToken,
+        [string[]]$UsersToIgnore,
         [string]$ClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
         [Alias("Secret")]
         [string]$Token,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotToken,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotChannel,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotOwner,
+        [string]$DefaultFont,
+        [string]$DiscordWebhook,
+        [string]$FollowIcon,
+        [string]$FollowImage,
+        [string]$FollowSound,
+        [string]$FollowText,
+        [string]$FollowTitle,
         # do this to avoid a huge list of colors AND ALSO
         # to ensure that the autocomplete works as expected
         # with partial matches
@@ -36,46 +46,29 @@ function Set-TvConfig {
             }
         )]
         [string]$NotifyColor,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$DefaultFont,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$DiscordWebhook,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$NewSubcriberSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$NewFollowerSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$BotsToIgnore,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidImage,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidText,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$RaidSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsImage,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsTitle,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BitsSound,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotKey,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$AdminCommandFile,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$UserCommandFile,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotIcon,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BotIconColor,
-        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet("chat", "leave", "join", "none")]
         [string[]]$NotifyType,
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$RaidIcon,
+        [string]$RaidImage,
+        [string]$RaidSound,
+        [string]$RaidText,
+        [string]$RaidTitle,
+        [parameter(DontShow)]
+        [ValidateSet("Enabled", "Disabled")]
+        [string]$Sound,
+        [string]$SubGiftedText,
+        [string]$SubGiftedTitle,
+        [string]$SubGiftedIcon,
+        [string]$SubGiftedImage,
+        [string]$SubGiftedSound,
+        [string]$SubIcon,
+        [string]$SubImage,
+        [string]$SubSound,
+        [string]$SubText,
+        [string]$SubTitle,
+        [string]$AdminCommandFile,
+        [string]$UserCommandFile,
+        [switch]$Append,
         [switch]$Force
     )
     begin {
@@ -98,15 +91,23 @@ function Set-TvConfig {
         }
         $config = Get-Content -Path $script:configfile | ConvertFrom-Json | ConvertTo-HashTable
 
-        $ignore = [System.Management.Automation.PSCmdlet]::CommonParameters
+        $ignorecommonargs = [System.Management.Automation.PSCmdlet]::CommonParameters
 
         foreach ($key in $PSBoundParameters.Keys) {
             $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
 
-            if ($key -ne "Force" -and $key -notin $ignore) {
-                if ($key -in "BotsToIgnore", "NotifyType", "BotOwner") {
-                    $value = $PSBoundParameters.$key -join ", "
-                    $config[$key] = $value
+            if ($key -notin $ignorecommonargs -and $key -notin "Append", "Force", "WhatIf", "Confirm") {
+                if ($key -in "UsersToIgnore", "NotifyType", "BotOwner") {
+                    if ($Append) {
+                        $value = @(Get-TvConfigValue -Name $key)
+                        $value += $PSBoundParameters.$key
+                        $value = $value -join ", "
+                    } else {
+                        $value = $PSBoundParameters.$key -join ", "
+                    }
+                    if ($PSCmdlet.ShouldProcess($script:configfile, "Set $key to $value")) {
+                        $config[$key] = $value
+                    }
                 } else {
                     $value = $PSBoundParameters.$key
                     $config[$key] = $value
@@ -114,12 +115,16 @@ function Set-TvConfig {
                     if ($key -in $hidden -and -not $Force) {
                         $value = "********************** (Use -Force to see)"
                     }
+                    if ($PSCmdlet.ShouldProcess($script:configfile, "Set $key to $value")) {
+                        # couldn't figure out how to do this lol
+                    }
                 }
-                Write-Verbose -Message "Set $key to $value"
             }
         }
 
-        $config | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
-        Get-TvConfig -Force:$Force
+        if ($PSCmdlet.ShouldProcess($script:configfile, "Writing config file")) {
+            $config | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
+            Get-TvConfig -Force:$Force
+        }
     }
 }

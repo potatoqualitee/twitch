@@ -7,7 +7,7 @@ function Get-TvModerator {
     param
     (
         [ValidateRange(1,100)]
-        [int]$MaxResults = 10,
+        [int]$MaxResults = 50,
         [switch]$Next
     )
     begin {

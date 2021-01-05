@@ -18,35 +18,50 @@ function New-ConfigFile {
         }
 
         Write-Verbose "Writing config to $script:configfile"
-        @{
-            ConfigFile         = $script:configfile
-            DefaultFont        = "Segoe UI"
-            RaidIcon           = $null
-            RaidImage          = $null
-            RaidText           = "HAS RAIDED!"
-            RaidSound          = "ms-winsoundevent:Notification.IM"
-            BitsIcon           = $null
-            BitsImage          = $null
-            BitsTitle          = "MERCI BEAUCOUP"
-            BitsText           = "THANK YOU FOR THE"
-            BitsSound          = "ms-winsoundevent:Notification.Mail"
-            BotsToIgnore       = $null
-            ClientId           = $null
-            Token              = $null
-            BotClientId        = $null
-            BotToken           = $null
-            BotChannel         = $null
-            BotOwner           = $null
-            NotifyColor        = $color
-            BotIconColor       = $color
-            BotIcon            = $null
-            DiscordWebhook     = $null
-            NewSubscriberSound = "ms-winsoundevent:Notification.Mail"
-            NewFollowerSound   = "ms-winsoundevent:Notification.Mail"
-            UserCommandFile    = $userfile
-            AdminCommandFile   = $adminfile
-            NotifyType         = "none"
-            BotKey             = "!"
-        } | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
+        [PSCustomObject]@{
+            AdminCommandFile = $adminfile
+            ConfigFile       = $script:configfile.Replace("\\","\")
+            BitsIcon         = $null
+            BitsImage        = $null
+            BitsSound        = "ms-winsoundevent:Notification.Mail"
+            BitsText         = "THANK YOU FOR THE <<bitcount>>, <<username>>!"
+            BitsTitle        = "MERCI BEAUCOUP, <<username>>!"
+            BotClientId      = $null
+            BotChannel       = $null
+            BotIcon          = $null
+            BotIconColor     = $color
+            BotKey           = "!"
+            BotOwner         = $null
+            BotToken         = $null
+            UsersToIgnore    = $null
+            ClientId         = $null
+            Token            = $null
+            DefaultFont      = "Segoe UI"
+            DiscordWebhook   = $null
+            FollowIcon       = $null
+            FollowImage      = $null
+            FollowSound      = "ms-winsoundevent:Notification.Mail"
+            FollowText       = "THANKS SO MUCH!"
+            FollowTitle      = "WHAT UP, <<username>> HAS FOLLOWED!"
+            NotifyColor      = $color
+            NotifyType       = "none"
+            RaidIcon         = $null
+            RaidImage        = $null
+            RaidSound        = "ms-winsoundevent:Notification.IM"
+            RaidText         = "<<username>> HAS RAIDED!"
+            RaidTitle        = "IT'S A RAID!"
+            Sound            = "Enabled"
+            SubGiftedText    = "Thank you so very much for gifting a Tier <<tier>> sub, <<gifter>>!"
+            SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
+            SubGiftedIcon    = $null
+            SubGiftedImage   = $null
+            SubGiftedSound   = "ms-winsoundevent:Notification.Mail"
+            SubIcon          = $null
+            SubImage         = $null
+            SubSound         = "ms-winsoundevent:Notification.Mail"
+            SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>>!"
+            SubTitle         = "AWESOME!!"
+            UserCommandFile  = $userfile
+        } | ConvertFrom-RestResponse | ConvertTo-Json | Set-Content -Path $script:configfile -Encoding Unicode
     }
 }

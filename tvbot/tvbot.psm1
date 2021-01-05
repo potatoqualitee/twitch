@@ -35,7 +35,7 @@ if (-not (Test-Path -Path $adminfile)) {
     @{
         quit = 'Disconnect-TvServer -Message "k bye 👋!"'
     } | ConvertTo-Json | Set-Content -Path $adminfile -Encoding Unicode
-    Set-TvConfig -AdminCommandFile $adminfile
+    $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
 ######### Create user command files
@@ -44,20 +44,81 @@ if (-not (Test-Path -Path $userfile)) {
         ping = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
-    Set-TvConfig -UserCommandFile $userfile
+    $null = Set-TvConfig -UserCommandFile $userfile
 }
 
-Enum ShowStates {
-    Hide = 0
-    Normal = 1
-    Minimized = 2
-    Maximized = 3
-    ShowNoActivateRecentPosition = 4
-    Show = 5
-    MinimizeActivateNext = 6
-    MinimizeNoActivate = 7
-    ShowNoActivate = 8
-    Restore = 9
-    ShowDefault = 10
-    ForceMinimize = 11
+if (-not (Get-TvConfig -Name BotIcon)) {
+    $botico = Join-Path -Path $PSScriptRoot -ChildPath "bot.ico"
+    $null = Set-TvConfig -BotIcon $botico
 }
+
+
+if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
+    # sqlite shared cache
+    $script:toast = $true
+    $script:cache = @{}
+    # set max notifications to 20
+    $maxps = Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe' -Name MaxCollapsedGroupItemCount -ErrorAction SilentlyContinue | Select-Object -ExpandProperty MaxCollapsedGroupItemCount
+
+    if ($maxps -ne 21) {
+        $null = Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe' -Name MaxCollapsedGroupItemCount -Value 21 -ErrorAction SilentlyContinue
+    }
+}
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+if ($PSVersionTable.Platform -ne "UNIX") {
+    Add-Type -AssemblyName PresentationFramework, System.Windows.Forms
+}
+
+##################### Config setup #####################
+$config = Get-TvConfig
+$dir = Split-Path -Path $config.ConfigFile
+$params = @{}
+
+$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "pog.png", "pog-hero.png"
+foreach ($pic in $pics) {
+    if (-not (Test-Path -Path "$dir\$pic")) {
+        Copy-Item "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
+    }
+}
+
+$settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\pog.png"
+    }
+}
+
+$settings = "RaidImage", "SubImage", "SubGiftedImage"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\catparty.gif"
+    }
+}
+
+if (-not $config.BitsIcon) {
+    $params.BitsIcon = "$dir\bits.gif"
+}
+
+
+$settings = "BitsImage", "FollowImage"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\vibecat.gif"
+    }
+}
+
+#placeholder
+$settings = $null
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = "$dir\pog-hero.png"
+    }
+}
+
+if (-not $config.BotIcon) {
+    $params.BotIcon = "$dir\robo.png"
+}
+
+$null = Set-TvConfig @params

@@ -17,7 +17,6 @@ function Invoke-Pagination {
 
         $results = Invoke-TvRequest -Path "$Path&first=$MaxResults&after=$cursor" -Raw
 
-
         $script:pagination[$Name] = $results.pagination.cursor
         $data = $results | Get-Member -Name data
 
