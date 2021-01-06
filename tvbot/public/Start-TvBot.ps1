@@ -35,6 +35,11 @@ function Start-TvBot {
         if ($PrimaryPid) {
             $script:primarypid = $PrimaryPid
         }
+
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -eq "Core") {
+            Write-Verbose -Message "Bot cannot be hidden when using PowerShell Core. Setting -NoHide."
+            $PSBoundParameters.NoHide = $true
+        }
         $script:startboundparams = $PSBoundParameters
 
         # this could be done a lot better

@@ -58,11 +58,13 @@ if ((Get-TvConfigValue -Name UserCommandFile)) {
 
 ######### Create user command files
 if (-not (Test-Path -Path $userfile)) {
+    $say = '$message.Replace("!say ","")'
     @{
         ping      = 'Write-TvChannelMessage -Message "$user, pong"'
         pwd       = 'Write-TvChannelMessage -Message $(Get-Location)'
         psversion = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
-        hello     = 'Write-TvChannelMessage -Message "Hey,how is it going?"'
+        hello     = 'Write-TvChannelMessage -Message "hi!"'
+        say       = "Write-TvChannelMessage -Message $say"
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
 }
 

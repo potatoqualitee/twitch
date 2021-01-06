@@ -69,7 +69,7 @@ function Invoke-TvCommand {
                             Invoke-Expression -Command $code
                         }
                     } catch {
-                        Write-TvChannelMessage -Message "$($_.Exception.Message)" -Channel $botchannel
+                        Write-TvChannelMessage -Message "$($_.Exception.Message)"
                         Write-Output $_.Exception
                     }
                 }
