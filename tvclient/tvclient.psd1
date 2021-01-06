@@ -10,7 +10,7 @@
     RootModule         = 'tvclient.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.0.4'
+    ModuleVersion      = '0.0.10'
 
     # ID used to uniquely identify this module
     GUID               = '46d77594-0721-45ad-ac7c-0cb366db089e'
@@ -25,7 +25,7 @@
     Copyright          = 'Copyright (c) 2020, licensed under MIT'
 
     # Description of the functionality provided by this module
-    Description        = "A pi-friendly bot for your Twitch channel"
+    Description        = "PowerShell client for the Twitch API"
 
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion  = '5.1'
@@ -87,7 +87,7 @@
             Category     = "Messaging & Communication"
 
             # Keyword tags to help users find this module via navigations and search.
-            Tags         = @('twitch', 'bot', 'irc')
+            Tags         = @('twitch', 'bot', 'irc', 'api')
 
             # The web address of an icon which can be used in galleries to represent this module
             IconUri      = "https://user-images.githubusercontent.com/8278033/95674723-6c0fef80-0bb2-11eb-8156-fbb026255c94.png"

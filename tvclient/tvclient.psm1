@@ -1,5 +1,6 @@
 ﻿$script:ModuleRoot = $PSScriptRoot
 
+# Import as fast as possible
 function Import-ModuleFile {
     [CmdletBinding()]
     Param (

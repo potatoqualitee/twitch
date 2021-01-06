@@ -57,7 +57,7 @@ function Start-TvBot {
 
         if (-not $NoAutoReconnect) { $script:reconnect = $true }
 
-        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.Platform -ne "UNIX") {
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -ne "Core") {
             Start-Bot
         } else {
             if ($PrimaryPid) {

@@ -10,7 +10,7 @@
     RootModule         = 'tvbot.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.0.4'
+    ModuleVersion      = '0.0.10'
 
     # ID used to uniquely identify this module
     GUID               = 'd6a499b1-fafd-4911-9b4c-cabd00c11546'
