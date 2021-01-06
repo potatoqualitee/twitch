@@ -15,6 +15,8 @@ function Send-TvDiscordMessage {
         [string]$Message
     )
     process {
+        Write-Verbose "Verbose disabled for Send-TvDiscordMessage since the hook is in the URL"
+        $VerbosePreference = "SilentlyContinue"
         $url = Get-TvConfigValue -Name DiscordWebhook
         if (-not $url) {
             Write-Error -ErrorAction Stop -Message "You must set a DiscordWebhook using Set-TvConfig -DiscordWebhook https://WEBHOOK"
