@@ -17,7 +17,7 @@ function New-ConfigFile {
             $color = "Black"
         }
 
-        Write-Verbose "Writing config to $script:configfile"
+        Write-Verbose "[$(Get-Date)] Writing config to $script:configfile"
         [PSCustomObject]@{
             AdminCommandFile = $null # set during load of tvbot
             ConfigFile       = $script:configfile.Replace("\\","\")

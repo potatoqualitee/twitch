@@ -30,7 +30,7 @@ function Get-TvFollower {
                 Invoke-Pagination @params
             } else {
                 # Get max
-                $params.MaxResults = 500
+                $params.MaxResults = 100
                 switch ($Since) {
                     "StreamStart" {
                         $started = (Get-TvStream).StartedAt

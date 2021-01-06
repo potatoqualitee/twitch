@@ -13,29 +13,30 @@ function Write-TvChannelMessage {
     param (
         [string]$Message
     )
-
-    if (-not $writer.BaseStream) {
-        Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
-    }
-
-    $botchannel = Get-TvConfigValue -Name BotChannel
-
-    if ($null -ne $writer.BaseStream) {
-        foreach ($channel in $botchannel) {
-            # Clean up multi line
-            # irc doesnt allow multi-line and twitch can potentially throttle
-            if ($Message -match "`n") {
-                $Message = $Message.Replace("`n"," ")
-                $Message = $Message.Replace("`r"," ")
-                $Message = $Message.Replace("`t"," ")
-                do {
-                    $Message = $Message.Replace("  "," ")
-                } until ($Message -notmatch "  ")
-            }
-            Send-Server -Message "PRIVMSG #$channel :$Message"
-            Show-TvAlert -Message $Message -Type Message -UserName $script:botname
+    process {
+        if (-not $script:writer.BaseStream) {
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
-    } else {
-        Write-Error -ErrorAction Stop -Message "Disconnected?"
+
+        $botchannel = Get-TvConfigValue -Name BotChannel
+
+        if ($null -ne $script:writer.BaseStream) {
+            foreach ($channel in $botchannel) {
+                # Clean up multi line
+                # irc doesnt allow multi-line and twitch can potentially throttle
+                if ($Message -match "`n") {
+                    $Message = $Message.Replace("`n"," ")
+                    $Message = $Message.Replace("`r"," ")
+                    $Message = $Message.Replace("`t"," ")
+                    do {
+                        $Message = $Message.Replace("  "," ")
+                    } until ($Message -notmatch "  ")
+                }
+                Send-Server -Message "PRIVMSG #$channel :$Message"
+                Show-TvAlert -Message $Message -Type Message -UserName $script:botname
+            }
+        } else {
+            Write-Error -ErrorAction Stop -Message "Disconnected?"
+        }
     }
 }

@@ -25,8 +25,8 @@ function Disconnect-TvServer {
         Write-TvChannelMessage -Message $Message
     }
 
-    $writer.WriteLine("QUIT")
-    $writer.Flush()
+    $script:writer.WriteLine("QUIT")
+    $script:writer.Flush()
     $script:running = $false
     $script:bot.Close()
     $script:channel = $script:line = $script:writer = $null

@@ -12,6 +12,10 @@ function Wait-TvResponse {
     [CmdletBinding()]
     param ()
     process {
+        if (-not $script:writer.BaseStream) {
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
+        }
+
         # Wait 1 second
         Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
         Start-Sleep -Seconds 1
@@ -38,7 +42,7 @@ function Wait-TvResponse {
             }
         }
 
-        if (-not $writer.BaseStream) {
+        if (-not $script:writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 

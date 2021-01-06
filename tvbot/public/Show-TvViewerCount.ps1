@@ -23,7 +23,6 @@ function Show-TvViewerCount {
     )
     begin {
         function Update-ViewCount {
-
             $viewcount = (Get-TvStream).viewer_count
             if (-not $viewcount) {
                 $viewcount = 0
@@ -64,6 +63,10 @@ function Show-TvViewerCount {
         }
     }
     process {
+        if ($PSVersionTable.PSEdition -eq "Core") {
+            throw "Not supported in PowerShell Core"
+        }
+
         Write-Output "Please wait one moment while we perform the initial population of data"
         Write-Output "
   _____                       _____ _          _ _

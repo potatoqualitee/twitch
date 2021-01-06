@@ -27,7 +27,7 @@ function Invoke-TvRequest {
     )
     process {
         if (-not $script:session -and -not $ClientId -and -not $Token) {
-            Write-Error -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig"
+            Write-Error -ErrorAction Stop -Message "You must set a ClientId and Token using Set-TvConfig. You can generate your tokens at https://twitchtokengenerator.com"
         }
 
         $Path = $Path.TrimStart("/")

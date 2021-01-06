@@ -6,25 +6,14 @@ function Connect-TvServer {
     .DESCRIPTION
        Connects the bot and establishes a session for a Twitch IRC server.
 
-    .PARAMETER Name
-        The IRC nickname of the bot
-
-    .PARAMETER Token
-        The plain-text Twitch token from https://twitchapps.com/tmi/
-
-        SecureStrings were attempted but were not cross-platform yet :(
-
     .PARAMETER Server
         The Twitch IRC server. Defaults to irc.chat.twitch.tv.
 
     .PARAMETER Port
         The Twitch IRC Port. Defaults to 6697.
 
-    .PARAMETER Owner
-        The Twitch account or accounts that are owners of the bot
-
     .EXAMPLE
-        PS> Connect-TvServer -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs
+        PS> Connect-TvServer
 
         Connects to irc.chat.twitch.tv on port 6697 as a bot with the Twitch account, mypsbot. potatoqualitee is the owner.
     #>
@@ -65,7 +54,7 @@ function Connect-TvServer {
             $sslstream.AuthenticateAsClient($Server)
 
             $script:writer = New-Object System.IO.StreamWriter $sslstream
-            $writer.NewLine = "`r`n"
+            $script:writer.NewLine = "`r`n"
             $script:reader = New-Object System.IO.StreamReader $sslstream
             # allow user to pass in a token starting or not starting with oauth:
             $auth = "PASS oauth:$($bottoken.Replace('oauth:', ''))"

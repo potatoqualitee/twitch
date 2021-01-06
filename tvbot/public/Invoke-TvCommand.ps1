@@ -32,7 +32,7 @@ function Invoke-TvCommand {
         [string]$User
     )
     process {
-        if (-not $writer.BaseStream) {
+        if (-not $script:writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
@@ -59,7 +59,7 @@ function Invoke-TvCommand {
                 if ($index) {
                     $code = $usercommand[$index[0]]
                     if (-not $code -and $user -in $botowner) {
-                        Write-Verbose "Getting admin command"
+                        Write-Verbose "[$(Get-Date)] Getting admin command"
                         $code = $admincommand[$index[0]]
                     }
 
