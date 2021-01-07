@@ -24,7 +24,7 @@ function Write-TvOutput {
         [string]$InputObject
     )
     process {
-        if (-not $writer.BaseStream) {
+        if (-not $script:writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
@@ -73,7 +73,7 @@ function Write-TvOutput {
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
-                        Write-Verbose "Display name: $displayname"
+                        Write-Verbose "[$(Get-Date)] Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
                         if ($notifytype -contains "chat" -and $user -notin $UsersToIgnore) {
@@ -85,13 +85,13 @@ function Write-TvOutput {
 
                             if ($emote) {
                                 # @badge-info=;badges=premium/1;color=#0089FF;display-name=potatoqualitee;emote-only=1;emotes=425618:0-2;flags=;id=0902c83d
-                                Write-Verbose "EMOTE: $emote"
-                                Write-Verbose "EMOTE ONLY: $emoteonly"
+                                Write-Verbose "[$(Get-Date)] EMOTE: $emote"
+                                Write-Verbose "[$(Get-Date)] EMOTE ONLY: $emoteonly"
                                 $emote, $location = $emote.Split(":")
 
                                 if (-not $emoteonly) {
                                     $location = $location.Split(",")
-                                    Write-Verbose "$location"
+                                    Write-Verbose "[$(Get-Date)] $location"
                                     foreach ($match in $location) {
                                         $first, $last = $match.Split("-")
                                         # Thanks milb0!
@@ -107,9 +107,21 @@ function Write-TvOutput {
                                 $message = ($message -replace '\x01').Replace("ACTION ", "")
                                 Show-TvAlert -Type Message -UserName $displayname -Message $message
                             }
+
+                            # Allow a person to custom code
+                            # Use Get-Variable to see all of the variables that
+                            # are available. displayname and message are probably
+                            # the most useful
+                            if ($script:scriptstoprocess) {
+                                foreach ($file in $script:scriptstoprocess) {
+                                    Write-Verbose -Message "Executing $file"
+                                    $externalcode = Get-Content -Path $file -Raw
+                                    Invoke-Expression -Command $externalcode
+                                }
+                            }
                         }
                     } else {
-                        Write-Output "[$(Get-Date)] > $message"
+                        Write-Output -Message "[$(Get-Date)] > $message"
                     }
                     if ($notifytype -ne "none" -or $message -eq "!quit") {
                         Invoke-TvCommand -InputObject $message -User $user
@@ -144,7 +156,7 @@ function Write-TvOutput {
                 } else {
                     Write-Verbose "[$(Get-Date)] > Current user list:"
                     foreach ($member in $members) {
-                        Write-Verbose "  $member"
+                        Write-Verbose "[$(Get-Date)]  $member"
                     }
                 }
             }

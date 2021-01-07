@@ -12,8 +12,8 @@ function Start-TvBot {
     .PARAMETER Port
         The Twitch IRC Port. Defaults to 6697.
 
-    .PARAMETER AutoReconnect
-        Attempt to automatically reconnect if disconnected
+    .PARAMETER NoAutoReconnect
+        Do not attempt to automatically reconnect if disconnected
 
     .EXAMPLE
         PS> Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
@@ -26,7 +26,7 @@ function Start-TvBot {
     param (
         [string]$Server = "irc.chat.twitch.tv",
         [int]$Port = 6697,
-        [switch]$AutoReconnect,
+        [switch]$NoAutoReconnect,
         [switch]$NoHide,
         [parameter(DontShow)]
         [int]$PrimaryPid
@@ -34,6 +34,11 @@ function Start-TvBot {
     process {
         if ($PrimaryPid) {
             $script:primarypid = $PrimaryPid
+        }
+
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -eq "Core") {
+            Write-Verbose -Message "Bot cannot be hidden when using PowerShell Core. Setting -NoHide."
+            $PSBoundParameters.NoHide = $true
         }
         $script:startboundparams = $PSBoundParameters
 
@@ -50,9 +55,9 @@ function Start-TvBot {
         }
         $script:flatparams = $array -join " "
 
-        if ($AutoReconnect) { $script:reconnect = $true }
+        if (-not $NoAutoReconnect) { $script:reconnect = $true }
 
-        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.Platform -ne "UNIX") {
+        if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -ne "Core") {
             Start-Bot
         } else {
             if ($PrimaryPid) {

@@ -1,5 +1,6 @@
 ﻿$script:ModuleRoot = $PSScriptRoot
 
+# Import as fast as possible
 function Import-ModuleFile {
     [CmdletBinding()]
     Param (
@@ -86,4 +87,9 @@ Register-ArgumentCompleter -ParameterName Since -CommandName Get-TvFollower -Scr
     "StreamStart", "LastStream" | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
+}
+
+$config = Get-TvConfig
+if (-not $config.ClientId -and -not $config.Token) {
+    Write-Warning "ClientId and Token not found. Please use Set-TvConfig to set your ClientId and Token."
 }

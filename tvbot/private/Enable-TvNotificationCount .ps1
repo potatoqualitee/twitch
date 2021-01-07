@@ -1,4 +1,5 @@
 function Enable-TvNotificationCount {
+    <# never could get this to work. i'm missing a step #>
     [CmdletBinding(SupportsShouldProcess)]
     param()
     process {

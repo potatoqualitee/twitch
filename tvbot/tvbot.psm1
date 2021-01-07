@@ -1,5 +1,6 @@
 ﻿$script:ModuleRoot = $PSScriptRoot
 
+# Import as fast as possible
 function Import-ModuleFile {
     [CmdletBinding()]
     Param (
@@ -15,12 +16,12 @@ function Import-ModuleFile {
 if ($tvbot_dotsourcemodule) { $script:doDotSource }
 
 # Import all internal functions
-foreach ($function in (Get-ChildItem "$ModuleRoot\private\" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
+foreach ($function in (Get-ChildItem -Path "$ModuleRoot\private\" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
     . Import-ModuleFile -Path $function.FullName
 }
 
 # Import all public functions
-foreach ($function in (Get-ChildItem "$ModuleRoot\public" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
+foreach ($function in (Get-ChildItem -Path "$ModuleRoot\public" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
     . Import-ModuleFile -Path $function.FullName
 }
 
@@ -35,22 +36,36 @@ if (-not (Test-Path -Path $adminfile)) {
     @{
         quit = 'Disconnect-TvServer -Message "k bye 👋!"'
     } | ConvertTo-Json | Set-Content -Path $adminfile -Encoding Unicode
-    $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
 if (-not (Get-TvConfigValue -Name AdminCommandFile)) {
-    $null = Set-TvConfig -AdminCommandFile $userfile
+    $null = Set-TvConfig -AdminCommandFile $adminfile
+}
+
+$cmd = Get-TvConfigValue -Name ScriptsToProcess
+
+if ($cmd) {
+    if ((Test-Path -Path $cmd)) {
+        $script:scriptstoprocess = $cmd
+    } else {
+        Write-Warning -Message "ScriptsToProcess is set but does not exist"
+    }
+}
+
+# set during load of tvbot
+if ((Get-TvConfigValue -Name UserCommandFile)) {
+    $null = Set-TvConfig -UserCommandFile $userfile
 }
 
 ######### Create user command files
 if (-not (Test-Path -Path $userfile)) {
+    $say = '$message.Replace("!say ","")'
     @{
-        ping = 'Write-TvChannelMessage -Message "$user, pong"'
-        pwd  = 'Write-TvChannelMessage -Message $(Get-Location)'
-        psversion  = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
-        talk = 'Write-TvChannelMessage -Message "Okie dok"'
-        LEL      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
-        L3L      = 'Write-TvChannelMessage -Message "LUL LUL ha LUL"'
+        ping      = 'Write-TvChannelMessage -Message "$user, pong"'
+        pwd       = 'Write-TvChannelMessage -Message $(Get-Location)'
+        psversion = 'Write-TvChannelMessage -Message ($PSVersionTable | Out-String)'
+        hello     = 'Write-TvChannelMessage -Message "hi!"'
+        say       = "Write-TvChannelMessage -Message $say"
     } | ConvertTo-Json | Set-Content -Path $userfile -Encoding Unicode
 }
 
@@ -63,9 +78,8 @@ if (-not (Get-TvConfig -Name BotIcon)) {
     $null = Set-TvConfig -BotIcon $botico
 }
 
-
 if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
-    # sqlite shared cache
+    # if they have BurntToast installed, it's assumed they are running windows 10
     $script:toast = $true
     $script:cache = @{}
     # set max notifications to 20
@@ -76,9 +90,7 @@ if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction
     }
 }
 
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-if ($PSVersionTable.Platform -ne "UNIX") {
+if ($PSVersionTable.PSEdition -ne "Core") {
     Add-Type -AssemblyName PresentationFramework, System.Windows.Forms
 }
 
@@ -90,46 +102,84 @@ $params = @{}
 $pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "pog.png", "pog-hero.png"
 foreach ($pic in $pics) {
     if (-not (Test-Path -Path "$dir\$pic")) {
-        Copy-Item "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
+        Copy-Item -Path "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
     }
 }
 
 $settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = "$dir\pog.png"
+        $params.$setting = (Resolve-XPath -Path "$dir\pog.png")
     }
 }
 
 $settings = "RaidImage", "SubImage", "SubGiftedImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = "$dir\catparty.gif"
+        $params.$setting = (Resolve-XPath -Path "$dir\catparty.gif")
     }
 }
 
 if (-not $config.BitsIcon) {
-    $params.BitsIcon = "$dir\bits.gif"
+    $params.BitsIcon = (Resolve-XPath -Path "$dir\bits.gif")
 }
 
 
 $settings = "BitsImage", "FollowImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = "$dir\vibecat.gif"
-    }
-}
-
-#placeholder
-$settings = $null
-foreach ($setting in $settings) {
-    if (-not $config.$setting) {
-        $params.$setting = "$dir\pog-hero.png"
+        $params.$setting = (Resolve-XPath -Path "$dir\vibecat.gif")
     }
 }
 
 if (-not $config.BotIcon) {
-    $params.BotIcon = "$dir\robo.png"
+    $params.BotIcon = (Resolve-XPath -Path "$script:ModuleRoot\bot.ico")
 }
 
-$null = Set-TvConfig @params
+######### Set variables and write to file
+if ((Get-TvSystemTheme).Theme -eq "dark") {
+    $color = "White"
+} else {
+    $color = "Black"
+}
+
+$newparams = @{
+    BitsSound        = "ms-winsoundevent:Notification.Mail"
+    BitsText         = "Thanks so much for the <<bitcount>>, <<username>> 🤩"
+    BitsTitle        = "<<username>> shared bits!"
+    BotClientId      = $null # set to null to lets user know its available
+    BotIconColor     = $color
+    BotKey           = "!"
+    BotOwner         = $null
+    BotToken         = $null
+    UsersToIgnore    = $null
+    DefaultFont      = "Segoe UI"
+    FollowIcon       = $null # gets icon from the net but can default to this
+    FollowSound      = "ms-winsoundevent:Notification.Mail"
+    FollowText       = "Thanks so much for the follow, <<username>>!"
+    FollowTitle      = "New follower 🥳"
+    NotifyColor      = $color
+    NotifyType       = "none"
+    RaidSound        = "ms-winsoundevent:Notification.IM"
+    RaidText         = $null # disabled for now bc the raid info comes from twitch
+    RaidTitle        = "IT'S A RAID!"
+    Sound            = "Enabled"
+    SubGiftedText    = "Thank you so very much for gifting a Tier <<tier>> sub, <<gifter>>!"
+    SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub 🤯"
+    SubGiftedSound   = "ms-winsoundevent:Notification.Mail"
+    SubSound         = "ms-winsoundevent:Notification.Mail"
+    SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>> 🤗"
+    SubTitle         = "AWESOME!!"
+    ScriptsToProcess = $null
+}
+
+foreach ($key in $newparams.Keys) {
+    if (-not $config.$key) {
+        $params.$key = $newparams[$key]
+    }
+}
+
+$config = Set-TvConfig @params -Force
+if (-not $config.BotClientId -and -not $config.BotToken) {
+    Write-Warning "BotClientId and BotToken not found. Please use Set-TvConfig to set your BotClientId and BotToken. If no BotChannel is set, the bot will join its own channel."
+}

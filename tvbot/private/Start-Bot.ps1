@@ -7,6 +7,7 @@ function Start-Bot {
             There's a lot to unpack here! This command
 
             - Creates a notify icon that sits near the clock. This is used to control the bot
+            - If the bot icon is a .ico, it uses that. Otherwise...
             - The notifyicon is then "painted" to the setting of BotIconColor
             - It also opens a new window to run the bot
             - Both the control powershell host process and the new window that actually runs the bot are automatically hidden
@@ -34,42 +35,47 @@ function Start-Bot {
                 }'
     $script:foreground = Add-Type -TypeDefinition $forecode -PassThru
 
-    ############################## repaint the bot icon ##############################
+    ############################## bot icon ##############################
 
-    # Create bitmapimage to enable streaming
     $boticon = Get-TvConfigValue -Name BotIcon
-    $script:bitmap = New-Object System.Windows.Media.Imaging.BitmapImage
-    $bytes = [System.IO.File]::ReadAllBytes($boticon)
-    $stream = New-Object System.IO.MemoryStream(,$Bytes)
-    $bitmap.BeginInit()
-    $bitmap.StreamSource = $stream
-    $bitmap.EndInit()
-    $bitmap.Freeze()
+    if ("$boticon".EndsWith("ico")) {
+        $icon = New-Object System.Drawing.Icon (Resolve-XPath $boticon)
+    } else {
+        # recolor image
+        $script:bitmap = New-Object System.Windows.Media.Imaging.BitmapImage
+        $bytes = [System.IO.File]::ReadAllBytes($boticon)
+        # Create bitmapimage to enable streaming
+        $stream = New-Object System.IO.MemoryStream(,$Bytes)
+        $bitmap.BeginInit()
+        $bitmap.StreamSource = $stream
+        $bitmap.EndInit()
+        $bitmap.Freeze()
 
-    # Setup reusable objects
-    $colormap = New-Object System.Drawing.Imaging.ColorMap
-    $attributes = New-Object System.Drawing.Imaging.ImageAttributes
-    $rectangle = New-Object System.Drawing.Rectangle(0, 0, $bitmap.Width, $bitmap.Height)
+        # Setup reusable objects
+        $colormap = New-Object System.Drawing.Imaging.ColorMap
+        $attributes = New-Object System.Drawing.Imaging.ImageAttributes
+        $rectangle = New-Object System.Drawing.Rectangle(0, 0, $bitmap.Width, $bitmap.Height)
 
-    $color = Get-TvConfigValue -Name BotIconColor
-    $img = [System.Drawing.Image]::FromStream($bitmap.StreamSource)
-    $bmp = [System.Drawing.Bitmap]$img
-    $colormap.OldColor = "#000000"
-    $colormap.NewColor = $color
-    $attributes.SetRemapTable($colormap)
-    $graphics = [System.Drawing.Graphics]::FromImage($bmp)
-    $graphics.DrawImage($bmp, $rectangle, 0, 0, $bitmap.Width, $bitmap.Height, "Pixel", $attributes)
+        $color = Get-TvConfigValue -Name BotIconColor
+        $img = [System.Drawing.Image]::FromStream($bitmap.StreamSource)
+        $bmp = [System.Drawing.Bitmap]$img
+        $colormap.OldColor = "#000000"
+        $colormap.NewColor = $color
+        $attributes.SetRemapTable($colormap)
+        $graphics = [System.Drawing.Graphics]::FromImage($bmp)
+        $graphics.DrawImage($bmp, $rectangle, 0, 0, $bitmap.Width, $bitmap.Height, "Pixel", $attributes)
 
-    # Create empty canvas for the new image
-    $newimage = New-Object System.Drawing.Bitmap(16, 16)
-    $null = $newimage.SetResolution(96, 96)
+        # Create empty canvas for the new image
+        $newimage = New-Object System.Drawing.Bitmap(16, 16)
+        $null = $newimage.SetResolution(96, 96)
 
-    # Draw new image on the empty canvas
-    $graph = [System.Drawing.Graphics]::FromImage($newimage)
-    $graph.DrawImage($img, 0, 0, 16, 16)
+        # Draw new image on the empty canvas
+        $graph = [System.Drawing.Graphics]::FromImage($newimage)
+        $graph.DrawImage($img, 0, 0, 16, 16)
 
-    # Convert the bitmap into an icon
-    $icon = [System.Drawing.Icon]::FromHandle($newimage.GetHicon())
+        # Convert the bitmap into an icon
+        $icon = [System.Drawing.Icon]::FromHandle($newimage.GetHicon())
+    }
 
     # Create NotificationIcon and set its default values
     $script:notifyicon = New-Object System.Windows.Forms.NotifyIcon

@@ -15,7 +15,7 @@ function Join-TvChannel {
     #>
     [CmdletBinding()]
     param ()
-    if (-not $writer.BaseStream) {
+    if (-not $script:writer.BaseStream) {
         Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
     }
 

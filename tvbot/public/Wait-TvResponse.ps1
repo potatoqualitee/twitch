@@ -12,16 +12,37 @@ function Wait-TvResponse {
     [CmdletBinding()]
     param ()
     process {
+        if (-not $script:writer.BaseStream) {
+            Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
+        }
+
         # Wait 1 second
         Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
         Start-Sleep -Seconds 1
         # this is where it fails when it mysteriously fails. it used to be a continue.
         if (-not $script:line) {
-            Write-Verbose "[$(Get-Date)] Weird, it didn't have any input. Let's try to get one"
-            $script:line = $script:reader.ReadLine()
+            Write-Warning "[$(Get-Date)] Weird, it didn't have any input. Let's try to get one"
+            try {
+                try {
+                    $script:line = $script:reader.ReadLine()
+                } catch {
+                    if ($script:reconnect) {
+                        Write-Warning "[$(Get-Date)] Something went wrong. Problem: $PSItem"
+                        Write-Warning "[$(Get-Date)] Trying to reconnect.."
+                        $script:bot.Close()
+                        $script:channel = $script:line = $script:writer = $null
+                        $script:reader = $script:sslstream = $script:bot = $null
+                        Start-TvBot @script:startboundparams
+                    } else {
+                        throw "Disconnecting due to $PSItem because NoAutoReconnect was specified"
+                    }
+                }
+            } catch {
+                throw "Can't connect: $PSItem"
+            }
         }
 
-        if (-not $writer.BaseStream) {
+        if (-not $script:writer.BaseStream) {
             Write-Error -ErrorAction Stop -Message "Have you connected to a server using Connect-TvServer?"
         }
 
@@ -63,8 +84,12 @@ function Wait-TvResponse {
                     $active = $true
                     Invoke-TvCommand -InputObject $script:line
                 } catch {
-                    if ($script:startboundparams -and $script:running) {
-                        Write-Verbose "[$(Get-Date)] Something went wrong, reconnecting"
+                    if ($script:startboundparams -and $script:running -and $script:reconnect) {
+                        Write-Warning "[$(Get-Date)] Something went wrong. Problem: $PSItem"
+                        Write-Warning "[$(Get-Date)] Trying to reconnect.."
+                        $script:bot.Close()
+                        $script:channel = $script:line = $script:writer = $null
+                        $script:reader = $script:sslstream = $script:bot = $null
                         Start-TvBot @script:startboundparams
                     } else {
                         throw "Cannot read stream: $_"

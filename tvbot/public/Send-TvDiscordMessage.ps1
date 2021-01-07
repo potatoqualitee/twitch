@@ -19,13 +19,17 @@ function Send-TvDiscordMessage {
         if (-not $url) {
             Write-Error -ErrorAction Stop -Message "You must set a DiscordWebhook using Set-TvConfig -DiscordWebhook https://WEBHOOK"
         }
+
+        Write-Verbose "[$(Get-Date)] Verbose disabled for Send-TvDiscordMessage since the hook is in the URL"
+        $VerbosePreference = "SilentlyContinue"
+
         $body = [pscustomobject]@{
             content = $Message
         } | ConvertTo-Json
         $null = Invoke-RestMethod -Uri $url -Method POST -Body $body -ContentType "application/json" -ErrorAction Stop
         [pscustomobject]@{
             Message = $Message
-            Status  = "Success"
+            Status  = "Sent"
         }
     }
 }

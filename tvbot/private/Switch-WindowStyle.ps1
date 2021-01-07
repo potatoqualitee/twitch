@@ -10,10 +10,10 @@ function Switch-WindowStyle {
         }
         $handle = $Process.MainWindowHandle
 
-        Write-Verbose "Getting window handle"
+        Write-Verbose "[$(Get-Date)] Getting window handle"
         while ($handle -eq 0) {
             Start-Sleep -Milliseconds 100
-            Write-Verbose "Trying to get the handle again"
+            Write-Verbose "[$(Get-Date)] Trying to get the handle again"
             $Process.Refresh()
             $handle = $Process.MainWindowHandle
         }
@@ -22,7 +22,7 @@ function Switch-WindowStyle {
             $wp = $ae.GetCurrentPattern([System.Windows.Automation.WindowPatternIdentifiers]::Pattern)
             $state = $wp.Current.WindowVisualState
         } catch {
-            Write-Verbose "Couldn't get handle, try again"
+            Write-Verbose "[$(Get-Date)] Couldn't get handle, try again"
             return
         }
 
@@ -43,12 +43,12 @@ function Switch-WindowStyle {
             'SHOWNOACTIVATE'  = 4
             'SHOWNORMAL'      = 1
             #>
-            Write-Verbose "Setting to show using restore cuz it's awesome"
+            Write-Verbose "[$(Get-Date)] Setting to show using restore cuz it's awesome"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 9)
-            Write-Verbose "Setting to foreground just to be sure"
+            Write-Verbose "[$(Get-Date)] Setting to foreground just to be sure"
             $null = $script:foreground::SetForegroundWindow($handle)
         } else {
-            Write-Verbose "Setting to hide"
+            Write-Verbose "[$(Get-Date)] Setting to hide"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 0)
         }
     }

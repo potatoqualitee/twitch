@@ -1,7 +1,7 @@
 
 ## Getting Started
 
-<img align="left" src=https://user-images.githubusercontent.com/8278033/95674723-6c0fef80-0bb2-11eb-8156-fbb026255c94.png alt="dbatools logo">  <br/></br>`tvbot` is a proof of concept PowerShell bot for [https://twitch.tv](twitch.tv) that works on the Raspberry Pi. It supports user commands and admin commands which can be imported from JSON files.
+<img align="left" src=https://github.com/potatoqualitee/twitch/tvbot/blob/main/icon.png alt="dbatools logo">  <br/></br>`tvbot` is a proof of concept PowerShell bot for [https://twitch.tv](twitch.tv) that works on the Raspberry Pi. It supports user commands and admin commands which can be imported from JSON files.
 <br/></br>
 ## Install
 
