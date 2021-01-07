@@ -82,12 +82,6 @@ if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction
     # if they have BurntToast installed, it's assumed they are running windows 10
     $script:toast = $true
     $script:cache = @{}
-    # set max notifications to 20
-    $maxps = Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe' -Name MaxCollapsedGroupItemCount -ErrorAction SilentlyContinue | Select-Object -ExpandProperty MaxCollapsedGroupItemCount
-
-    if ($maxps -ne 21) {
-        $null = Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe' -Name MaxCollapsedGroupItemCount -Value 21 -ErrorAction SilentlyContinue
-    }
 }
 
 if ($PSVersionTable.PSEdition -ne "Core") {
