@@ -85,24 +85,34 @@ function Write-TvOutput {
 
                             if ($emote) {
                                 # @badge-info=;badges=premium/1;color=#0089FF;display-name=potatoqualitee;emote-only=1;emotes=425618:0-2;flags=;id=0902c83d
+
                                 Write-Verbose "[$(Get-Date)] EMOTE: $emote"
                                 Write-Verbose "[$(Get-Date)] EMOTE ONLY: $emoteonly"
-                                $emote, $location = $emote.Split(":")
+                                $emotes = $emote -split "/"
+                                $primaryemote = $emotes | Select-Object -First 1
+                                $primaryemote = $primaryemote.Split(":") | Select-Object -First 1
 
                                 if (-not $emoteonly) {
-                                    $location = $location.Split(",")
-                                    Write-Verbose "[$(Get-Date)] $location"
-                                    foreach ($match in $location) {
-                                        $first, $last = $match.Split("-")
-                                        # Thanks milb0!
-                                        $remove = $message.Substring($first, $last - $first + 1)
-                                        $message = $message.Replace($remove, "")
+                                    $removeword = @()
+                                    # Thank you KnownOnSense!
+                                    foreach ($item in $emotes) {
+                                        $each = $item.Split(":") | Select-Object -Last 1
+                                        $locations = $each -split ","
+                                        foreach ($location in $locations) {
+                                            $location = $location.TrimEnd(";")
+                                            $start = [int]($location.Split("-") | Select-Object -First 1).TrimStart()
+                                            $end = [int]($location.Split("-") | Select-Object -Last 1)
+                                            $removeword += $message.Substring($start, $end - $start + 1)
+                                        }
+                                    }
+                                    foreach ($word in $removeword) {
+                                        $message = $message.Replace($word,"")
                                     }
                                 }
-                                Show-TvAlert -Type Message -UserName $displayname -Message $message -Emote $emote
+                                Show-TvAlert -Type Message -UserName $displayname -Message $message.Trim() -Emote $primaryemote
                             }
 
-                            if ($message) {
+                            if ($message -and -not $emote) {
                                 # THANK YOU @vexx32!
                                 $message = ($message -replace '\x01').Replace("ACTION ", "")
                                 Show-TvAlert -Type Message -UserName $displayname -Message $message
