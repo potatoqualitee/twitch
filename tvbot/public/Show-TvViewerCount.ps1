@@ -23,7 +23,7 @@ function Show-TvViewerCount {
     )
     begin {
         function Update-ViewCount {
-            $viewcount = (Get-TvStream).viewer_count
+            $viewcount = (Get-TvStream).ViewerCount
             if (-not $viewcount) {
                 $viewcount = 0
             }
@@ -33,7 +33,7 @@ function Show-TvViewerCount {
             $null = $image.SetResolution(96, 96)
             [System.Drawing.Graphics]$surface = [System.Drawing.Graphics]::FromImage($image)
 
-            $configcolor = (Get-TvSystemTheme).Color
+            $configcolor = Get-TvConfigValue -Name NotifyColor
             $color = [System.Drawing.Color]::$configcolor
             $brush = [System.Drawing.SolidBrush]::New($color)
 

@@ -42,16 +42,6 @@ if (-not (Get-TvConfigValue -Name AdminCommandFile)) {
     $null = Set-TvConfig -AdminCommandFile $adminfile
 }
 
-$cmd = Get-TvConfigValue -Name ScriptsToProcess
-
-if ($cmd) {
-    if ((Test-Path -Path $cmd)) {
-        $script:scriptstoprocess = $cmd
-    } else {
-        Write-Warning -Message "ScriptsToProcess is set but does not exist"
-    }
-}
-
 # set during load of tvbot
 if ((Get-TvConfigValue -Name UserCommandFile)) {
     $null = Set-TvConfig -UserCommandFile $userfile
@@ -73,11 +63,6 @@ if (-not (Get-TvConfigValue -Name UserCommandFile)) {
     $null = Set-TvConfig -UserCommandFile $userfile
 }
 
-if (-not (Get-TvConfig -Name BotIcon)) {
-    $botico = Join-Path -Path $PSScriptRoot -ChildPath "bot.ico"
-    $null = Set-TvConfig -BotIcon $botico
-}
-
 if (Get-Command -Name New-BurntToastNotification -Module BurntToast -ErrorAction SilentlyContinue) {
     # if they have BurntToast installed, it's assumed they are running windows 10
     $script:toast = $true
@@ -93,10 +78,18 @@ $config = Get-TvConfig
 $dir = Split-Path -Path $config.ConfigFile
 $params = @{}
 
-$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "yay.gif"
+
+$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "yay.gif",  "bot.ico"
 foreach ($pic in $pics) {
     if (-not (Test-Path -Path "$dir\$pic")) {
         Copy-Item -Path "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
+    }
+}
+
+$settings = "BotIcon"
+foreach ($setting in $settings) {
+    if (-not $config.$setting) {
+        $params.$setting = (Resolve-XPath -Path "$dir\bot.ico")
     }
 }
 
