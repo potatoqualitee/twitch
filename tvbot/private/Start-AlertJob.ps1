@@ -39,16 +39,16 @@ function Start-AlertJob {
                         $newsubs = $subupdate | Where-Object Username -notin $StartingSubs.UserName
 
                         foreach ($follower in $newfollowers.FromName) {
-                            Start-AlertJob -UserName $follower -Type Follow
+                            Show-TvAlert -UserName $follower -Type Follow
                         }
 
                         foreach ($sub in $newsubs) {
                             $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
 
                             if ($sub.GifterName) {
-                                Start-AlertJob -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
+                                Show-TvAlert -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
                             } else {
-                                Start-AlertJob -UserName $sub.UserName -Type Sub -MiscNumber $tier
+                                Show-TvAlert -UserName $sub.UserName -Type Sub -MiscNumber $tier
                             }
                         }
 

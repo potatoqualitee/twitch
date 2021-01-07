@@ -54,10 +54,10 @@ function Start-TvBot {
             }
         }
         $script:flatparams = $array -join " "
-
         if (-not $NoAutoReconnect) { $script:reconnect = $true }
 
         if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -ne "Core") {
+            Start-AlertJob
             Start-Bot
         } else {
             if ($PrimaryPid) {

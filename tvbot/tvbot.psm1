@@ -119,10 +119,6 @@ foreach ($setting in $settings) {
     }
 }
 
-if (-not $config.BotIcon) {
-    $params.BotIcon = (Resolve-XPath -Path "$script:ModuleRoot\bot.ico")
-}
-
 ######### Set variables and write to file
 if ((Get-TvSystemTheme).Theme -eq "dark") {
     $color = "White"

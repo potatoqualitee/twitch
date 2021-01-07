@@ -63,6 +63,12 @@ To run the bot as a background job, run the following:
 Start-Job -ScriptBlock { Start-TvBot -NoHide }
 ```
 
+Or, if you're on Linux or Mac, just run
+
+```
+Start-TvBot &
+```
+
 ## Interact
 This starts a bot named mypsbot (which, in this case, would be a twitch account), then joins the `potatoqualitee` chat room.
 
