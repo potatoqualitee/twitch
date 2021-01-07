@@ -16,7 +16,7 @@ function Set-ConsoleIcon {
     ##############################################################################
 
     param(
-        [string] $iconFile = (Resolve-Path -Path "$script:ModuleRoot\bot.ico")
+        [string] $iconFile = (Resolve-XPath -Path "$script:ModuleRoot\bot.ico")
     )
     if ((Get-Host).UI.RawUI.WindowTitle) {
         (Get-Host).UI.RawUI.WindowTitle = "tvbot"

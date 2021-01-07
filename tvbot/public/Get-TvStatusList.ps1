@@ -13,6 +13,6 @@ Function Get-TvStatusList {
     #>
     process {
         # Thanks to https://github.com/alejandro5042/Run-IrcBot
-        Import-Csv -Path (Resolve-Path -Path "$script:ModuleRoot\codes.txt") -Delimiter `t
+        Import-Csv -Path (Resolve-XPath -Path "$script:ModuleRoot\codes.txt") -Delimiter `t
     }
 }

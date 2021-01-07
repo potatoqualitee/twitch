@@ -39,7 +39,7 @@ function Start-Bot {
 
     $boticon = Get-TvConfigValue -Name BotIcon
     if ("$boticon".EndsWith("ico")) {
-        $icon = New-Object System.Drawing.Icon (Resolve-Path $boticon)
+        $icon = New-Object System.Drawing.Icon (Resolve-XPath $boticon)
     } else {
         # recolor image
         $script:bitmap = New-Object System.Windows.Media.Imaging.BitmapImage

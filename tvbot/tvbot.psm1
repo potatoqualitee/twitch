@@ -101,39 +101,39 @@ $params = @{}
 
 $pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "pog.png", "pog-hero.png"
 foreach ($pic in $pics) {
-    if (-not (Test-Path -Path -Path "$dir\$pic")) {
-        Copy-Item -Path "$script:ModuleRoot\images\$pic" -Destination -Path "$dir\$pic"
+    if (-not (Test-Path -Path "$dir\$pic")) {
+        Copy-Item -Path "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
     }
 }
 
 $settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-Path -Path "$dir\pog.png")
+        $params.$setting = (Resolve-XPath -Path "$dir\pog.png")
     }
 }
 
 $settings = "RaidImage", "SubImage", "SubGiftedImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-Path -Path "$dir\catparty.gif")
+        $params.$setting = (Resolve-XPath -Path "$dir\catparty.gif")
     }
 }
 
 if (-not $config.BitsIcon) {
-    $params.BitsIcon = (Resolve-Path -Path "$dir\bits.gif")
+    $params.BitsIcon = (Resolve-XPath -Path "$dir\bits.gif")
 }
 
 
 $settings = "BitsImage", "FollowImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-Path -Path "$dir\vibecat.gif")
+        $params.$setting = (Resolve-XPath -Path "$dir\vibecat.gif")
     }
 }
 
 if (-not $config.BotIcon) {
-    $params.BotIcon = (Resolve-Path -Path "$script:ModuleRoot\bot.ico")
+    $params.BotIcon = (Resolve-XPath -Path "$script:ModuleRoot\bot.ico")
 }
 
 ######### Set variables and write to file
@@ -145,8 +145,8 @@ if ((Get-TvSystemTheme).Theme -eq "dark") {
 
 $newparams = @{
     BitsSound        = "ms-winsoundevent:Notification.Mail"
-    BitsText         = "THANK YOU FOR THE <<bitcount>>, <<username>>!"
-    BitsTitle        = "MERCI BEAUCOUP, <<username>>!"
+    BitsText         = "Thanks so much for the <<bitcount>>, <<username>> 🤩"
+    BitsTitle        = "<<username>> shared bits!"
     BotClientId      = $null # set to null to lets user know its available
     BotIconColor     = $color
     BotKey           = "!"
@@ -156,19 +156,19 @@ $newparams = @{
     DefaultFont      = "Segoe UI"
     FollowIcon       = $null # gets icon from the net but can default to this
     FollowSound      = "ms-winsoundevent:Notification.Mail"
-    FollowText       = "THANKS SO MUCH!"
-    FollowTitle      = "WHAT UP, <<username>> HAS FOLLOWED!"
+    FollowText       = "Thanks so much for the follow, <<username>>!"
+    FollowTitle      = "New follower 🥳"
     NotifyColor      = $color
     NotifyType       = "none"
     RaidSound        = "ms-winsoundevent:Notification.IM"
-    RaidText         = "<<username>> HAS RAIDED!"
+    RaidText         = $null # disabled for now bc the raid info comes from twitch
     RaidTitle        = "IT'S A RAID!"
     Sound            = "Enabled"
     SubGiftedText    = "Thank you so very much for gifting a Tier <<tier>> sub, <<gifter>>!"
-    SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub!"
+    SubGiftedTitle   = "<<gifter>> has gifted <<giftee>> a sub 🤯"
     SubGiftedSound   = "ms-winsoundevent:Notification.Mail"
     SubSound         = "ms-winsoundevent:Notification.Mail"
-    SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>>!"
+    SubText          = "Thank you so very much for the tier <<tier>> sub, <<username>> 🤗"
     SubTitle         = "AWESOME!!"
     ScriptsToProcess = $null
 }
