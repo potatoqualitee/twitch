@@ -1,4 +1,4 @@
-This is the repo for two twitch modules. Below is a quick overview. More documentation can be found by clicking on the module repo.
+This is the repo for two twitch modules. Below is a quick overview. More documentation can be found by clicking on the module directory.
 
 To see all of the commands available, install and run:
 
