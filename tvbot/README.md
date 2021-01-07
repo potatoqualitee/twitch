@@ -50,7 +50,7 @@ Start-TvBot
 
 If you are on a Windows 10 machine and running PowerShell 5.1, the bot will open a new window, then minimize to the taskbar as a notify icon. Note: Windows Terminal does not support minimizing the bot to the taskbar. You'll have to use `powershell.exe`, unless you specify `-NoHide`.
 
-To run the bot in the current console, use the `NoHide` parameter.
+To run the bot in the current console, use the `-NoHide` parameter.
 
 ```
 Start-TvBot -NoHide
@@ -70,7 +70,7 @@ Start-TvBot &
 ```
 
 ## Interact
-This starts a bot named mypsbot (which, in this case, would be a twitch account), then joins the `potatoqualitee` chat room.
+In your chat room, users execute the following commands:
 
 * `!ping` - says "pong" back
 * `!pwd` - shows the present working directory
