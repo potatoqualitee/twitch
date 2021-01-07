@@ -93,7 +93,7 @@ $config = Get-TvConfig
 $dir = Split-Path -Path $config.ConfigFile
 $params = @{}
 
-$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "pog.png", "pog-hero.png"
+$pics = "robo.png", "vibecat.gif", "bits.gif", "catparty.gif", "yay.gif"
 foreach ($pic in $pics) {
     if (-not (Test-Path -Path "$dir\$pic")) {
         Copy-Item -Path "$script:ModuleRoot\images\$pic" -Destination "$dir\$pic"
@@ -103,7 +103,7 @@ foreach ($pic in $pics) {
 $settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-XPath -Path "$dir\pog.png")
+        $params.$setting = (Resolve-XPath -Path "$dir\yay.gif")
     }
 }
 
