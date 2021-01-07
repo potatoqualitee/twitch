@@ -1,15 +1,15 @@
 
-## Getting Started
+## tvclient
 
-<img align="left" src=https://github.com/potatoqualitee/twitch/tvclient/blob/main/icon.png alt="tvbot logo">  <br/></br>`tvbot` is a proof of concept PowerShell bot for [https://twitch.tv](twitch.tv) that works on the Raspberry Pi. It supports user commands and admin commands which can be imported from JSON files.
+<img align="left" src="https://github.com/potatoqualitee/twitch/blob/main/tvclient/icon.png?raw=true" alt="tvclient logo">  <br/></br>`tvclient` PowerShell client for the [https://twitch.tv](Twitch) API.
 <br/></br>
+
+
 ## Install
 
-Create a bot account on twitch, then get an oauth token from [twitchapps.com/tmi](https://twitchapps.com/tmi/).
+Get an API key from Twitch from [twitchtokengenerator.com](https://twitchtokengenerator.com/) or [twitchapps.com/tmi](https://twitchapps.com/tmi/).
 
-Then do this from [twitchtokengenerator.com](https://twitchtokengenerator.com/)
-
-Next, change your execution policy then install `tvbot` from the PowerShell Gallery.
+Next, change your execution policy, if needed, then install `tvclient` from the PowerShell Gallery.
 
 ```
 # Set execution policy to allow local scripts
@@ -18,33 +18,81 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 # OPTIONAL: Trust the Microsoft Gallery to avoid prompts
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 
-# Install the tvbot PowerShell module
-Install-Module tvbot
+# Install the tvclient PowerShell module
+Install-Module tvclient
+```
+
+## Config
+
+Once `tvclient` is installed, set your client id and token using the token generated earlier.
+
+```
+$splat = @{
+    ClientId = "abcdefh01234567ijklmop"
+    Token    = "01234567fghijklmnopqrs"
+}
+
+Set-TvConfig @splat
+```
+
+## Configure
+
+Next, check out your configuration.
+
+```
+Get-TvConfig
+```
+
+```
+Edit-TvConfig
+```
+
+
+## Explore
+
+Next, check out the commands that are available.
+
+```
+Get-Command -Module tvclient
 ```
 
 ## Run
-Once `tvbot` is installed, start it up. Note that this will run the bot infinitely so you will not be brought back to a prompt.
+
+Time to run some commands!
+
+Want to see your subscribers?
+
 ```
-Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
+Get-TvSubscriber
 ```
 
-To run the bot as a background job, run the following:
+Or how about followers since your last stream?
+
 ```
-Start-Job -ScriptBlock { Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567fghijklmnopqrs -Channel potatoqualitee }
+Get-TvFollower -Since LastStream
 ```
 
-## Interact
-This starts a bot named mypsbot (which, in this case, would be a twitch account), then joins the `potatoqualitee` chat room. It responds to 3 commands in total
+Want to see who followed since your stream started?
 
-* `!ping` - says "pong" back
-* `!pwd` - shows the present working directory
+```
+Get-TvFollower -Since StreamStarted
+```
 
-The owner(s) of the bot can issue the following command:
+Or who is a mod?
 
-* `!quit` - disconnects the bot and quits the script
+```
+Get-TvModerator
+```
 
-To interact with the bot, join the same channel and execute a command.
+You can even get details about other users by using the `UserName` parameter on several commands.
 
-## TODO
+```
+Get-TvUser -UserName potatoqualitee
+Get-TvFollower -UserName potatoqualitee
+```
 
-- Automatic reconnects
+Have more than 50 followers? Scroll through them using the `Next` switch.
+
+```
+Get-TvFollower -UserName potatoqualitee -Next
+```
