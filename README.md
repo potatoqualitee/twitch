@@ -7,12 +7,27 @@ This is the repo for two twitch modules.
 
 ### Basic usage
 
+Set your variables
+```
+$splat = @{
+    ClientId = "abcdefh01234567ijklmop"
+    Token    = "01234567fghijklmnopqrs"
+}
 
+Set-TvConfig @splat
+```
+
+And run your commands
+```
+Get-TvSubscriber
+Get-TvFollower -Since LastStream
+Get-TvUser -UserName potatoqualitee
+```
 
 ## tvbot
 
 <img align="left" src="https://github.com/potatoqualitee/twitch/blob/main/tvbot/icon.png?raw=true" alt="tvbot logo">  <br/></br>[tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/) is a pi-friendly PowerShell bot for [twitch.tv](https://twitch.tv) that works on the Windows, Linux, and mac OS.
-<br/></br>
+<p>&nbsp;</p>
 
 ### Basic usage
 
