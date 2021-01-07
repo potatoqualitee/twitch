@@ -107,6 +107,7 @@ function Write-TvOutput {
                                     }
                                     foreach ($word in $removeword) {
                                         $message = $message.Replace($word,"")
+                                        $message = $message.Replace("  "," ")
                                     }
                                 }
                                 Show-TvAlert -Type Message -UserName $displayname -Message $message.Trim() -Emote $primaryemote
