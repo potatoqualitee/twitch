@@ -1,4 +1,4 @@
-This is the repo for two twitch modules. Below is a quick overview. More documentation can be found by clicking on the module directory.
+This is the repo for two twitch modules. Below is a quick overview. More documentation can be found by clicking on the module directories.
 
 To see all of the commands available, install and run:
 
@@ -6,7 +6,7 @@ To see all of the commands available, install and run:
 Get-Command -Module tvbot, tvclient
 ```
 
-Installation instructions can be found [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvclient/) and [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvclient/).
+Installation instructions can be found at [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvclient/) and [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvclient/).
 
 ## tvclient
 
