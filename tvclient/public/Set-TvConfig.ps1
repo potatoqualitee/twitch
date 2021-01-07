@@ -84,7 +84,7 @@ function Set-TvConfig {
             $PSBoundParameters.NotifyColor = "Magenta"
         }
 
-        if ($PSBoundParameters.DefaultFont) {
+        if ($PSBoundParameters.DefaultFont -and -not $islinux) {
             if ($DefaultFont -notin (New-Object System.Drawing.Text.InstalledFontCollection).Families) {
                 Write-Warning -Message "The font $DefaultFont is not installed, using Segoe UI instead"
                 $PSBoundParameters.DefaultFont = "Segoe UI"
