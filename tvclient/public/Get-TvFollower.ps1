@@ -32,7 +32,7 @@ function Get-TvFollower {
                 # Get max
                 $params.MaxResults = 100
                 switch ($Since) {
-                    "StreamStart" {
+                    { "StreamStart" -or "StreamStarted" } {
                         $started = (Get-TvStream).StartedAt
                         if (-not $started) {
                             Write-Warning -Message "Stream not started ¯\_(ツ)_/¯"
