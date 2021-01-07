@@ -33,7 +33,11 @@ function Write-TvChannelMessage {
                     } until ($Message -notmatch "  ")
                 }
                 Send-Server -Message "PRIVMSG #$channel :$Message"
-                Show-TvAlert -Message $Message -Type Message -UserName $script:botname
+
+                if ((Get-TvConfigValue -Name NotifyType) -ne "none") {
+                    Show-TvAlert -Message $Message -Type Message -UserName $script:botname
+                }
+
             }
         } else {
             Write-Error -ErrorAction Stop -Message "Disconnected?"
