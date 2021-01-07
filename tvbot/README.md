@@ -1,9 +1,10 @@
 
 ## tvbot
 
-<img align="left" src="https://github.com/potatoqualitee/twitch/blob/main/tvbot/icon.png?raw=true" alt="tvbot logo">  <br/></br>`tvbot` is a PowerShell bot for [https://twitch.tv](twitch.tv) that works on the Windows, Linux, mac OS and Raspberry Pi.
+<img align="left" src="https://github.com/potatoqualitee/twitch/blob/main/tvbot/icon.png?raw=true" alt="tvbot logo">  <br/></br>`tvbot` is a PowerShell bot for [https://twitch.tv](twitch.tv) that works on Windows, Linux, mac OS and Raspberry Pi.
 <p>&nbsp;</p>
 
+This bot can be used strictly to respond to channel events and/or you can use it to visually display events that are occuring. If you do want to use it as a notify bot, installing [BurntToast](https://github.com/Windos/BurntToast) gives the best experience in Windows 10.
 
 ## Install
 
