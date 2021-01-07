@@ -89,33 +89,33 @@ foreach ($pic in $pics) {
 $settings = "BotIcon"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-XPath -Path "$dir\bot.ico")
+        $params.$setting = (Resolve-XPlatPath -Path "$dir\bot.ico")
     }
 }
 
 $settings = "RaidIcon", "SubIcon", "SubGiftedIcon"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-XPath -Path "$dir\yay.gif")
+        $params.$setting = (Resolve-XPlatPath -Path "$dir\yay.gif")
     }
 }
 
 $settings = "RaidImage", "SubImage", "SubGiftedImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-XPath -Path "$dir\catparty.gif")
+        $params.$setting = (Resolve-XPlatPath -Path "$dir\catparty.gif")
     }
 }
 
 if (-not $config.BitsIcon) {
-    $params.BitsIcon = (Resolve-XPath -Path "$dir\bits.gif")
+    $params.BitsIcon = (Resolve-XPlatPath -Path "$dir\bits.gif")
 }
 
 
 $settings = "BitsImage", "FollowImage"
 foreach ($setting in $settings) {
     if (-not $config.$setting) {
-        $params.$setting = (Resolve-XPath -Path "$dir\vibecat.gif")
+        $params.$setting = (Resolve-XPlatPath -Path "$dir\vibecat.gif")
     }
 }
 
