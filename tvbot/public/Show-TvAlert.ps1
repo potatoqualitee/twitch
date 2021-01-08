@@ -39,11 +39,11 @@ function Show-TvAlert {
                     $Value = $Value.Replace("<<giftee>>", $MiscString)
                 }
             }
-
             $Value
         }
     }
     process {
+        Write-TvVerbose -Message $Message
         # i can probably just get-tvconifg once instead
         if ($Message) {
             $key = Get-TvConfigValue -Name BotKey
