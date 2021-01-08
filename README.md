@@ -6,7 +6,7 @@ To see all of the commands available, install and run:
 Get-Command -Module tvbot, tvclient
 ```
 
-Installation instructions can be found at [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvclient/) and [tvclient](https://github.com/potatoqualitee/twitch/blob/main/tvclient/).
+Installation instructions can be found at [tvclient](https://github.com/potatoqualitee/twitch/blob/main/tvclient/) and [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/).
 
 ## tvclient
 
@@ -31,6 +31,7 @@ Get-TvSubscriber
 Get-TvFollower -Since LastStream
 Get-TvUser -UserName potatoqualitee
 ```
+Read more at [tvclient](https://github.com/potatoqualitee/twitch/blob/main/tvclient/).
 
 ## tvbot
 
@@ -57,4 +58,4 @@ And start your bot
 ```
 Start-TvBot
 ```
-Check out [tvcbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/)
+Read more at [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/)
