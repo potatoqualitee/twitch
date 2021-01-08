@@ -181,11 +181,11 @@ function Write-TvOutput {
                 Write-Output "[$(Get-Date)] > $message"
             }
             default {
-                Write-Debug -Message "command: $command"
-                Write-Debug -Message "message: $message"
-                Write-Debug -Message "params: $params"
-                Write-Debug -Message "prefix: $prefix"
-                Write-Debug -Message "user: $user"
+                Write-TvSystemMessage -Type Debug -Message "command: $command"
+                Write-TvSystemMessage -Type Debug -Message "message: $message"
+                Write-TvSystemMessage -Type Debug -Message "params: $params"
+                Write-TvSystemMessage -Type Debug -Message "prefix: $prefix"
+                Write-TvSystemMessage -Type Debug -Message "user: $user"
             }
         }
     }

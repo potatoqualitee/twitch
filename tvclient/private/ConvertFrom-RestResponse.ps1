@@ -157,8 +157,8 @@
                     $null = $order.Add($column)
                 }
 
-                Write-Debug "Columns: $order"
-                Write-Debug "Count: $($hash.Count)"
+                Write-TvSystemMessage -Type Debug "Columns: $order"
+                Write-TvSystemMessage -Type Debug "Count: $($hash.Count)"
                 [pscustomobject]$hash | Select-Object -Property $order
             }
         }
@@ -168,7 +168,7 @@
             return
         }
         foreach ($object in $InputObject) {
-            Write-Debug "Processing object"
+            Write-TvSystemMessage -Type Debug "Processing object"
 
             # determine if it has an inner field to extract
             $fields = $object | Get-Member -Type NoteProperty

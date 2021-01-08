@@ -10,7 +10,7 @@ function Switch-WindowStyle {
         }
         $handle = $Process.MainWindowHandle
 
-        Write-Debug -Message "Getting window handle"
+        Write-TvSystemMessage -Type Debug -Message "Getting window handle"
         while ($handle -eq 0) {
             Start-Sleep -Milliseconds 100
             Write-TvSystemMessage -Type Verbose -Message "Trying to get the handle again"
@@ -43,12 +43,12 @@ function Switch-WindowStyle {
             'SHOWNOACTIVATE'  = 4
             'SHOWNORMAL'      = 1
             #>
-            Write-Debug -Message "Setting to show using restore cuz it's awesome"
+            Write-TvSystemMessage -Type Debug -Message "Setting to show using restore cuz it's awesome"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 9)
-            Write-Debug -Message "Setting to foreground just to be sure"
+            Write-TvSystemMessage -Type Debug -Message "Setting to foreground just to be sure"
             $null = $script:foreground::SetForegroundWindow($handle)
         } else {
-            Write-Debug -Message "Setting to hide"
+            Write-TvSystemMessage -Type Debug -Message "Setting to hide"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 0)
         }
     }

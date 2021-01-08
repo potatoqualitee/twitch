@@ -7,7 +7,7 @@ function Write-TvSystemMessage {
     param
     (
         [string]$Message,
-        [ValidateSet("Verbose")]
+        [ValidateSet("Verbose", "Debug")]
         [string]$Type
     )
     process {
@@ -15,6 +15,10 @@ function Write-TvSystemMessage {
             "Verbose" {
                 Write-Verbose -Message "[$(Get-Date)] $Message"
                 $null = $script:logger.Info($Message)
+            }
+            "Debug" {
+                Write-Debug -Message "[$(Get-Date)] $Message"
+                $null = $script:logger.Debug($Message)
             }
         }
     }
