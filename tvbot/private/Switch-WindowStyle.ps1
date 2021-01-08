@@ -10,10 +10,10 @@ function Switch-WindowStyle {
         }
         $handle = $Process.MainWindowHandle
 
-        Write-TvVerbose -Message "Getting window handle"
+        Write-Debug -Message "Getting window handle"
         while ($handle -eq 0) {
             Start-Sleep -Milliseconds 100
-            Write-TvVerbose -Message "Trying to get the handle again"
+            Write-TvSystemMessage -Type Verbose -Message "Trying to get the handle again"
             $Process.Refresh()
             $handle = $Process.MainWindowHandle
         }
@@ -22,7 +22,7 @@ function Switch-WindowStyle {
             $wp = $ae.GetCurrentPattern([System.Windows.Automation.WindowPatternIdentifiers]::Pattern)
             $state = $wp.Current.WindowVisualState
         } catch {
-            Write-TvVerbose -Message "Couldn't get handle, try again"
+            Write-TvSystemMessage -Type Verbose -Message "Couldn't get handle, try again"
             return
         }
 

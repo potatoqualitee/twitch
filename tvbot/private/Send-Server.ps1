@@ -14,9 +14,9 @@ function Send-Server {
 
     foreach ($msg in $Message) {
         if ($msg -match "PASS ") {
-            Write-TvVerbose -Message "PASS ********"
+            Write-TvSystemMessage -Type Verbose -Message "PASS ********"
         } else {
-            Write-TvVerbose -Message "$msg"
+            Write-TvSystemMessage -Type Verbose -Message "$msg"
         }
         $script:writer.WriteLine($msg)
     }

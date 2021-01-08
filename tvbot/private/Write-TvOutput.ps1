@@ -68,12 +68,12 @@ function Write-TvOutput {
                     $text = $sysmsg.Replace("\s"," ").Replace("\n","")
                     Show-TvAlert -Type Message -UserName $displayname -Message $text
                 }
-                Write-TvVerbose -Message "$sysmessage"
+                Write-TvSystemMessage -Type Verbose -Message "$sysmessage"
             }
             "PRIVMSG" {
                 if ($message) {
                     if ($user) {
-                        Write-TvVerbose -Message "Display name: $displayname"
+                        Write-TvSystemMessage -Type Verbose -Message "Display name: $displayname"
                         Write-Output "[$(Get-Date)] <$user> $message"
 
                         if ($notifytype -contains "chat" -and $user -notin $UsersToIgnore) {
@@ -86,8 +86,8 @@ function Write-TvOutput {
                             if ($emote) {
                                 # @badge-info=;badges=premium/1;color=#0089FF;display-name=potatoqualitee;emote-only=1;emotes=425618:0-2;flags=;id=0902c83d
 
-                                Write-TvVerbose -Message "EMOTE: $emote"
-                                Write-TvVerbose -Message "EMOTE ONLY: $emoteonly"
+                                Write-TvSystemMessage -Type Verbose -Message "EMOTE: $emote"
+                                Write-TvSystemMessage -Type Verbose -Message "EMOTE ONLY: $emoteonly"
                                 $emotes = $emote -split "/"
                                 $primaryemote = $emotes | Select-Object -First 1
                                 $primaryemote = $primaryemote.Split(":") | Select-Object -First 1
@@ -171,9 +171,9 @@ function Write-TvOutput {
                         Write-Output "  $member"
                     }
                 } else {
-                    Write-TvVerbose -Message "> Current user list:"
+                    Write-TvSystemMessage -Type Verbose -Message "> Current user list:"
                     foreach ($member in $members) {
-                        Write-TvVerbose -Message " $member"
+                        Write-TvSystemMessage -Type Verbose -Message " $member"
                     }
                 }
             }

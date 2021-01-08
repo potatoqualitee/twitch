@@ -43,7 +43,7 @@ function Show-TvAlert {
         }
     }
     process {
-        Write-TvVerbose -Message $Message
+        Write-TvSystemMessage -Type Verbose -Message $Message
         # i can probably just get-tvconifg once instead
         if ($Message) {
             $key = Get-TvConfigValue -Name BotKey
@@ -89,7 +89,7 @@ function Show-TvAlert {
             try {
                 Send-OSNotification -Title $Title -Body $string -Icon $image -ErrorAction Stop
             } catch {
-                Write-TvVerbose -Message "Failure $_"
+                Write-TvSystemMessage -Type Verbose -Message "Failure $_"
             }
         } else {
             # Emotes can only be loaded by BurntToast
@@ -116,7 +116,7 @@ function Show-TvAlert {
                     New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier $uid -ErrorAction Stop -SuppressPopup
                     New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop -ExpirationTime (Get-Date).AddSeconds(5)
                 } catch {
-                    Write-TvVerbose -Message "Failure $_"
+                    Write-TvSystemMessage -Type Verbose -Message "Failure $_"
                 }
             } else {
                 if ($Type -in "Sub","Follow") {
@@ -133,12 +133,12 @@ function Show-TvAlert {
                     $audio = New-BTAudio -Source $sound
                 }
 
-                Write-TvVerbose -Message "Username: $UserName"
-                Write-TvVerbose -Message "Icon: $icon"
-                Write-TvVerbose -Message "Image: $image"
-                Write-TvVerbose -Message "Title: $Title"
-                Write-TvVerbose -Message "Message: $Message"
-                Write-TvVerbose -Message "Sound: $sound"
+                Write-TvSystemMessage -Type Verbose -Message "Username: $UserName"
+                Write-TvSystemMessage -Type Verbose -Message "Icon: $icon"
+                Write-TvSystemMessage -Type Verbose -Message "Image: $image"
+                Write-TvSystemMessage -Type Verbose -Message "Title: $Title"
+                Write-TvSystemMessage -Type Verbose -Message "Message: $Message"
+                Write-TvSystemMessage -Type Verbose -Message "Sound: $sound"
 
                 $binding = New-BTBinding -Children $bttitle, $bttext -HeroImage $btimage -AppLogoOverride $bticon
 
@@ -163,7 +163,7 @@ function Show-TvAlert {
                         Start-Sleep 5
                     }
                 } catch {
-                    Write-TvVerbose -Message "Failure $_"
+                    Write-TvSystemMessage -Type Verbose -Message "Failure $_"
                 }
             }
         }
