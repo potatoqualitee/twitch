@@ -43,12 +43,12 @@ function Switch-WindowStyle {
             'SHOWNOACTIVATE'  = 4
             'SHOWNORMAL'      = 1
             #>
-            Write-TvVerbose -Message "Setting to show using restore cuz it's awesome"
+            Write-Debug -Message "Setting to show using restore cuz it's awesome"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 9)
-            Write-TvVerbose -Message "Setting to foreground just to be sure"
+            Write-Debug -Message "Setting to foreground just to be sure"
             $null = $script:foreground::SetForegroundWindow($handle)
         } else {
-            Write-TvVerbose -Message "Setting to hide"
+            Write-Debug -Message "Setting to hide"
             $null = $script:asyncwindow::ShowWindowAsync($handle, 0)
         }
     }
