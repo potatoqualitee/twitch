@@ -175,7 +175,7 @@
 
             # IF EVERY ONE HAS MULTIPLES INSIDE
             if ($fields.Count -eq 0) {
-                Write-Verbose "[$(Get-Date)] Found no inner objects"
+                Write-TvVerbose -Message "Found no inner objects"
                 if ($object.ToString().StartsWith("{")) {
                     $object = $object.Replace("\","\\") | ConvertFrom-Json
                     $fields = $object | Get-Member -Type NoteProperty
@@ -193,11 +193,11 @@
             }
 
             if ($fields.Count -eq 1) {
-                Write-Verbose "[$(Get-Date)] Found one inner object"
+                Write-TvVerbose -Message "Found one inner object"
                 $name = $fields.Name
                 Convert-Row -Object $object.$name -Type $null
             } else {
-                # Write-Verbose "[$(Get-Date)] Found multiple inner objects"
+                # Write-TvVerbose -Message "Found multiple inner objects"
                 $result = $true
                 foreach ($definition in $fields.Definition) {
                     if (-not $definition.Contains("Object[]")) {

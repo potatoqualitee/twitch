@@ -14,9 +14,9 @@ function Send-Server {
 
     foreach ($msg in $Message) {
         if ($msg -match "PASS ") {
-            Write-Verbose "[$(Get-Date)] PASS ********"
+            Write-TvVerbose -Message "PASS ********"
         } else {
-            Write-Verbose "[$(Get-Date)] $msg"
+            Write-TvVerbose -Message "$msg"
         }
         $script:writer.WriteLine($msg)
     }

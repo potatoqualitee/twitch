@@ -23,7 +23,7 @@ function Show-TvViewerCount {
     )
     begin {
         function Update-ViewCount {
-            $viewcount = (Get-TvStream).viewer_count
+            $viewcount = (Get-TvStream).ViewerCount
             if (-not $viewcount) {
                 $viewcount = 0
             }
