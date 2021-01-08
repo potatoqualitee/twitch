@@ -15,6 +15,16 @@ function Start-Bot {
             - If the notify is right-clicked, you'll be offered the option to quit or restart the bot (sometimes it just fails ¯\_(ツ)_/¯)
 
     #>
+    Write-Output "Please wait one moment while we perform the initial population of data"
+    Write-Output "
+  _____                       _____ _          _ _
+ |  __ \                     / ____| |        | | |
+ | |__) |____      _____ _ __ (___ | |__   ___| | |
+ |  ___/ _ \ \ /\ / / _ \ '__\___ \| '_ \ / _ \ | |
+ | |  | (_) \ V  V /  __/ |  ____) | | | |  __/ | |
+ |_|   \___/ \_/\_/ \___|_| |_____/|_| |_|\___|_|_|
+
+"
     # add all the GUI assemblies
     Add-Type -AssemblyName PresentationFramework, System.Drawing, System.Windows.Forms, UIAutomationClient
 
@@ -107,13 +117,17 @@ function Start-Bot {
     $menuexit.add_Click( {
             $script:notifyicon.Visible = $false
             $script:notifyicon.dispose()
-            Stop-Process $script:newprocess.Id
-            Stop-Process $pid
+            if (Get-Process -Id $script:newprocess.Id) {
+                Stop-Process -Id $script:newprocess.Id
+            }
+            Stop-Process -Id $pid
         })
 
     # When Restart is clicked, close everything and kill the PowerShell process
     $menurestart.add_Click( {
-            Stop-Process $script:newprocess.Id
+            if (Get-Process -Id $script:newprocess.Id) {
+                Stop-Process -Id $script:newprocess.Id
+            }
             $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
             Start-Sleep -Seconds 3
             $null = Switch-WindowStyle -Process $script:newprocess
