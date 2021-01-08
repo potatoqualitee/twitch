@@ -103,8 +103,8 @@ function Start-Bot {
 
     $contextmenu = New-Object System.Windows.Forms.ContextMenu
     $script:notifyicon.ContextMenu = $contextmenu
-    $script:notifyicon.contextMenu.MenuItems.AddRange($menurestart)
-    $script:notifyicon.contextMenu.MenuItems.AddRange($menuexit)
+    $script:notifyicon.ContextMenu.MenuItems.AddRange($menurestart)
+    $script:notifyicon.ContextMenu.MenuItems.AddRange($menuexit)
 
     # Show/Hide bot window on left-click
     $script:notifyicon.add_Click( {
@@ -116,7 +116,7 @@ function Start-Bot {
     # When Exit is clicked, close everything and kill the PowerShell process
     $menuexit.add_Click( {
             $script:notifyicon.Visible = $false
-            $script:notifyicon.dispose()
+            $script:notifyicon.Dispose()
             Stop-Process -Id (Get-CimInstance -ClassName win32_process -Filter "Name='powershell.exe' AND ParentProcessId=$PID").ProcessId
             Stop-Process -Id $pid
         })
