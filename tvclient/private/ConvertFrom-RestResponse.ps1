@@ -157,8 +157,8 @@
                     $null = $order.Add($column)
                 }
 
-                Write-TvSystemMessage -Type Debug "Columns: $order"
-                Write-TvSystemMessage -Type Debug "Count: $($hash.Count)"
+                Write-Debug "Columns: $order"
+                Write-Debug "Count: $($hash.Count)"
                 [pscustomobject]$hash | Select-Object -Property $order
             }
         }
@@ -168,14 +168,14 @@
             return
         }
         foreach ($object in $InputObject) {
-            Write-TvSystemMessage -Type Debug "Processing object"
+            Write-Debug "Processing object"
 
             # determine if it has an inner field to extract
             $fields = $object | Get-Member -Type NoteProperty
 
             # IF EVERY ONE HAS MULTIPLES INSIDE
             if ($fields.Count -eq 0) {
-                Write-TvSystemMessage -Type Verbose -Message "Found no inner objects"
+                Write-Verbose -Message "Found no inner objects"
                 if ($object.ToString().StartsWith("{")) {
                     $object = $object.Replace("\","\\") | ConvertFrom-Json
                     $fields = $object | Get-Member -Type NoteProperty
@@ -193,11 +193,11 @@
             }
 
             if ($fields.Count -eq 1) {
-                Write-TvSystemMessage -Type Verbose -Message "Found one inner object"
+                Write-Verbose -Message "Found one inner object"
                 $name = $fields.Name
                 Convert-Row -Object $object.$name -Type $null
             } else {
-                # Write-TvSystemMessage -Type Verbose -Message "Found multiple inner objects"
+                # Write-Verbose -Message "Found multiple inner objects"
                 $result = $true
                 foreach ($definition in $fields.Definition) {
                     if (-not $definition.Contains("Object[]")) {
