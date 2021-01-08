@@ -30,15 +30,18 @@ function Get-TvFollower {
                 Invoke-Pagination @params
             } else {
                 # Get max
-                $params.MaxResults = 100
+                if (-not $PSBoundParameters.MaxResults) {
+                    $params.MaxResults = 100
+                }
+
                 switch ($Since) {
-                    { "StreamStart" -or "StreamStarted" } {
+                    { $PSItem -match "StreamStart" } {
                         $started = (Get-TvStream).StartedAt
                         if (-not $started) {
                             Write-Warning -Message "Stream not started ¯\_(ツ)_/¯"
                             return
                         }
-                        Invoke-Pagination @params | Where-Object FollowedAt -lt $started
+                        Invoke-Pagination @params | Where-Object FollowedAt -gt $started
                     }
                     "LastStream" {
                         $lastvod = (Get-TvVideo -MaxResults 1).CreatedAt
@@ -59,7 +62,6 @@ function Get-TvFollower {
                     }
                 }
             }
-
         } else {
             $users = Get-TvUser -UserName $UserName
             foreach ($user in $users) {

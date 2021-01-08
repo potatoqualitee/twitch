@@ -7,8 +7,12 @@
 
 ## Install
 
+To get started, you'll need to generate a Twitch token then install the module.
+
+### Get a token from Twitch
 Get an API key from Twitch from [twitchtokengenerator.com](https://twitchtokengenerator.com/) or [twitchapps.com/tmi](https://twitchapps.com/tmi/).
 
+### Install the bot
 Next, change your execution policy, if needed, then install `tvclient` from the PowerShell Gallery.
 
 ```
@@ -35,8 +39,6 @@ $splat = @{
 Set-TvConfig @splat
 ```
 
-## Configure
-
 Next, check out your configuration.
 
 ```
@@ -46,7 +48,6 @@ Get-TvConfig
 ```
 Edit-TvConfig
 ```
-
 
 ## Explore
 

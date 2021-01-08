@@ -1,4 +1,4 @@
-function Resolve-XPath {
+function Resolve-XPlatPath {
     [CmdletBinding()]
     param (
         [string]$Path
