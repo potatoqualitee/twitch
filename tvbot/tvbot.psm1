@@ -166,3 +166,6 @@ $config = Set-TvConfig @params -Force
 if (-not $config.BotClientId -and -not $config.BotToken) {
     Write-Warning "BotClientId and BotToken not found. Please use Set-TvConfig to set your BotClientId and BotToken. If no BotChannel is set, the bot will join its own channel."
 }
+
+
+$script:logger = New-Logger

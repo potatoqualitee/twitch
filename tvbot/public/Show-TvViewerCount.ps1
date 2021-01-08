@@ -14,16 +14,11 @@ function Show-TvViewerCount {
     param
     (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$ClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias("Secret")]
-        [string]$Token,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Channel = "potatoqualitee"
+        [string]$UserName
     )
     begin {
         function Update-ViewCount {
-            $viewcount = (Get-TvStream).ViewerCount
+            $viewcount = (Get-TvStream -UserName $UserName).ViewerCount
             if (-not $viewcount) {
                 $viewcount = 0
             }
@@ -92,7 +87,6 @@ function Show-TvViewerCount {
         # When Exit is clicked, close everything and kill the PowerShell process
         $menuitem.add_Click( {
                 $script:notifyicon.Visible = $false
-                $window.Close()
                 $script:notifyicon.dispose()
                 Stop-Process $pid
             })

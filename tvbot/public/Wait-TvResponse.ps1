@@ -17,7 +17,7 @@ function Wait-TvResponse {
         }
 
         # Wait 1 second
-        Write-Verbose "[$(Get-Date)] Sleeping a moment to let the server catch up"
+        Write-TvVerbose -Message "Sleeping a moment to let the server catch up"
         Start-Sleep -Seconds 1
         # this is where it fails when it mysteriously fails. it used to be a continue.
         if (-not $script:line) {
@@ -51,7 +51,7 @@ function Wait-TvResponse {
         $lasttick = $script:ping = [DateTime]::Now
 
 
-        Write-Verbose -Message "[$(Get-Date)] Waiting for input by starting wait loop"
+        Write-TvVerbose -Message "Waiting for input by starting wait loop"
 
         while ($script:running) {
             if ($active) {

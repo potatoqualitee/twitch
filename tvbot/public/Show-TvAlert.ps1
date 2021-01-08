@@ -89,7 +89,7 @@ function Show-TvAlert {
             try {
                 Send-OSNotification -Title $Title -Body $string -Icon $image -ErrorAction Stop
             } catch {
-                Write-Verbose "[$(Get-Date)] Failure $_"
+                Write-TvVerbose -Message "Failure $_"
             }
         } else {
             # Emotes can only be loaded by BurntToast
@@ -116,7 +116,7 @@ function Show-TvAlert {
                     New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier $uid -ErrorAction Stop -SuppressPopup
                     New-BurntToastNotification -AppLogo $image -Text $username, $message -UniqueIdentifier tvbot -ErrorAction Stop -ExpirationTime (Get-Date).AddSeconds(5)
                 } catch {
-                    Write-Verbose "[$(Get-Date)] Failure $_"
+                    Write-TvVerbose -Message "Failure $_"
                 }
             } else {
                 if ($Type -in "Sub","Follow") {
@@ -133,12 +133,12 @@ function Show-TvAlert {
                     $audio = New-BTAudio -Source $sound
                 }
 
-                Write-Verbose "[$(Get-Date)] Username: $UserName"
-                Write-Verbose "[$(Get-Date)] Icon: $icon"
-                Write-Verbose "[$(Get-Date)] Image: $image"
-                Write-Verbose "[$(Get-Date)] Title: $Title"
-                Write-Verbose "[$(Get-Date)] Message: $Message"
-                Write-Verbose "[$(Get-Date)] Sound: $sound"
+                Write-TvVerbose -Message "Username: $UserName"
+                Write-TvVerbose -Message "Icon: $icon"
+                Write-TvVerbose -Message "Image: $image"
+                Write-TvVerbose -Message "Title: $Title"
+                Write-TvVerbose -Message "Message: $Message"
+                Write-TvVerbose -Message "Sound: $sound"
 
                 $binding = New-BTBinding -Children $bttitle, $bttext -HeroImage $btimage -AppLogoOverride $bticon
 
@@ -163,7 +163,7 @@ function Show-TvAlert {
                         Start-Sleep 5
                     }
                 } catch {
-                    Write-Verbose "[$(Get-Date)] Failure $_"
+                    Write-TvVerbose -Message "Failure $_"
                 }
             }
         }

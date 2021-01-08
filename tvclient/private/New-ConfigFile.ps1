@@ -10,7 +10,7 @@ function New-ConfigFile {
             New-Item -ItemType Directory -Path $dir -ErrorAction SilentlyContinue
         }
 
-        Write-Verbose "[$(Get-Date)] Writing config to $script:configfile"
+        Write-TvVerbose -Message "Writing config to $script:configfile"
         [PSCustomObject]@{
             ConfigFile     = $script:configfile.Replace("\\","\")
             ClientId       = $null
