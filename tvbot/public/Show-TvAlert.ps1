@@ -81,7 +81,7 @@ function Show-TvAlert {
         $Message = Get-TransformedValue -Value $message
 
         if (-not $image) {
-            $image = Resolve-XPath "$script:ModuleRoot\icon.png"
+            $image = Resolve-XPlatPath "$script:ModuleRoot\icon.png"
         }
 
         if (-not $script:toast) {

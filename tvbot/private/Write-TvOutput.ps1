@@ -123,11 +123,17 @@ function Write-TvOutput {
                             # Use Get-Variable to see all of the variables that
                             # are available. displayname and message are probably
                             # the most useful
-                            if ($script:scriptstoprocess) {
-                                foreach ($file in $script:scriptstoprocess) {
-                                    Write-Verbose -Message "Executing $file"
-                                    $externalcode = Get-Content -Path $file -Raw
-                                    Invoke-Expression -Command $externalcode
+                            $cmd = Get-TvConfigValue -Name ScriptsToProcess
+
+                            if ($cmd) {
+                                if ((Test-Path -Path $cmd)) {
+                                    foreach ($file in $cmd) {
+                                        Write-Verbose -Message "Executing $file"
+                                        $externalcode = Get-Content -Path $file -Raw
+                                        Invoke-Expression -Command $externalcode
+                                    }
+                                } else {
+                                    Write-Warning -Message "ScriptsToProcess is set but does not exist"
                                 }
                             }
                         }

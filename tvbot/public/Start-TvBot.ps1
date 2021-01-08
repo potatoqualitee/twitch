@@ -16,7 +16,7 @@ function Start-TvBot {
         Do not attempt to automatically reconnect if disconnected
 
     .EXAMPLE
-        PS> Start-TvBot -Name mypsbot -Owner potatoqualitee -Token 01234567890abcdefghijklmnopqrs -Channel potatoqualitee
+        PS> Start-TvBot -Name mypsbot
 
         Connects to irc.chat.twitch.tv on port 6697 as a bot with the Twitch account, mypsbot. potatoqualitee is the owner.
 
@@ -55,10 +55,10 @@ function Start-TvBot {
             }
         }
         $script:flatparams = $array -join " "
-
         if (-not $NoAutoReconnect) { $script:reconnect = $true }
 
         if (-not $PSBoundParameters.NoHide -and $PSVersionTable.PSEdition -ne "Core") {
+            Start-AlertJob
             Start-Bot
         } else {
             if ($PrimaryPid) {

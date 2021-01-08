@@ -23,6 +23,8 @@ function Edit-TvConfigFile {
                 $Editor = $result.Path
             } elseif ($result = Get-Command -ErrorAction SilentlyContinue vi) {
                 $Editor = $result.Path
+            } else {
+                Invoke-Item -Path $script:configfile
             }
         }
         # no idea if this will be supported on Linux
