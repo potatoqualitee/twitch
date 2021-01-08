@@ -129,7 +129,7 @@ function Start-Bot {
                 Stop-Process -Id $script:newprocess.Id
             }
             $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
-            Start-Sleep -Seconds 3
+            Start-Sleep -Seconds 5
             $null = Switch-WindowStyle -Process $script:newprocess
         })
 
@@ -139,7 +139,7 @@ function Start-Bot {
     # Start bot
     $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
 
-    Start-Sleep -Seconds 3
+    Start-Sleep -Seconds 5
     $null = Switch-WindowStyle -Process $script:newprocess
 
     # Force garbage collection just to start slightly lower RAM usage.
