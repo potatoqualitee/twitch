@@ -92,7 +92,6 @@ function Show-TvViewerCount {
         # When Exit is clicked, close everything and kill the PowerShell process
         $menuitem.add_Click( {
                 $script:notifyicon.Visible = $false
-                $window.Close()
                 $script:notifyicon.dispose()
                 Stop-Process $pid
             })
