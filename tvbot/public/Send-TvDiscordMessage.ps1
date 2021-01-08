@@ -20,7 +20,8 @@ function Send-TvDiscordMessage {
             Write-Error -ErrorAction Stop -Message "You must set a DiscordWebhook using Set-TvConfig -DiscordWebhook https://WEBHOOK"
         }
 
-        Write-TvVerbose -Message "Verbose disabled for Send-TvDiscordMessage since the hook is in the URL"
+        Write-TvSystemMessage -Type Verbose -Message "Sending '$Message' to Discord"
+        # verbose disabled any further because it exposes the key
         $VerbosePreference = "SilentlyContinue"
 
         $body = [pscustomobject]@{

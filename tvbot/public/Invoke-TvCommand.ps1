@@ -59,7 +59,7 @@ function Invoke-TvCommand {
                 if ($index) {
                     $code = $usercommand[$index[0]]
                     if (-not $code -and $user -in $botowner) {
-                        Write-TvVerbose -Message "Getting admin command"
+                        Write-TvSystemMessage -Type Verbose -Message "Getting admin command"
                         $code = $admincommand[$index[0]]
                     }
 

@@ -58,10 +58,10 @@ function Show-TvViewerCount {
         }
     }
     process {
-        if ($PSVersionTable.PSEdition -eq "Core") {
-            throw "Not supported in PowerShell Core"
+        # Check if running in Core or in Windows Terminal ($env:WT_SESSION)
+        if ($PSVersionTable.PSEdition -eq "Core" -or $env:WT_SESSION) {
+            throw "This command is not supported by Core or Windows Terminal. Run Windows PowerShell 5.1."
         }
-
         Write-Output "Please wait one moment while we perform the initial population of data"
         Write-Output "
   _____                       _____ _          _ _
