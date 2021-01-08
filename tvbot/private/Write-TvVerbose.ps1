@@ -6,15 +6,10 @@ function Write-TvVerbose {
     [CmdletBinding()]
     param
     (
-        [string]$Message,
-        [switch]$NoLog
+        [string]$Message
     )
     process {
-        $Message = "[$(Get-Date)] $Message"
         Write-Verbose -Message $Message
-        if (-not $NoLog) {
-            $script:logger.Info($Message)
-            #[log4net.LogManager]::Flush([int]::MaxValue)
-        }
+        $null = $script:logger.Info($Message)
     }
 }

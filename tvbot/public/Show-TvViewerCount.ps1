@@ -14,16 +14,11 @@ function Show-TvViewerCount {
     param
     (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$ClientId,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias("Secret")]
-        [string]$Token,
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Channel = "potatoqualitee"
+        [string]$UserName
     )
     begin {
         function Update-ViewCount {
-            $viewcount = (Get-TvStream).ViewerCount
+            $viewcount = (Get-TvStream -UserName $UserName).ViewerCount
             if (-not $viewcount) {
                 $viewcount = 0
             }
@@ -33,7 +28,7 @@ function Show-TvViewerCount {
             $null = $image.SetResolution(96, 96)
             [System.Drawing.Graphics]$surface = [System.Drawing.Graphics]::FromImage($image)
 
-            $configcolor = (Get-TvSystemTheme).Color
+            $configcolor = Get-TvConfigValue -Name NotifyColor
             $color = [System.Drawing.Color]::$configcolor
             $brush = [System.Drawing.SolidBrush]::New($color)
 

@@ -179,6 +179,4 @@ if (-not $config.BotClientId -and -not $config.BotToken) {
 }
 
 
-Initialize-Logger
-Import-LoggerConfig -Basic
-$script:logger = New-Logger -Name tvbot
+$script:logger = New-Logger
