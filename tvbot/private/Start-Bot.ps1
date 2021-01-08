@@ -117,9 +117,7 @@ function Start-Bot {
     $menuexit.add_Click( {
             $script:notifyicon.Visible = $false
             $script:notifyicon.dispose()
-            if (Get-Process -Id $script:newprocess.Id) {
-                Stop-Process -Id $script:newprocess.Id
-            }
+            Stop-Process -Id (Get-CimInstance -ClassName win32_process -Filter "Name='powershell.exe' AND ParentProcessId=$PID").ProcessId
             Stop-Process -Id $pid
         })
 
