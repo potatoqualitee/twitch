@@ -100,9 +100,13 @@ function Start-Bot {
     # Create right-click -> Restart bot
     $menurestart = New-Object System.Windows.Forms.MenuItem
     $menurestart.Text = "Restart bot"
+    # Create right-click -> Create clip
+    $menuclip = New-Object System.Windows.Forms.MenuItem
+    $menuclip.Text = "Create clip"
 
     $contextmenu = New-Object System.Windows.Forms.ContextMenu
     $script:notifyicon.ContextMenu = $contextmenu
+    $script:notifyicon.ContextMenu.MenuItems.AddRange($menuclip)
     $script:notifyicon.ContextMenu.MenuItems.AddRange($menurestart)
     $script:notifyicon.ContextMenu.MenuItems.AddRange($menuexit)
 
@@ -129,6 +133,11 @@ function Start-Bot {
             $script:newprocess = Start-Process -FilePath powershell -ArgumentList "-NoLogo -NoProfile -Command Start-TvBot -NoHide -PrimaryPid $PID $script:flatparams" -PassThru
             Start-Sleep -Seconds 5
             $null = Switch-WindowStyle -Process $script:newprocess
+        })
+
+    # When New clip is selected, create new clip
+    $menuclip.add_Click( {
+            New-TvClip
         })
 
     # Make PowerShell Disappear

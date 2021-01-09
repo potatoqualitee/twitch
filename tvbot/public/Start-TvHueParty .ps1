@@ -28,14 +28,18 @@ function Start-TvHueParty {
 
         $baseurl = "http://$huehub/api/$apikey"
 
-        $bodyon = @{
-            "on"     = "$true".ToLower()
-            "effect" = "colorloop"
-        } | ConvertTo-Json
+        switch ($Type) {
+            "Loop" {
+                $bodyon = @{
+                    "on"     = "$true".ToLower()
+                    "effect" = "colorloop"
+                } | ConvertTo-Json
 
-        $bodyoff = @{
-            "effect" = "none"
-        } | ConvertTo-Json
+                $bodyoff = @{
+                    "effect" = "none"
+                } | ConvertTo-Json
+            }
+        }
 
         foreach ($groupname in $group) {
             $url = "$baseurl/groups/$group"
