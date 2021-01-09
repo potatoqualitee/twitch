@@ -36,6 +36,8 @@ function Set-TvConfig {
         [string]$FollowSound,
         [string]$FollowText,
         [string]$FollowTitle,
+        [string]$HueHub,
+        [string]$HueToken,
         # do this to avoid a huge list of colors AND ALSO
         # to ensure that the autocomplete works as expected
         # with partial matches

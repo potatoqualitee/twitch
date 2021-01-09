@@ -53,7 +53,7 @@ function Get-TvConfig {
         $callstack = Get-PSCallStack
 
         if (($callstack).Count -eq 2 -or $callstack[1].Command -eq 'Set-TvConfig' -and -not $Force) {
-            $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken"
+            $hidden = "ClientID", "Token", "DiscordWebhook", "BotClientId", "BotToken", "HueToken"
             foreach ($item in $hidden) {
                 if ($results.$item) {
                     $results.$item = "**************"

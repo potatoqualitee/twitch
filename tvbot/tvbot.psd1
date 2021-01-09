@@ -54,6 +54,7 @@
         'Send-TvDiscordMessage',
         'Split-TvChannel',
         'Start-TvBot',
+        'Start-TvHueParty',
         'Write-TvChannelMessage',
         'Wait-TvResponse'
     )
