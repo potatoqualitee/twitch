@@ -1,5 +1,5 @@
 function New-Logger {
-    $dll = Join-Path -Path $script:ModuleRoot -ChildPath log4net.dll
+    $dll = Join-Path -Path "$script:ModuleRoot\lib" -ChildPath log4net.dll
     $null = Add-Type -Path $dll
 
     $pattern = '[%date{yyyy-MM-dd HH:mm:ss}] [%level] [%message]%n'
