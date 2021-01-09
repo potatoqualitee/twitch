@@ -45,6 +45,16 @@ function Start-AlertJob {
                         foreach ($sub in $newsubs) {
                             $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
 
+                            if ($cmd) {
+                                if ((Test-Path -Path $cmd)) {
+                                    foreach ($file in $cmd) {
+                                        Write-Verbose -Message "Executing $file"
+                                        $externalcode = Get-Content -Path $file -Raw
+                                        Invoke-Expression -Command $externalcode
+                                    }
+                                }
+                            }
+
                             if ($sub.GifterName) {
                                 Show-TvAlert -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
                             } else {
@@ -52,6 +62,21 @@ function Start-AlertJob {
                             }
                         }
 
+                        if ($newsubs -or $newfollowers) {
+                            # Allow a person to custom code
+                            # Use Get-Variable to see all of the variables that
+                            # are available.
+                            $cmd = Get-TvConfigValue -Name ScriptsToProcess
+                            if ($cmd) {
+                                if ((Test-Path -Path $cmd)) {
+                                    foreach ($file in $cmd) {
+                                        Write-Verbose -Message "Executing $file"
+                                        $externalcode = Get-Content -Path $file -Raw
+                                        Invoke-Expression -Command $externalcode
+                                    }
+                                }
+                            }
+                        }
                         $StartingSubs = $subupdate
                         $startingFollows = $followerupdate
                     }
