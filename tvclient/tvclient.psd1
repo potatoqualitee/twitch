@@ -60,6 +60,7 @@
         'Get-TvVideo',
         'Get-TvStream',
         'Get-TvEmote',
+        'New-TvClip',
         'Search-TvChannel',
         'Search-TvCategory',
         'Get-TvFollowed',
