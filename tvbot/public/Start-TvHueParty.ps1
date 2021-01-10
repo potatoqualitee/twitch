@@ -1,25 +1,27 @@
 ﻿function Start-TvHueParty {
-<#
+    <#
     .SYNOPSIS
-        Starts a list of hue partys
+        Invokes a Philips Hue light effect
 
     .DESCRIPTION
-        Starts a list of hue partys
-        
-    .PARAMETER Group
-        Description for Group
-        
-    .PARAMETER Type
-        The type of hue party
-        
-    .PARAMETER Duration
-        Description for Duration
-        
-    .EXAMPLE
-        PS C:\> Start-TvHueParty
+        Invokes a Philips Hue light effect. Uses the HueHub and HubToken configuration values.
 
-        Starts a list of hue partys
-        
+        Visit http://sqlps.io/hue for more information on how to generate a token for your Philips Hue Hub.
+
+    .PARAMETER Group
+        The target group or groups of lights
+
+    .PARAMETER Type
+        The type of effect. Currently, only looping is supported.
+
+    .PARAMETER Duration
+        The length of the light change. Defaults to 10.
+
+    .EXAMPLE
+        PS> Start-TvHueParty
+
+        Loops colors for Philips Hue lights
+
 #>
     [CmdletBinding()]
     param
