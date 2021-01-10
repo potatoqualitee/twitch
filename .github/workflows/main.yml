@@ -11,7 +11,7 @@ jobs:
         id: psmodulecache
         uses: potatoqualitee/psmodulecache@v1
         with:
-          modules-to-cache: PoshNotify
+          modules-to-cache: PoshNotify, PSNotifySend
       - name: Setup PowerShell module cache
         id: cacher
         uses: actions/cache@v2
