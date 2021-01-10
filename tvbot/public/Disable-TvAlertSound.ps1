@@ -1,4 +1,7 @@
 function Disable-TvAlertSound {
+    <#
+    hello
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param()
     process {

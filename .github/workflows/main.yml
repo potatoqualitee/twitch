@@ -1,0 +1,30 @@
+name: Actions Workflow
+on: [push, pull_request]
+jobs:
+  nessus8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # time to party
+      - name: Set required PowerShell modules
+        id: psmodulecache
+        uses: potatoqualitee/psmodulecache@v1
+        with:
+          modules-to-cache: PoshNotify
+      - name: Setup PowerShell module cache
+        id: cacher
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.psmodulecache.outputs.modulepath }}
+          key: ${{ steps.psmodulecache.outputs.keygen }}
+      - name: Install required PowerShell modules
+        if: steps.cacher.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module ${{ steps.psmodulecache.outputs.needed }} -ErrorAction Stop
+      - name: Initialize the nessus server with admin user and license
+        shell: pwsh
+        run: |
+          Import-Module ./tvbot/tvbot.psd1
