@@ -9,6 +9,7 @@ Write-Host -Message "Importing Module"
 Import-Module "$PSScriptRoot\..\tvclient\tvclient.psd1"
 Import-Module "$PSScriptRoot\..\tvbot\tvbot.psd1"
 Set-TvConfig -ClientId $env:clientid -Token $env:token
+Set-TvConfig -BotClientId $env:botclientid -BotToken $env:bottoken
 
 $totalFailed = 0
 $totalRun = 0

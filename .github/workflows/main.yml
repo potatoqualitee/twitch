@@ -35,5 +35,7 @@ jobs:
         env:
           clientid: ${{secrets.CLIENTID}}
           token: ${{secrets.TOKEN}}
+          botclientid: ${{secrets.BOTCLIENTID}}
+          bottoken: ${{secrets.BOTTOKEN}}
         run: |
           ./tests/pester.ps1
