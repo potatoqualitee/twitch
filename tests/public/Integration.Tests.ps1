@@ -7,5 +7,9 @@ Describe "Integration Tests" -Tag "IntegrationTests" {
         It "Get-TvSubscriber should contain potatoqualitee" {
             (Get-TvSubscriber).UserName | Should -Contain potatoqualitee
         }
+        It "Show-TvAlert should probably return nothing" {
+            Show-TvAlert -UserName MrMarkWest -Type Follow | Should -BeNullOrEmpty
+        }
+
     }
 }
