@@ -66,7 +66,7 @@
         Optional tvbot configuration for the follow alert image
 
     .PARAMETER FollowSound
-        Optional tvbot configuration for the bits alert sound. To disable sounds, set Sound to Disabled.
+        Optional tvbot configuration for the bits alert sound. To disable sounds, set Sound to Disabled
 
     .PARAMETER FollowText
         Optional tvbot configuration for the follow alert text
@@ -99,7 +99,7 @@
         Optional tvbot configuration for the raid alert image
 
     .PARAMETER RaidSound
-        Optional tvbot configuration for the raid alert sound. To disable sounds, set Sound to Disabled.
+        Optional tvbot configuration for the raid alert sound. To disable sounds, set Sound to Disabled
 
     .PARAMETER RaidText
         Optional tvbot configuration for the raid alert text
@@ -125,7 +125,7 @@
         Optional tvbot configuration for the gifted sub alert iamge
 
     .PARAMETER SubGiftedSound
-        Optional tvbot configuration for the gifted alert sound. To disable sounds, set Sound to Disabled.
+        Optional tvbot configuration for the gifted alert sound. To disable sounds, set Sound to Disabled
 
     .PARAMETER SubIcon
         Optional tvbot configuration for the sub alert icon
@@ -134,7 +134,7 @@
         Optional tvbot configuration for the sub alert image
 
     .PARAMETER SubSound
-        Optional tvbot configuration for the sub alert sound. To disable sounds, set Sound to Disabled.
+        Optional tvbot configuration for the sub alert sound. To disable sounds, set Sound to Disabled
 
     .PARAMETER SubText
         Optional tvbot configuration for the sub alert text
@@ -145,17 +145,25 @@
     .PARAMETER AdminCommandFile
         Optional tvbot configuration for the path to the AdminCommandFile, which is in JSON format
 
+        It is recommended that you use Visual Studio Code to edit this file. You can also ignore this file and just use ScriptsToProcess
+
     .PARAMETER ScriptsToProcess
         Optional tvbot configuration for the path to the ScriptsToProcess
+
+        These are scripts that are processed when tvbot receives both a username and message
+
+        ScriptsToProcess are also run when a new sub and new follow are detected
 
     .PARAMETER UserCommandFile
         Optional tvbot configuration for the path to the UserCommandFile, which is in JSON format
 
+        It is recommended that you use Visual Studio Code to edit this file. You can also ignore this file and just use ScriptsToProcess
+
     .PARAMETER Append
-        For values that can append such as ScriptsToProcess, UsersToIgnore and Z, append the new value to the current value
+        For values that can append such as ScriptsToProcess, UsersToIgnore and NotifyType, append the new value to the current value
 
     .PARAMETER Force
-        By default, sensitive values are obscured. Use Force to show them
+        By default, sensitive values are obscured. Use Force to show them unobscured
 
     .PARAMETER WhatIf
         Shows what would happen if the command would run
