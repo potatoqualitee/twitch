@@ -1,7 +1,25 @@
-function Get-TvClip {
+﻿function Get-TvClip {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of clips
+
+    .DESCRIPTION
+        Gets a list of clips
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        Description for MaxResults
+
+    .PARAMETER Next
+        Description for Next
+
+    .EXAMPLE
+        PS> Get-TvClip
+
+        Gets a list of clips
+
 #>
     [CmdletBinding()]
     param
