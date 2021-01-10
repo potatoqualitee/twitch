@@ -14,6 +14,14 @@
 
         In Windows 10, creates a notify icon that shows how many users are currently watching a stream
 
+    .EXAMPLE
+        PS> Set-TvConfig -NotifyColor Magenta
+        PS> Set-TvConfig -DefaultFont Arial
+        PS> Show-TvViewerCount
+
+        Sets the notify color to Magenta and the default font to Arial then, in Windows 10, creates a notify
+        icon that shows how many users are currently watching a stream
+
 #>
     [CmdletBinding()]
     param
