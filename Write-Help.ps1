@@ -62,7 +62,7 @@ Function Write-Help {
                     $description = "The network name or IP address of the Nessus or tenable.sc server"
                 }
                 "Port" {
-                    $description = "The port of the Nessus or tenable.sc server. Defaults to 8834 which is the default port for Nessus."
+                    $description = "The port of the Twitch IRC server"
                 }
                 "Credential" {
                     $description = "The credential object (from Get-Credential) used to log into the target server. Specifies a user account that has permission to send the request. "
@@ -129,7 +129,7 @@ Function Write-Help {
         }
 
         "    .EXAMPLE
-        PS C:\> $name
+        PS> $name
 
         $synopsis
         "
