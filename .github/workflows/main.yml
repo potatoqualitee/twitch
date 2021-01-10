@@ -27,8 +27,8 @@ jobs:
       - name: Load time to import modules
         shell: pwsh
         run: |
-          Import-Module ./tvclient/tvclient.psd1
-          Import-Module ./tvbot/tvbot.psd1
+          Import-Module ./tvclient/tvclient.psd1 -WarningAction SilentlyContinue
+          Import-Module ./tvbot/tvbot.psd1 -WarningAction SilentlyContinue
 
       - name: Run tests
         shell: pwsh
