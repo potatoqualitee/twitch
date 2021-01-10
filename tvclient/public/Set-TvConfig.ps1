@@ -9,10 +9,14 @@
         tvbot configs are initialized only when tvbot is installed and imported
 
     .PARAMETER ClientId
-        Required client id for tvclient. You can get this information from Twitch or twitchtokengenerator.com
+        Required client id for tvclient
+
+        You can get this information from Twitch or twitchtokengenerator.com
 
     .PARAMETER Token
-        Required token for tvclient. You can get generate this token at twitchtokengenerator.com
+        Required token for tvclient
+
+        You can get generate this token at twitchtokengenerator.com
 
     .PARAMETER BitsIcon
         Optional tvbot configuration for the bits alert icon used when BurntToast toast popups are enabled
@@ -21,7 +25,9 @@
         Optional tvbot configuration for the bits alert image
 
     .PARAMETER BitsSound
-        Optional tvbot configuration for the bits alert sound. To disable sounds, set Sound to Disabled
+        Optional tvbot configuration for the bits alert sound
+
+        To disable sounds, set Sound to Disabled
 
     .PARAMETER BitsText
         Optional tvbot configuration for the bits alert text
@@ -90,7 +96,9 @@
     .PARAMETER NotifyType
         Optional tvbot configuration for the type of notifications to show
 
-        Options include none, chat, join, and follow. Defaults to none
+        Options include none, chat, join, and follow
+
+        Defaults to "none"
 
     .PARAMETER RaidIcon
         Optional tvbot configuration for the raid alert icon used when BurntToast toast popups are enabled
@@ -99,7 +107,9 @@
         Optional tvbot configuration for the raid alert image
 
     .PARAMETER RaidSound
-        Optional tvbot configuration for the raid alert sound. To disable sounds, set Sound to Disabled
+        Optional tvbot configuration for the raid alert sound
+
+        To disable sounds, set Sound to Disabled
 
     .PARAMETER RaidText
         Optional tvbot configuration for the raid alert text
@@ -108,9 +118,11 @@
         Optional tvbot configuration for the raid alert title
 
     .PARAMETER Sound
-        Optional tvbot configuration to enable or disable popup sounds.
+        Optional tvbot configuration to enable or disable popup sounds
 
-        Options include Enabled and Disabled. Defaults to Enabled.
+        Options include Enabled and Disabled
+
+        Defaults to Enabled
 
     .PARAMETER SubGiftedText
         Optional tvbot configuration for the gifted sub alert text
@@ -125,7 +137,9 @@
         Optional tvbot configuration for the gifted sub alert iamge
 
     .PARAMETER SubGiftedSound
-        Optional tvbot configuration for the gifted alert sound. To disable sounds, set Sound to Disabled
+        Optional tvbot configuration for the gifted alert sound
+
+        To disable sounds, set Sound to Disabled
 
     .PARAMETER SubIcon
         Optional tvbot configuration for the sub alert icon
@@ -134,7 +148,9 @@
         Optional tvbot configuration for the sub alert image
 
     .PARAMETER SubSound
-        Optional tvbot configuration for the sub alert sound. To disable sounds, set Sound to Disabled
+        Optional tvbot configuration for the sub alert sound
+
+        To disable sounds, set Sound to Disabled
 
     .PARAMETER SubText
         Optional tvbot configuration for the sub alert text
@@ -163,7 +179,7 @@
         For values that can append such as ScriptsToProcess, UsersToIgnore and NotifyType, append the new value to the current value
 
     .PARAMETER Force
-        By default, sensitive values are obscured. Use Force to show them unobscured
+        By default, sensitive values are obscured, use Force to show them unobscured
 
     .PARAMETER WhatIf
         Shows what would happen if the command would run
@@ -172,9 +188,34 @@
         Displays (or disables using -Confirm:$false) a confirmation prompt
 
     .EXAMPLE
-        PS> Set-TvConfig
+        PS> Set-TvConfig -ClientId abcxyz123 -Token 321zyxcba
 
-        Sets properties for configs
+        Sets the ClientId and Token used by all commands
+
+    .EXAMPLE
+        PS> Set-TvConfig -NotifyType chat
+
+        Sets the notify type to "chat", which is used by the tvbot module
+
+    .EXAMPLE
+        PS> Set-TvConfig -BotChannel janedeaux
+
+        Sets the tvbot channel to janedeaux. By default, the bot joins its own channel
+
+    .EXAMPLE
+        PS> Set-TvConfig -DiscordWebhook https://discord.com/api/webhooks/1234567890/ABC123XYZ
+
+        Sets the webhook to be used by Send-TvDiscordMessage in the tvbot module
+
+    .EXAMPLE
+        PS> Set-TvConfig -NotifyColor Magenta
+
+        Sets the notify color used by tvbot to Magenta
+
+    .EXAMPLE
+        PS> Set-TvConfig -HueHub hue.lab.local -HueToken abcdefh01234567ijklmop
+
+        Sets the required information to be used by the tvbot command, Start-TvHueParty
 
 #>
     [CmdletBinding(SupportsShouldProcess)]
