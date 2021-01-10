@@ -1,7 +1,18 @@
-function Get-TvEmote {
+﻿function Get-TvEmote {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Returns the emote web URI for Dark and Light themes
+
+    .DESCRIPTION
+        Returns the emote web URI for Dark and Light themes
+
+    .PARAMETER Id
+        The Id of the target emote
+
+    .EXAMPLE
+        PS> Get-TvEmote -Id 425618
+
+        Gets the web addresses for emote id 425618 (LUL)
 
 #>
     [CmdletBinding()]
