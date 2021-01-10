@@ -37,8 +37,8 @@ foreach ($file in (Get-ChildItem $PSScriptRoot -Recurse -File -Filter "*.Tests.p
 
 $testresults | Sort-Object Describe, Context, Name, Result, Message | Format-List
 
-if ($totalFailed -eq 0) { Write-Host -Message "All <c='em'>$totalRun</c> tests executed without failure" }
-else { Write-Host -Message "<c='em'>$totalFailed tests</c> out of <c='sub'>$totalRun</c> tests failed" }
+if ($totalFailed -eq 0) { Write-Host -Message "All $totalRun tests executed without failure" }
+else { Write-Host -Message "$totalFailed tests out of $totalRun tests failed" }
 
 if ($totalFailed -gt 0) {
     throw "$totalFailed / $totalRun tests failed"
