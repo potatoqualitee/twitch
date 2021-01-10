@@ -7,7 +7,11 @@ function Wait-TvResponse {
         Waits for the IRC Server to send data.
 
     .EXAMPLE
-        PS>
+        PS> Connect-TvServer
+        PS> Join-TvChannel
+        PS> Wait-TvResponse
+
+        Connects to IRC, joins the BotChannel channel and waits for a response
     #>
     [CmdletBinding()]
     param ()

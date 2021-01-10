@@ -8,14 +8,14 @@ function Split-TvChannel {
         Leaves a channel.
 
     .PARAMETER Channel
-        The channel to leave.
+        The channel to leave. If no channel is specified, the configuration value for BotChannel will be used.
 
     .EXAMPLE
         PS> Split-TvChannel -Channel mychannel
     #>
     [CmdletBinding()]
     Param (
-        [string]$Channel
+        [string]$Channel = (Get-TvConfigValue -Name BotChannel)
     )
     process {
         if (-not $script:writer.BaseStream) {
