@@ -1,8 +1,23 @@
-function Search-TvCategory {
+﻿function Search-TvCategory {
     <#
     .SYNOPSIS
-        Gets Twitch User
-    #>
+        Searches a list of Twitch categories
+
+    .DESCRIPTION
+        Searches a list of Twitch categories
+
+    .PARAMETER Query
+        The keyword or keywords you'd like to search
+
+    .PARAMETER MaxResults
+        The maximum number of results to return. The max value is 50 by default and can be no larger than 100.
+
+    .EXAMPLE
+        PS> Search-TvCategory -Query PowerShell
+
+        Searches a list of twitch categories related to PowerShell
+
+#>
     [CmdletBinding()]
     param
     (

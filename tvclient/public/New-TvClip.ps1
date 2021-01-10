@@ -1,8 +1,20 @@
-function New-TvClip {
+﻿function New-TvClip {
     <#
     .SYNOPSIS
-        Gets Twitch User
-    #>
+        Creates new clips
+
+    .DESCRIPTION
+        Creates new clips
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .EXAMPLE
+        PS> New-TvClip
+
+        Creates a new clip
+
+#>
     [CmdletBinding()]
     param(
         [string]$UserName

@@ -1,7 +1,30 @@
-function Get-TvVideo {
+﻿function Get-TvVideo {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of videos
+
+    .DESCRIPTION
+        Gets a list of videos
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        The maximum number of results to return. The max value is 50 by default and can be no larger than 100.
+
+    .PARAMETER Next
+        The next set of results
+
+    .EXAMPLE
+        PS> Get-TvVideo
+
+        Gets a list of your VODs
+
+    .EXAMPLE
+        PS> Get-TvVideo -UserName potatoqualitee, CodeWithSean
+
+        Gets a list of potatoqualitee's and CodeWithSean's VODs
+
 #>
     [CmdletBinding()]
     param

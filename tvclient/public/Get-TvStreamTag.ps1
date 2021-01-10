@@ -1,7 +1,25 @@
-function Get-TvStreamTag {
+﻿function Get-TvStreamTag {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of stream tags
+
+    .DESCRIPTION
+        Gets a list of stream tags
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        The maximum number of results to return. The max value is 50 by default and can be no larger than 100.
+
+    .PARAMETER Next
+        The next set of results
+
+    .EXAMPLE
+        PS> Get-TvStreamTag
+
+        Gets a list of stream tags
+
 #>
     [CmdletBinding()]
     param
