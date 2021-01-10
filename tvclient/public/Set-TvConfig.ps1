@@ -219,13 +219,13 @@
 
     .EXAMPLE
         PS> $splat = @{
-                ClientId = "abcdefh01234567ijklmop"
-                Token    = "01234567fghijklmnopqrs"
+                BotClientId = "abcdefh01234567ijklmop"
+                BotToken    = "01234567fghijklmnopqrs"
             }
 
         PS> Set-TvConfig @splat
 
-        Sets the ClientId and Token used by all tvclient commands
+        Sets the BotClientId and BotToken used by tvbot
 
 #>
     [CmdletBinding(SupportsShouldProcess)]
