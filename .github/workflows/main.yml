@@ -27,4 +27,5 @@ jobs:
       - name: Initialize the nessus server with admin user and license
         shell: pwsh
         run: |
+          Import-Module ./tvclient/tvclient.psd1
           Import-Module ./tvbot/tvbot.psd1
