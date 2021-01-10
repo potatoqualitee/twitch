@@ -8,6 +8,7 @@ Write-Host "Starting Tests" -ForegroundColor Green
 Write-Host -Message "Importing Module"
 Import-Module "$PSScriptRoot\..\tvclient\tvclient.psd1"
 Import-Module "$PSScriptRoot\..\tvbot\tvbot.psd1"
+Set-TvConfig -ClientId $env:clientid -Token $env:token
 
 $totalFailed = 0
 $totalRun = 0
@@ -15,7 +16,7 @@ $totalRun = 0
 $testresults = @()
 
 Write-Host -Message "Proceeding with individual tests"
-foreach ($file in (Get-ChildItem "$PSScriptRoot\public" -Recurse -File -Filter "*.Tests.ps1")) {
+foreach ($file in (Get-ChildItem $PSScriptRoot -Recurse -File -Filter "*.Tests.ps1")) {
     Write-Host -Message "Executing $($file.Name)"
     $results = Invoke-Pester -Script $file.FullName -PassThru
     foreach ($result in $results) {
