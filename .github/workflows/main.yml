@@ -26,6 +26,11 @@ jobs:
           Install-Module ${{ steps.psmodulecache.outputs.needed }} -ErrorAction Stop
       - name: Import tvclient and tvbot
         shell: pwsh
+        env:
+          clientid: ${{secrets.CLIENTID}}
+          token: ${{secrets.TOKEN}}
         run: |
           Import-Module ./tvclient/tvclient.psd1
           Import-Module ./tvbot/tvbot.psd1
+          Set-TvConfig -ClientId $env:clientid -Token $env:token
+          Get-TvFollower
