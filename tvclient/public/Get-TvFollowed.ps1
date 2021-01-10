@@ -1,7 +1,29 @@
-function Get-TvFollowed {
+﻿function Get-TvFollowed {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of everyone you or someone else has followed
+
+    .DESCRIPTION
+        Gets a list of everyone you or someone else has followed
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        Description for MaxResults
+
+    .PARAMETER Next
+        Description for Next
+
+    .EXAMPLE
+        PS> Get-TvFollowed
+
+        Gets a list of everyone you have followed
+
+    .EXAMPLE
+        PS> Get-TvFollowed -UserName potatoqualitee
+
+        Gets a list of everyone potatoqualitee has followed
 #>
     [CmdletBinding()]
     param
