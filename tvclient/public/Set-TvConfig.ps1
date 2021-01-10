@@ -190,7 +190,7 @@
     .EXAMPLE
         PS> Set-TvConfig -ClientId abcxyz123 -Token 321zyxcba
 
-        Sets the ClientId and Token used by all commands
+        Sets the ClientId and Token used by all tvclient commands
 
     .EXAMPLE
         PS> Set-TvConfig -NotifyType chat
@@ -216,6 +216,16 @@
         PS> Set-TvConfig -HueHub hue.lab.local -HueToken abcdefh01234567ijklmop
 
         Sets the required information to be used by the tvbot command, Start-TvHueParty
+
+    .EXAMPLE
+        PS> $splat = @{
+                ClientId = "abcdefh01234567ijklmop"
+                Token    = "01234567fghijklmnopqrs"
+            }
+
+        PS> Set-TvConfig @splat
+
+        Sets the ClientId and Token used by all tvclient commands
 
 #>
     [CmdletBinding(SupportsShouldProcess)]
