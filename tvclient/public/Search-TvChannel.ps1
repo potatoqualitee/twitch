@@ -1,8 +1,19 @@
-function Search-TvChannel {
+﻿function Search-TvChannel {
     <#
     .SYNOPSIS
-        Gets Twitch User
-    #>
+        Searches a list of Twitch channels
+
+    .DESCRIPTION
+        Searches a list of Twitch channels
+
+    .PARAMETER Query
+        The keyword or keywords you'd like to search
+
+    .EXAMPLE
+        PS> Search-TvChannel -Query PowerShell
+
+        Searches a list of twitch channels related to PowerShell
+#>
     [CmdletBinding()]
     param
     (

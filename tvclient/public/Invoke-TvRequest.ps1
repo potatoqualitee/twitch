@@ -1,13 +1,35 @@
-function Invoke-TvRequest {
+﻿function Invoke-TvRequest {
     <#
     .SYNOPSIS
-        Connects to a Twitch
+        Invokes a Twitch API request
 
     .DESCRIPTION
-        Connects to a Twitch
+        Invokes a Twitch API request.
+
+        This is basically an internal command that was added to the exported commands for convenience.
+
+    .PARAMETER ClientId
+        The target ClientId. Uses the ClientId config value by default.
+
+    .PARAMETER Token
+        The target Token. Uses the Token (Get-TvConfigValue -Name Token) config value by default.
+
+    .PARAMETER Path
+        The destination path. Basically, anything after https://api.twitch.tv/helix
+
+    .PARAMETER Method
+        The HTTP method, including Get, Post, Put and Delete
+
+    .PARAMETER Body
+        The body, in hashtable format
+
+    .PARAMETER Raw
+        By default, results are processed into PowerShell-styled output. Use Raw to see exactly what comes back from twitch.
 
     .EXAMPLE
-        PS C:\>
+        PS> Invoke-TvRequest -Path /users
+
+        Executes a GET on https://api.twitch.tv/helix/users
 
 #>
     [CmdletBinding()]

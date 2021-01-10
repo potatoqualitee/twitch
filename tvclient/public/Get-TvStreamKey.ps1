@@ -1,7 +1,24 @@
-function Get-TvStreamKey {
+﻿function Get-TvStreamKey {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets your stream key. By default, the output is obscured. Use -Force to show the key.
+
+    .DESCRIPTION
+        Gets your stream key. By default, the output is obscured. Use -Force to show the key.
+
+    .PARAMETER Force
+        Gets your stream key. By default, the output is obscured. Use -Force to show the key.
+
+    .EXAMPLE
+        PS> Get-TvStreamKey
+
+        Gets an obscured streamkey
+
+    .EXAMPLE
+        PS> Get-TvStreamKey -Force
+
+        Gets an unobscured streamkey
+
 #>
     [CmdletBinding()]
     param(

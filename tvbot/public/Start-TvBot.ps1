@@ -1,26 +1,41 @@
 function Start-TvBot {
     <#
     .SYNOPSIS
-        Combo-command that gets the bot completely online and responding.
+        Combo-command that gets the bot completely online and responding
 
     .DESCRIPTION
-        Combo-command that gets the bot completely online and responding.
+        Combo-command that gets the bot completely online and responding
 
     .PARAMETER Server
         The Twitch IRC server. Defaults to irc.chat.twitch.tv.
 
     .PARAMETER Port
-        The Twitch IRC Port. Defaults to 6697.
+        The Twitch IRC port
+
+        Defaults to 6697
 
     .PARAMETER NoAutoReconnect
         Do not attempt to automatically reconnect if disconnected
 
     .EXAMPLE
-        PS> Start-TvBot -Name mypsbot
+        PS> $splat = @{
+                BotClientId      = "abcdefh01234567ijklmop"
+                BotToken         = "01234567fghijklmnopqrs"
+                BotOwner         = "potatoqualitee", "luzkenin"
+                ScriptsToProcess = "C:\bot\response.ps1"
+            }
 
-        Connects to irc.chat.twitch.tv on port 6697 as a bot with the Twitch account, mypsbot. potatoqualitee is the owner.
+        PS> Set-TvConfig @splat
+        PS> Start-TvBot
 
-        Uses some default test commands. !ping and !pwd for users and !quit for admins.
+        Connects to irc.chat.twitch.tv on port 6697 with the given bot's client id and token
+
+        potatoqualitee and luzkenin are set as the owners and owners can execute admin commands
+        from AdminCommandFile
+
+        Admins can !quit
+
+        Users can execute commands listed in UserCommandFile, such as !ping and !say
     #>
     [CmdletBinding()]
     param (

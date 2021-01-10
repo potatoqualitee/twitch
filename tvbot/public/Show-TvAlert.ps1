@@ -1,7 +1,60 @@
-function Show-TvAlert {
-    <#Should base it on this
-    https://github.com/potatoqualitee/twitch/blob/9495ef024cf4a7b8da7be8dd63439a27564f7edf/private/Write-TvOutput.ps1
-    #>
+﻿function Show-TvAlert {
+    <#
+    .SYNOPSIS
+        Shows an awesome alert. This command is awesomest on Windows 10 with BurntToast installed
+
+    .DESCRIPTION
+        Shows an awesome alert. This command is awesomest on Windows 10 with BurntToast installed
+
+        This command causes alerts to show, and can help you when designing message/follow/sub alerts
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER Type
+        The type of alert, including "Bits", "Follow", "Raid", "SubGifted", "Sub", and "Message"
+
+    .PARAMETER Message
+        The body of the message
+
+    .PARAMETER Title
+        The title displayed on the toast popup
+
+    .PARAMETER MiscNumber
+        Helper number for bits and gifted subs
+
+    .PARAMETER MiscString
+        Helper message for bits and gifted subs
+
+    .PARAMETER Emote
+        The ID of an emote
+
+    .EXAMPLE
+        PS> Show-TvAlert -UserName luzkenin -Type SubGifted -MiscNumber 3 -MiscString everyone
+
+        Shows an alert for a Tier 3 gifted sub from luzkenin to everyone
+
+    .EXAMPLE
+        PS> Show-TvAlert -Message "Welcome to the fake chat" -Type Message -UserName potatoqualitee
+
+        Shows a chat message alert from potatoqualitee
+
+    .EXAMPLE
+        PS> Show-TvAlert -UserName corbob -Type Bits -MiscNumber 1000
+
+        Shows a bits alert from corbob for 1000 bits
+
+    .EXAMPLE
+        PS> Show-TvAlert -UserName MrMarkWest -Type Follow
+
+        Shows a follow alert from MrMarkWest
+
+    .EXAMPLE
+        PS> Show-TvAlert -UserName mrmagou -Type Sub -MiscNumber 1
+
+        Shows an alert for a Tier 1 sub
+
+#>
     [CmdletBinding()]
     param (
         [parameter(Mandatory)]

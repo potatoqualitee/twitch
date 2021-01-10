@@ -1,13 +1,18 @@
-function Edit-TvConfigFile {
+﻿function Edit-TvConfigFile {
     <#
     .SYNOPSIS
-        Gets configuration values
+        Edits the config file
 
     .DESCRIPTION
-        Gets configuration values
+        Edits the config file
+
+    .PARAMETER Editor
+        The desired editor such as notepad, code or vi
 
     .EXAMPLE
-        PS C:\>
+        PS> Edit-TvConfigFile
+
+        Edits the config file using code, notepad, vi or the default opening app
 
 #>
     [CmdletBinding()]

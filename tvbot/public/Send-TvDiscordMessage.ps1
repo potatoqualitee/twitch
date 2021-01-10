@@ -1,13 +1,18 @@
-function Send-TvDiscordMessage {
+﻿function Send-TvDiscordMessage {
     <#
     .SYNOPSIS
-        Connects to a Twitch
+        Submits a message to a Discord webhook
 
     .DESCRIPTION
-        Connects to a Twitch
+        Submits a message to a Discord webhook
+
+    .PARAMETER Message
+        The message to be sent
 
     .EXAMPLE
-        PS C:\>
+        PS> Send-TvDiscordMessage
+
+        Submits a message to a Discord webhook
 
 #>
     [CmdletBinding()]

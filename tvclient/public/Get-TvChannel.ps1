@@ -1,7 +1,25 @@
-function Get-TvChannel {
+﻿function Get-TvChannel {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets channel information
+
+    .DESCRIPTION
+        Gets channel information
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        Description for MaxResults
+
+    .PARAMETER Next
+        Description for Next
+
+    .EXAMPLE
+        PS> Get-TvChannel
+
+        Gets a list of channels
+
 #>
     [CmdletBinding()]
     param

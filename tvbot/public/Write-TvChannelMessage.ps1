@@ -1,10 +1,13 @@
 function Write-TvChannelMessage {
     <#
     .SYNOPSIS
-        Writes a message to a channel.
+        Writes a message to a channel
 
     .DESCRIPTION
-        Writes a message to a channel.
+        Writes a message to a channel
+
+    .PARAMETER Message
+        The message to send
 
     .EXAMPLE
         PS> Write-TvChannelMessage -Message "Test!"

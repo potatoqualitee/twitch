@@ -1,13 +1,15 @@
 function Get-TvConfigValue {
     <#
     .SYNOPSIS
-        Gets configuration values
+        Gets the value for a specified configuration. This comand will not obscure sensitive information.
 
     .DESCRIPTION
-        Gets configuration values
+        Gets the value for a specified configuration. This comand will not obscure sensitive information.
 
     .EXAMPLE
-        PS C:\>
+        PS C:\> Get-TvConfigValue -Name BotToken
+
+        Gets the BotToken value
 
 #>
     [CmdletBinding()]

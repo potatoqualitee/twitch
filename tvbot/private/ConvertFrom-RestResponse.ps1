@@ -10,14 +10,14 @@
         The rest response to parse from pipeline
 
     .EXAMPLE
-        PS C:\> $session = Connect-TNServer -ComputerName nessus -Credential admin
-        PS C:\> $params = @{
+        PS> $session = Connect-TNServer -ComputerName nessus -Credential admin
+        PS> $params = @{
                     SessionObject   = $session
                     Path            = "/folders"
                     Method          = "GET"
                     EnableException = $EnableException
                 }
-        PS C:\> Invoke-TNRequest @params | ConvertFrom-RestResponse
+        PS> Invoke-TNRequest @params | ConvertFrom-RestResponse
 
         Connects to https://nessus:8834 using the admin credential, gets the results in JSON format then converts to PowerShell styled output
 

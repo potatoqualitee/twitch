@@ -1,13 +1,15 @@
-function Reset-TvConfig {
+﻿function Reset-TvConfig {
     <#
     .SYNOPSIS
-        Gets configuration values
+        Resets all of your tvbot and tvclient configs
 
     .DESCRIPTION
-        Gets configuration values
+        Resets all of your tvbot and tvclient configs
 
     .EXAMPLE
-        PS C:\>
+        PS> Reset-TvConfig
+
+        Resets all of your tvbot and tvclient configs
 
 #>
     [CmdletBinding()]

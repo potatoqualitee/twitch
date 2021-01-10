@@ -1,13 +1,26 @@
-function Get-TvConfig {
+﻿function Get-TvConfig {
     <#
     .SYNOPSIS
-        Gets configuration values
+        Gets a list of all set configuration values
 
     .DESCRIPTION
-        Gets configuration values
+        Gets a list of all set configuration values
+
+    .PARAMETER Name
+        The name of a specific config or configs
+
+    .PARAMETER Force
+        By default, sensitive values are obscured. Use Force to show tokens and keys.
 
     .EXAMPLE
-        PS C:\>
+        PS> Get-TvConfig
+
+        Gets a list of configs while obscuring the values of tokens, keys, clientids, etc.
+
+    .EXAMPLE
+        PS> Get-TvConfig -Force
+
+        By default, sensitive values are obscured. Using Force will show you tokens, keys, clientids, etc.
 
 #>
     [CmdletBinding()]

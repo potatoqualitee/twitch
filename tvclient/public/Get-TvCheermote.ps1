@@ -1,7 +1,25 @@
-function Get-TvCheermote {
+﻿function Get-TvCheermote {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of cheermotes
+
+    .DESCRIPTION
+        Gets a list of cheermotes
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        Description for MaxResults
+
+    .PARAMETER Next
+        Description for Next
+
+    .EXAMPLE
+        PS> Get-TvCheermote
+
+        Gets a list of cheermotes
+
 #>
     [CmdletBinding()]
     param

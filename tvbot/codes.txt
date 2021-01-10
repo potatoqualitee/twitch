@@ -6,20 +6,20 @@ Id	Name	RFC	Message	Description
 004	RPL_MYINFO	KineIRCd	<server_name> <version> <user_modes> <chan_modes> <channel_modes_with_params> <user_modes_with_params> <server_modes> <server_modes_with_params>	Same as RFC2812 however with additional fields to avoid additional 005 burden.
 005	RPL_BOUNCE	RFC2812	:Try server <server_name>, port <port_number>	Sent by the server to a user to suggest an alternative server, sometimes used when the connection is refused because the server is already full. Also known as RPL_SLINE (AustHex), and RPL_REDIR Also see #010.
 005	RPL_ISUPPORT			Also known as RPL_PROTOCTL (Bahamut, Unreal, Ultimate)
-006	RPL_MAP	Unreal		
-007	RPL_MAPEND	Unreal		
+006	RPL_MAP	Unreal
+007	RPL_MAPEND	Unreal
 008	RPL_SNOMASK	ircu		Server notice mask (hex)
-009	RPL_STATMEMTOT	ircu		
+009	RPL_STATMEMTOT	ircu
 010	RPL_BOUNCE		<hostname> <port> :<info>	Sent to the client to redirect it to another server. Also known as RPL_REDIR
-010	RPL_STATMEM	ircu		
-014	RPL_YOURCOOKIE	Hybrid?		
-015	RPL_MAP	ircu		
-016	RPL_MAPMORE	ircu		
-017	RPL_MAPEND	ircu		
-042	RPL_YOURID	IRCnet		
+010	RPL_STATMEM	ircu
+014	RPL_YOURCOOKIE	Hybrid?
+015	RPL_MAP	ircu
+016	RPL_MAPMORE	ircu
+017	RPL_MAPEND	ircu
+042	RPL_YOURID	IRCnet
 043	RPL_SAVENICK	IRCnet	:<info>	Sent to the client when their nickname was forced to change due to a collision
-050	RPL_ATTEMPTINGJUNC	aircd		
-051	RPL_ATTEMPTINGREROUTE	aircd		
+050	RPL_ATTEMPTINGJUNC	aircd
+051	RPL_ATTEMPTINGREROUTE	aircd
 200	RPL_TRACELINK	RFC1459	Link <version>[.<debug_level>] <destination> <next_server> [V<protocol_version> <link_uptime_in_seconds> <backstream_sendq> <upstream_sendq>]	See RFC
 201	RPL_TRACECONNECTING	RFC1459	Try. <class> <server>	See RFC
 202	RPL_TRACEHANDSHAKE	RFC1459	H.S. <class> <server>	See RFC
@@ -30,7 +30,7 @@ Id	Name	RFC	Message	Description
 207	RPL_TRACESERVICE	RFC2812	Service <class> <name> <type> <active_type>	See RFC
 208	RPL_TRACENEWTYPE	RFC1459	<newtype> 0 <client_name>	See RFC
 209	RPL_TRACECLASS	RFC2812	Class <class> <count>	See RFC
-210	RPL_TRACERECONNECT	RFC2812		
+210	RPL_TRACERECONNECT	RFC2812
 210	RPL_STATS	aircd		Used instead of having multiple stats numerics
 211	RPL_STATSLINKINFO	RFC1459	<linkname> <sendq> <sent_msgs> <sent_bytes> <recvd_msgs> <rcvd_bytes> <time_open>	Reply to STATS (See RFC)
 212	RPL_STATSCOMMANDS	RFC1459	<command> <count> [<byte_count> <remote_count>]	Reply to STATS (See RFC)
@@ -38,57 +38,57 @@ Id	Name	RFC	Message	Description
 214	RPL_STATSNLINE	RFC1459	N <host> * <name> <port> <class>	Reply to STATS (See RFC), Also known as RPL_STATSOLDNLINE (ircu, Unreal)
 215	RPL_STATSILINE	RFC1459	I <host> * <host> <port> <class>	Reply to STATS (See RFC)
 216	RPL_STATSKLINE	RFC1459	K <host> * <username> <port> <class>	Reply to STATS (See RFC)
-217	RPL_STATSQLINE	RFC1459		
-217	RPL_STATSPLINE	ircu		
+217	RPL_STATSQLINE	RFC1459
+217	RPL_STATSPLINE	ircu
 218	RPL_STATSYLINE	RFC1459	Y <class> <ping_freq> <connect_freq> <max_sendq>	Reply to STATS (See RFC)
 219	RPL_ENDOFSTATS	RFC1459	<query> :<info>	End of RPL_STATS* list.
-220	RPL_STATSPLINE	Hybrid		
-220	RPL_STATSBLINE	Bahamut, Unreal		
+220	RPL_STATSPLINE	Hybrid
+220	RPL_STATSBLINE	Bahamut, Unreal
 221	RPL_UMODEIS	RFC1459	<user_modes> [<user_mode_params>]	Information about a user's own modes. Some daemons have extended the mode command and certain modes take parameters (like channel modes).
-222	RPL_MODLIST			
-222	RPL_SQLINE_NICK	Unreal		
-222	RPL_STATSBLINE	Bahamut		
-223	RPL_STATSELINE	Bahamut		
-223	RPL_STATSGLINE	Unreal		
-224	RPL_STATSFLINE	Hybrid, Bahamut		
-224	RPL_STATSTLINE	Unreal		
-225	RPL_STATSDLINE	Hybrid		
-225	RPL_STATSZLINE	Bahamut		
-225	RPL_STATSELINE	Unreal		
-226	RPL_STATSCOUNT	Bahamut		
-226	RPL_STATSNLINE	Unreal		
-227	RPL_STATSGLINE	Bahamut		
-227	RPL_STATSVLINE	Unreal		
-228	RPL_STATSQLINE	ircu		
-231	RPL_SERVICEINFO	RFC1459		
-232	RPL_ENDOFSERVICES	RFC1459		
-232	RPL_RULES	Unreal		
-233	RPL_SERVICE	RFC1459		
+222	RPL_MODLIST
+222	RPL_SQLINE_NICK	Unreal
+222	RPL_STATSBLINE	Bahamut
+223	RPL_STATSELINE	Bahamut
+223	RPL_STATSGLINE	Unreal
+224	RPL_STATSFLINE	Hybrid, Bahamut
+224	RPL_STATSTLINE	Unreal
+225	RPL_STATSDLINE	Hybrid
+225	RPL_STATSZLINE	Bahamut
+225	RPL_STATSELINE	Unreal
+226	RPL_STATSCOUNT	Bahamut
+226	RPL_STATSNLINE	Unreal
+227	RPL_STATSGLINE	Bahamut
+227	RPL_STATSVLINE	Unreal
+228	RPL_STATSQLINE	ircu
+231	RPL_SERVICEINFO	RFC1459
+232	RPL_ENDOFSERVICES	RFC1459
+232	RPL_RULES	Unreal
+233	RPL_SERVICE	RFC1459
 234	RPL_SERVLIST	RFC2812	<name> <server> <mask> <type> <hopcount> <info>	A service entry in the service list
 235	RPL_SERVLISTEND	RFC2812	<mask> <type> :<info>	Termination of an RPL_SERVLIST list
 236	RPL_STATSVERBOSE	ircu		Verbose server list?
 237	RPL_STATSENGINE	ircu		Engine name?
 238	RPL_STATSFLINE	ircu		Feature lines?
-239	RPL_STATSIAUTH	IRCnet		
-240	RPL_STATSVLINE	RFC2812		
-240	RPL_STATSXLINE	AustHex		
+239	RPL_STATSIAUTH	IRCnet
+240	RPL_STATSVLINE	RFC2812
+240	RPL_STATSXLINE	AustHex
 241	RPL_STATSLLINE	RFC1459	L <hostmask> * <servername> <maxdepth>	Reply to STATS (See RFC)
 242	RPL_STATSUPTIME	RFC1459	:Server Up <days> days <hours>:<minutes>:<seconds>	Reply to STATS (See RFC)
 243	RPL_STATSOLINE	RFC1459	O <hostmask> * <nick> [:<info>]	Reply to STATS (See RFC); The info field is an extension found in some IRC daemons, which returns info such as an e-mail address or the name/job of an operator
 244	RPL_STATSHLINE	RFC1459	H <hostmask> * <servername>	Reply to STATS (See RFC)
-245	RPL_STATSSLINE	Bahamut, IRCnet, Hybrid		
-246	RPL_STATSPING	RFC2812		
-246	RPL_STATSTLINE	ircu		
-246	RPL_STATSULINE	Hybrid		
-247	RPL_STATSBLINE	RFC2812		
-247	RPL_STATSXLINE	Hybrid, PTlink, Unreal		
-247	RPL_STATSGLINE	ircu		
-248	RPL_STATSULINE	ircu		
-248	RPL_STATSDEFINE	IRCnet		
+245	RPL_STATSSLINE	Bahamut, IRCnet, Hybrid
+246	RPL_STATSPING	RFC2812
+246	RPL_STATSTLINE	ircu
+246	RPL_STATSULINE	Hybrid
+247	RPL_STATSBLINE	RFC2812
+247	RPL_STATSXLINE	Hybrid, PTlink, Unreal
+247	RPL_STATSGLINE	ircu
+248	RPL_STATSULINE	ircu
+248	RPL_STATSDEFINE	IRCnet
 249	RPL_STATSULINE			Extension to RFC1459?
-249	RPL_STATSDEBUG	Hybrid		
-250	RPL_STATSDLINE	RFC2812		
-250	RPL_STATSCONN	ircu, Unreal		
+249	RPL_STATSDEBUG	Hybrid
+250	RPL_STATSDLINE	RFC2812
+250	RPL_STATSCONN	ircu, Unreal
 251	RPL_LUSERCLIENT	RFC1459	:There are <int> users and <int> invisible on <int> servers	Reply to LUSERS command, other versions exist (eg. RFC2812); Text may vary.
 252	RPL_LUSEROP	RFC1459	<int> :<info>	Reply to LUSERS command - Number of IRC operators online
 253	RPL_LUSERUNKNOWN	RFC1459	<int> :<info>	Reply to LUSERS command - Number of unknown/unregistered connections
@@ -104,111 +104,111 @@ Id	Name	RFC	Message	Description
 263	RPL_TRYAGAIN	RFC2812	<command> :<info>	When a server drops a command without processing it, it MUST use this reply. Also known as RPL_LOAD_THROTTLED and RPL_LOAD2HI, I'm presuming they do the same thing.
 265	RPL_LOCALUSERS	aircd, Hybrid, Hybrid, Bahamut		Also known as RPL_CURRENT_LOCAL
 266	RPL_GLOBALUSERS	aircd, Hybrid, Hybrid, Bahamut		Also known as RPL_CURRENT_GLOBAL
-267	RPL_START_NETSTAT	aircd		
-268	RPL_NETSTAT	aircd		
-269	RPL_END_NETSTAT	aircd		
-270	RPL_PRIVS	ircu		
-271	RPL_SILELIST	ircu		
-272	RPL_ENDOFSILELIST	ircu		
-273	RPL_NOTIFY	aircd		
-274	RPL_ENDNOTIFY	aircd		
-274	RPL_STATSDELTA	IRCnet		
-275	RPL_STATSDLINE	ircu, Ultimate		
-276	RPL_VCHANEXIST			
-277	RPL_VCHANLIST			
-278	RPL_VCHANHELP			
-280	RPL_GLIST	ircu		
-281	RPL_ENDOFGLIST	ircu		
-281	RPL_ACCEPTLIST			
-282	RPL_ENDOFACCEPT			
-282	RPL_JUPELIST	ircu		
-283	RPL_ALIST			
-283	RPL_ENDOFJUPELIST	ircu		
-284	RPL_ENDOFALIST			
-284	RPL_FEATURE	ircu		
-285	RPL_GLIST_HASH			
-285	RPL_CHANINFO_HANDLE	aircd		
-285	RPL_NEWHOSTIS	QuakeNet		
-286	RPL_CHANINFO_USERS	aircd		
-286	RPL_CHKHEAD	QuakeNet		
-287	RPL_CHANINFO_CHOPS	aircd		
-287	RPL_CHANUSER	QuakeNet		
-288	RPL_CHANINFO_VOICES	aircd		
-288	RPL_PATCHHEAD	QuakeNet		
-289	RPL_CHANINFO_AWAY	aircd		
-289	RPL_PATCHCON	QuakeNet		
-290	RPL_CHANINFO_OPERS	aircd		
-290	RPL_HELPHDR	Unreal		
-290	RPL_DATASTR	QuakeNet		
-291	RPL_CHANINFO_BANNED	aircd		
-291	RPL_HELPOP	Unreal		
-291	RPL_ENDOFCHECK	QuakeNet		
-292	RPL_CHANINFO_BANS	aircd		
-292	RPL_HELPTLR	Unreal		
-293	RPL_CHANINFO_INVITE	aircd		
-293	RPL_HELPHLP	Unreal		
-294	RPL_CHANINFO_INVITES	aircd		
-294	RPL_HELPFWD	Unreal		
-295	RPL_CHANINFO_KICK	aircd		
-295	RPL_HELPIGN	Unreal		
-296	RPL_CHANINFO_KICKS	aircd		
-299	RPL_END_CHANINFO	aircd		
+267	RPL_START_NETSTAT	aircd
+268	RPL_NETSTAT	aircd
+269	RPL_END_NETSTAT	aircd
+270	RPL_PRIVS	ircu
+271	RPL_SILELIST	ircu
+272	RPL_ENDOFSILELIST	ircu
+273	RPL_NOTIFY	aircd
+274	RPL_ENDNOTIFY	aircd
+274	RPL_STATSDELTA	IRCnet
+275	RPL_STATSDLINE	ircu, Ultimate
+276	RPL_VCHANEXIST
+277	RPL_VCHANLIST
+278	RPL_VCHANHELP
+280	RPL_GLIST	ircu
+281	RPL_ENDOFGLIST	ircu
+281	RPL_ACCEPTLIST
+282	RPL_ENDOFACCEPT
+282	RPL_JUPELIST	ircu
+283	RPL_ALIST
+283	RPL_ENDOFJUPELIST	ircu
+284	RPL_ENDOFALIST
+284	RPL_FEATURE	ircu
+285	RPL_GLIST_HASH
+285	RPL_CHANINFO_HANDLE	aircd
+285	RPL_NEWHOSTIS	QuakeNet
+286	RPL_CHANINFO_USERS	aircd
+286	RPL_CHKHEAD	QuakeNet
+287	RPL_CHANINFO_CHOPS	aircd
+287	RPL_CHANUSER	QuakeNet
+288	RPL_CHANINFO_VOICES	aircd
+288	RPL_PATCHHEAD	QuakeNet
+289	RPL_CHANINFO_AWAY	aircd
+289	RPL_PATCHCON	QuakeNet
+290	RPL_CHANINFO_OPERS	aircd
+290	RPL_HELPHDR	Unreal
+290	RPL_DATASTR	QuakeNet
+291	RPL_CHANINFO_BANNED	aircd
+291	RPL_HELPOP	Unreal
+291	RPL_ENDOFCHECK	QuakeNet
+292	RPL_CHANINFO_BANS	aircd
+292	RPL_HELPTLR	Unreal
+293	RPL_CHANINFO_INVITE	aircd
+293	RPL_HELPHLP	Unreal
+294	RPL_CHANINFO_INVITES	aircd
+294	RPL_HELPFWD	Unreal
+295	RPL_CHANINFO_KICK	aircd
+295	RPL_HELPIGN	Unreal
+296	RPL_CHANINFO_KICKS	aircd
+299	RPL_END_CHANINFO	aircd
 300	RPL_NONE	RFC1459		Dummy reply, supposedly only used for debugging/testing new features, however has appeared in production daemons.
 301	RPL_AWAY	RFC1459	<nick> :<message>	Used in reply to a command directed at a user who is marked as away
 301	RPL_AWAY	KineIRCd	<nick> <seconds away> :<message>	Identical to RPL_AWAY, however this includes the number of seconds the user has been away for. This is designed to discourage the need for people to use those horrible scripts which set the AWAY message every 30 seconds in order to include an 'away since' timer.
 302	RPL_USERHOST	RFC1459	:*1<reply> *( ' ' <reply> )	Reply used by USERHOST (see RFC)
 303	RPL_ISON	RFC1459	:*1<nick> *( ' ' <nick> )	Reply to the ISON command (see RFC)
-304	RPL_TEXT			
+304	RPL_TEXT
 305	RPL_UNAWAY	RFC1459	:<info>	Reply from AWAY when no longer marked as away
 306	RPL_NOWAWAY	RFC1459	:<info>	Reply from AWAY when marked away
-307	RPL_USERIP			
-307	RPL_WHOISREGNICK	Bahamut, Unreal		
-307	RPL_SUSERHOST	AustHex		
-308	RPL_NOTIFYACTION	aircd		
-308	RPL_WHOISADMIN	Bahamut		
-308	RPL_RULESSTART	Unreal		
-309	RPL_NICKTRACE	aircd		
-309	RPL_WHOISSADMIN	Bahamut		
-309	RPL_ENDOFRULES	Unreal		
-309	RPL_WHOISHELPER	AustHex		
-310	RPL_WHOISSVCMSG	Bahamut		
-310	RPL_WHOISHELPOP	Unreal		
-310	RPL_WHOISSERVICE	AustHex		
+307	RPL_USERIP
+307	RPL_WHOISREGNICK	Bahamut, Unreal
+307	RPL_SUSERHOST	AustHex
+308	RPL_NOTIFYACTION	aircd
+308	RPL_WHOISADMIN	Bahamut
+308	RPL_RULESSTART	Unreal
+309	RPL_NICKTRACE	aircd
+309	RPL_WHOISSADMIN	Bahamut
+309	RPL_ENDOFRULES	Unreal
+309	RPL_WHOISHELPER	AustHex
+310	RPL_WHOISSVCMSG	Bahamut
+310	RPL_WHOISHELPOP	Unreal
+310	RPL_WHOISSERVICE	AustHex
 311	RPL_WHOISUSER	RFC1459	<nick> <user> <host> * :<real_name>	Reply to WHOIS - Information about the user
 312	RPL_WHOISSERVER	RFC1459	<nick> <server> :<server_info>	Reply to WHOIS - What server they're on
 313	RPL_WHOISOPERATOR	RFC1459	<nick> :<privileges>	Reply to WHOIS - User has IRC Operator privileges
 314	RPL_WHOWASUSER	RFC1459	<nick> <user> <host> * :<real_name>	Reply to WHOWAS - Information about the user
 315	RPL_ENDOFWHO	RFC1459	<name> :<info>	Used to terminate a list of RPL_WHOREPLY replies
-316	RPL_WHOISCHANOP	RFC1459		
+316	RPL_WHOISCHANOP	RFC1459
 317	RPL_WHOISIDLE	RFC1459	<nick> <seconds> :seconds idle	Reply to WHOIS - Idle information
 318	RPL_ENDOFWHOIS	RFC1459	<nick> :<info>	Reply to WHOIS - End of list
 319	RPL_WHOISCHANNELS	RFC1459	<nick> :*( ( '@' / '+' ) <channel> ' ' )	Reply to WHOIS - Channel list for user (See RFC)
-320	RPL_WHOISVIRT	AustHex		
-320	RPL_WHOIS_HIDDEN	Anothernet		
-320	RPL_WHOISSPECIAL	Unreal		
+320	RPL_WHOISVIRT	AustHex
+320	RPL_WHOIS_HIDDEN	Anothernet
+320	RPL_WHOISSPECIAL	Unreal
 321	RPL_LISTSTART	RFC1459	Channels :Users Name	Channel list - Header
 322	RPL_LIST	RFC1459	<channel> <#_visible> :<topic>	Channel list - A channel
 323	RPL_LISTEND	RFC1459	:<info>	Channel list - End of list
-324	RPL_CHANNELMODEIS	RFC1459	<channel> <mode> <mode_params>	
-325	RPL_UNIQOPIS	RFC2812	<channel> <nickname>	
-325	RPL_CHANNELPASSIS			
-326	RPL_NOCHANPASS			
-327	RPL_CHPASSUNKNOWN			
-328	RPL_CHANNEL_URL	Bahamut, AustHex		
-329	RPL_CREATIONTIME	Bahamut		
-330	RPL_WHOWAS_TIME			
-330	RPL_WHOISACCOUNT	ircu	<nick> <authname> :<info>	
+324	RPL_CHANNELMODEIS	RFC1459	<channel> <mode> <mode_params>
+325	RPL_UNIQOPIS	RFC2812	<channel> <nickname>
+325	RPL_CHANNELPASSIS
+326	RPL_NOCHANPASS
+327	RPL_CHPASSUNKNOWN
+328	RPL_CHANNEL_URL	Bahamut, AustHex
+329	RPL_CREATIONTIME	Bahamut
+330	RPL_WHOWAS_TIME
+330	RPL_WHOISACCOUNT	ircu	<nick> <authname> :<info>
 331	RPL_NOTOPIC	RFC1459	<channel> :<info>	Response to TOPIC when no topic is set
 332	RPL_TOPIC	RFC1459	<channel> :<topic>	Response to TOPIC with the set topic
-333	RPL_TOPICWHOTIME	ircu		
-334	RPL_LISTUSAGE	ircu		
-334	RPL_COMMANDSYNTAX	Bahamut		
-334	RPL_LISTSYNTAX	Unreal		
-335	RPL_WHOISBOT	Unreal		
-338	RPL_CHANPASSOK			
-338	RPL_WHOISACTUALLY	ircu, Bahamut		
-339	RPL_BADCHANPASS			
-340	RPL_USERIP	ircu		
+333	RPL_TOPICWHOTIME	ircu
+334	RPL_LISTUSAGE	ircu
+334	RPL_COMMANDSYNTAX	Bahamut
+334	RPL_LISTSYNTAX	Unreal
+335	RPL_WHOISBOT	Unreal
+338	RPL_CHANPASSOK
+338	RPL_WHOISACTUALLY	ircu, Bahamut
+339	RPL_BADCHANPASS
+340	RPL_USERIP	ircu
 341	RPL_INVITING	RFC1459	<nick> <channel>	Returned by the server to indicate that the attempted INVITE message was successful and is being passed onto the end client. Note that RFC1459 documents the parameters in the reverse order. The format given here is the format used on production servers, and should be considered the standard reply above that given by RFC1459.
 342	RPL_SUMMONING	RFC1459	<user> :<info>	Returned by a server answering a SUMMON message to indicate that it is summoning that user
 345	RPL_INVITED	GameSurge	<channel> <user being invited> <user issuing invite> :<user being invited> has been invited by <user issuing invite>	Sent to users on a channel when an INVITE command has been issued
@@ -221,12 +221,12 @@ Id	Name	RFC	Message	Description
 353	RPL_NAMREPLY	RFC1459	( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> *( ' ' [ '@' / '+' ] <nick> )	Reply to NAMES (See RFC)
 354	RPL_WHOSPCRPL	ircu		Reply to WHO, however it is a 'special' reply because it is returned using a non-standard (non-RFC1459) format. The format is dictated by the command given by the user, and can vary widely. When this is used, the WHO command was invoked in its 'extended' form, as announced by the 'WHOX' ISUPPORT tag.
 355	RPL_NAMREPLY_	QuakeNet	( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> *( ' ' [ '@' / '+' ] <nick> )	Reply to the "NAMES -d" command - used to show invisible users (when the channel is set +D, QuakeNet relative). The proper define name for this numeric is unknown at this time Also see #353.
-357	RPL_MAP	AustHex		
-358	RPL_MAPMORE	AustHex		
-359	RPL_MAPEND	AustHex		
-361	RPL_KILLDONE	RFC1459		
-362	RPL_CLOSING	RFC1459		
-363	RPL_CLOSEEND	RFC1459		
+357	RPL_MAP	AustHex
+358	RPL_MAPMORE	AustHex
+359	RPL_MAPEND	AustHex
+361	RPL_KILLDONE	RFC1459
+362	RPL_CLOSING	RFC1459
+363	RPL_CLOSEEND	RFC1459
 364	RPL_LINKS	RFC1459	<mask> <server> :<hopcount> <server_info>	Reply to the LINKS command
 365	RPL_ENDOFLINKS	RFC1459	<mask> :<info>	Termination of an RPL_LINKS list
 366	RPL_ENDOFNAMES	RFC1459	<channel> :<info>	Termination of an RPL_NAMREPLY list
@@ -235,30 +235,30 @@ Id	Name	RFC	Message	Description
 369	RPL_ENDOFWHOWAS	RFC1459	<nick> :<info>	Reply to WHOWAS - End of list
 371	RPL_INFO	RFC1459	:<string>	Reply to INFO
 372	RPL_MOTD	RFC1459	:- <string>	Reply to MOTD
-373	RPL_INFOSTART	RFC1459		
+373	RPL_INFOSTART	RFC1459
 374	RPL_ENDOFINFO	RFC1459	:<info>	Termination of an RPL_INFO list
 375	RPL_MOTDSTART	RFC1459	:- <server> Message of the day -	Start of an RPL_MOTD list
 376	RPL_ENDOFMOTD	RFC1459	:<info>	Termination of an RPL_MOTD list
-377	RPL_KICKEXPIRED	aircd		
+377	RPL_KICKEXPIRED	aircd
 377	RPL_SPAM	AustHex	:<text>	Used during the connection (after MOTD) to announce the network policy on spam and privacy. Supposedly now obsoleted in favour of using NOTICE.
-378	RPL_BANEXPIRED	aircd		
-378	RPL_WHOISHOST	Unreal		
+378	RPL_BANEXPIRED	aircd
+378	RPL_WHOISHOST	Unreal
 378	RPL_MOTD	AustHex		Used by AustHex to 'force' the display of the MOTD, however is considered obsolete due to client/script awareness & ability to Also see #372.
-379	RPL_KICKLINKED	aircd		
-379	RPL_WHOISMODES	Unreal		
-380	RPL_BANLINKED	aircd		
-380	RPL_YOURHELPER	AustHex		
+379	RPL_KICKLINKED	aircd
+379	RPL_WHOISMODES	Unreal
+380	RPL_BANLINKED	aircd
+380	RPL_YOURHELPER	AustHex
 381	RPL_YOUREOPER	RFC1459	:<info>	Successful reply from OPER
 382	RPL_REHASHING	RFC1459	<config_file> :<info>	Successful reply from REHASH
 383	RPL_YOURESERVICE	RFC2812	:You are service <service_name>	Sent upon successful registration of a service
-384	RPL_MYPORTIS	RFC1459		
-385	RPL_NOTOPERANYMORE	AustHex, Hybrid, Unreal		
-386	RPL_QLIST	Unreal		
-386	RPL_IRCOPS	Ultimate		
-387	RPL_ENDOFQLIST	Unreal		
-387	RPL_ENDOFIRCOPS	Ultimate		
-388	RPL_ALIST	Unreal		
-389	RPL_ENDOFALIST	Unreal		
+384	RPL_MYPORTIS	RFC1459
+385	RPL_NOTOPERANYMORE	AustHex, Hybrid, Unreal
+386	RPL_QLIST	Unreal
+386	RPL_IRCOPS	Ultimate
+387	RPL_ENDOFQLIST	Unreal
+387	RPL_ENDOFIRCOPS	Ultimate
+388	RPL_ALIST	Unreal
+389	RPL_ENDOFALIST	Unreal
 391	RPL_TIME	RFC1459	<server> :<time string>	Response to the TIME command. The string format may vary greatly. Also see #679.
 391	RPL_TIME	ircu	<server> <timestamp> <offset> :<time string>	This extention adds the timestamp and timestamp-offet information for clients.
 391	RPL_TIME	bdq-ircd	<server> <timezone name> <microseconds> :<time string>	Timezone name is acronym style (eg. 'EST', 'PST' etc). The microseconds field is the number of microseconds since the UNIX epoch, however it is relative to the local timezone of the server. The timezone field is ambiguous, since it only appears to include American zones.
@@ -277,7 +277,7 @@ Id	Name	RFC	Message	Description
 406	ERR_WASNOSUCHNICK	RFC1459	<nick> :<reason>	Returned by WHOWAS to indicate there was no history information for a given nickname
 407	ERR_TOOMANYTARGETS	RFC1459	<target> :<reason>	The given target(s) for a command are ambiguous in that they relate to too many targets
 408	ERR_NOSUCHSERVICE	RFC2812	<service_name> :<reason>	Returned to a client which is attempting to send an SQUERY (or other message) to a service which does not exist
-408	ERR_NOCOLORSONCHAN	Bahamut		
+408	ERR_NOCOLORSONCHAN	Bahamut
 409	ERR_NOORIGIN	RFC1459	:<reason>	PING or PONG message missing the originator parameter which is required since these commands must work without valid prefixes
 411	ERR_NORECIPIENT	RFC1459	:<reason>	Returned when no recipient is given with a command
 412	ERR_NOTEXTTOSEND	RFC1459	:<reason>	Returned when NOTICE/PRIVMSG is used with no message given
@@ -286,45 +286,45 @@ Id	Name	RFC	Message	Description
 415	ERR_BADMASK	RFC2812	<mask> :<reason>	Used when a message is being sent to a mask with an invalid syntax
 416	ERR_TOOMANYMATCHES	IRCnet	<command> [<mask>] :<info>	Returned when too many matches have been found for a command and the output has been truncated. An example would be the WHO command, where by the mask '*' would match everyone on the network! Ouch!
 416	ERR_QUERYTOOLONG	ircu		Same as ERR_TOOMANYMATCHES
-419	ERR_LENGTHTRUNCATED	aircd		
+419	ERR_LENGTHTRUNCATED	aircd
 421	ERR_UNKNOWNCOMMAND	RFC1459	<command> :<reason>	Returned when the given command is unknown to the server (or hidden because of lack of access rights)
 422	ERR_NOMOTD	RFC1459	:<reason>	Sent when there is no MOTD to send the client
 423	ERR_NOADMININFO	RFC1459	<server> :<reason>	Returned by a server in response to an ADMIN request when no information is available. RFC1459 mentions this in the list of numerics. While it's not listed as a valid reply in section 4.3.7 ('Admin command'), it's confirmed to exist in the real world.
 424	ERR_FILEERROR	RFC1459	:<reason>	Generic error message used to report a failed file operation during the processing of a command
-425	ERR_NOOPERMOTD	Unreal		
-429	ERR_TOOMANYAWAY	Bahamut		
+425	ERR_NOOPERMOTD	Unreal
+429	ERR_TOOMANYAWAY	Bahamut
 430	ERR_EVENTNICKCHANGE	AustHex		Returned by NICK when the user is not allowed to change their nickname due to a channel event (channel mode +E)
 431	ERR_NONICKNAMEGIVEN	RFC1459	:<reason>	Returned when a nickname parameter expected for a command isn't found
 432	ERR_ERRONEUSNICKNAME	RFC1459	<nick> :<reason>	Returned after receiving a NICK message which contains a nickname which is considered invalid, such as it's reserved ('anonymous') or contains characters considered invalid for nicknames. This numeric is misspelt, but remains with this name for historical reasons :)
 433	ERR_NICKNAMEINUSE	RFC1459	<nick> :<reason>	Returned by the NICK command when the given nickname is already in use
-434	ERR_SERVICENAMEINUSE	AustHex?		
-434	ERR_NORULES	Unreal, Ultimate		
-435	ERR_SERVICECONFUSED	Unreal		
-435	ERR_BANONCHAN	Bahamut		
+434	ERR_SERVICENAMEINUSE	AustHex?
+434	ERR_NORULES	Unreal, Ultimate
+435	ERR_SERVICECONFUSED	Unreal
+435	ERR_BANONCHAN	Bahamut
 436	ERR_NICKCOLLISION	RFC1459	<nick> :<reason>	Returned by a server to a client when it detects a nickname collision
 437	ERR_UNAVAILRESOURCE	RFC2812	<nick/channel/service> :<reason>	Return when the target is unable to be reached temporarily, eg. a delay mechanism in play, or a service being offline
-437	ERR_BANNICKCHANGE	ircu		
+437	ERR_BANNICKCHANGE	ircu
 438	ERR_NICKTOOFAST	ircu		Also known as ERR_NCHANGETOOFAST (Unreal, Ultimate)
-438	ERR_DEAD	IRCnet		
+438	ERR_DEAD	IRCnet
 439	ERR_TARGETTOOFAST	ircu		Also known as many other things, RPL_INVTOOFAST, RPL_MSGTOOFAST etc
-440	ERR_SERVICESDOWN	Bahamut, Unreal		
+440	ERR_SERVICESDOWN	Bahamut, Unreal
 441	ERR_USERNOTINCHANNEL	RFC1459	<nick> <channel> :<reason>	Returned by the server to indicate that the target user of the command is not on the given channel
 442	ERR_NOTONCHANNEL	RFC1459	<channel> :<reason>	Returned by the server whenever a client tries to perform a channel effecting command for which the client is not a member
 443	ERR_USERONCHANNEL	RFC1459	<nick> <channel> [:<reason>]	Returned when a client tries to invite a user to a channel they're already on
 444	ERR_NOLOGIN	RFC1459	<user> :<reason>	Returned by the SUMMON command if a given user was not logged in and could not be summoned
 445	ERR_SUMMONDISABLED	RFC1459	:<reason>	Returned by SUMMON when it has been disabled or not implemented
 446	ERR_USERSDISABLED	RFC1459	:<reason>	Returned by USERS when it has been disabled or not implemented
-447	ERR_NONICKCHANGE	Unreal		
+447	ERR_NONICKCHANGE	Unreal
 449	ERR_NOTIMPLEMENTED	Undernet	Unspecified	Returned when a requested feature is not implemented (and cannot be completed)
 451	ERR_NOTREGISTERED	RFC1459	:<reason>	Returned by the server to indicate that the client must be registered before the server will allow it to be parsed in detail
-452	ERR_IDCOLLISION			
-453	ERR_NICKLOST			
-455	ERR_HOSTILENAME	Unreal		
-456	ERR_ACCEPTFULL			
-457	ERR_ACCEPTEXIST			
-458	ERR_ACCEPTNOT			
+452	ERR_IDCOLLISION
+453	ERR_NICKLOST
+455	ERR_HOSTILENAME	Unreal
+456	ERR_ACCEPTFULL
+457	ERR_ACCEPTEXIST
+458	ERR_ACCEPTNOT
 459	ERR_NOHIDING	Unreal		Not allowed to become an invisible operator?
-460	ERR_NOTFORHALFOPS	Unreal		
+460	ERR_NOTFORHALFOPS	Unreal
 461	ERR_NEEDMOREPARAMS	RFC1459	<command> :<reason>	Returned by the server by any command which requires more parameters than the number of parameters given
 462	ERR_ALREADYREGISTERED	RFC1459	:<reason>	Returned by the server to any link which attempts to register again
 463	ERR_NOPERMFORHOST	RFC1459	:<reason>	Returned to a client which attempts to register with a server which has been configured to refuse connections from the client's host
@@ -332,11 +332,11 @@ Id	Name	RFC	Message	Description
 465	ERR_YOUREBANNEDCREEP	RFC1459	:<reason>	Returned to a client after an attempt to register on a server configured to ban connections from that client
 466	ERR_YOUWILLBEBANNED	RFC1459		Sent by a server to a user to inform that access to the server will soon be denied
 467	ERR_KEYSET	RFC1459	<channel> :<reason>	Returned when the channel key for a channel has already been set
-468	ERR_INVALIDUSERNAME	ircu		
-468	ERR_ONLYSERVERSCANCHANGE	Bahamut, Unreal		
-469	ERR_LINKSET	Unreal		
-470	ERR_LINKCHANNEL	Unreal		
-470	ERR_KICKEDFROMCHAN	aircd		
+468	ERR_INVALIDUSERNAME	ircu
+468	ERR_ONLYSERVERSCANCHANGE	Bahamut, Unreal
+469	ERR_LINKSET	Unreal
+470	ERR_LINKCHANNEL	Unreal
+470	ERR_KICKEDFROMCHAN	aircd
 471	ERR_CHANNELISFULL	RFC1459	<channel> :<reason>	Returned when attempting to join a channel which is set +l and is already full
 472	ERR_UNKNOWNMODE	RFC1459	<char> :<reason>	Returned when a given mode is unknown
 473	ERR_INVITEONLYCHAN	RFC1459	<channel> :<reason>	Returned when attempting to join a channel which is invite only without an invitation
@@ -344,108 +344,108 @@ Id	Name	RFC	Message	Description
 475	ERR_BADCHANNELKEY	RFC1459	<channel> :<reason>	Returned when attempting to join a key-locked channel either without a key or with the wrong key
 476	ERR_BADCHANMASK	RFC2812	<channel> :<reason>	The given channel mask was invalid
 477	ERR_NOCHANMODES	RFC2812	<channel> :<reason>	Returned when attempting to set a mode on a channel which does not support channel modes, or channel mode changes. Also known as ERR_MODELESS
-477	ERR_NEEDREGGEDNICK	Bahamut, ircu, Unreal		
+477	ERR_NEEDREGGEDNICK	Bahamut, ircu, Unreal
 478	ERR_BANLISTFULL	RFC2812	<channel> <char> :<reason>	Returned when a channel access list (i.e. ban list etc) is full and cannot be added to
-479	ERR_BADCHANNAME	Hybrid		
-479	ERR_LINKFAIL	Unreal		
-480	ERR_NOULINE	AustHex		
-480	ERR_CANNOTKNOCK	Unreal		
+479	ERR_BADCHANNAME	Hybrid
+479	ERR_LINKFAIL	Unreal
+480	ERR_NOULINE	AustHex
+480	ERR_CANNOTKNOCK	Unreal
 481	ERR_NOPRIVILEGES	RFC1459	:<reason>	Returned by any command requiring special privileges (eg. IRC operator) to indicate the operation was unsuccessful
 482	ERR_CHANOPRIVSNEEDED	RFC1459	<channel> :<reason>	Returned by any command requiring special channel privileges (eg. channel operator) to indicate the operation was unsuccessful
 483	ERR_CANTKILLSERVER	RFC1459	:<reason>	Returned by KILL to anyone who tries to kill a server
 484	ERR_RESTRICTED	RFC2812	:<reason>	Sent by the server to a user upon connection to indicate the restricted nature of the connection (i.e. usermode +r)
-484	ERR_ISCHANSERVICE	Undernet		
-484	ERR_DESYNC	Bahamut, Hybrid, PTlink		
-484	ERR_ATTACKDENY	Unreal		
+484	ERR_ISCHANSERVICE	Undernet
+484	ERR_DESYNC	Bahamut, Hybrid, PTlink
+484	ERR_ATTACKDENY	Unreal
 485	ERR_UNIQOPRIVSNEEDED	RFC2812	:<reason>	Any mode requiring 'channel creator' privileges returns this error if the client is attempting to use it while not a channel creator on the given channel
-485	ERR_KILLDENY	Unreal		
-485	ERR_CANTKICKADMIN	PTlink		
-485	ERR_ISREALSERVICE	QuakeNet		
-486	ERR_NONONREG			
-486	ERR_HTMDISABLED	Unreal		
-486	ERR_ACCOUNTONLY	QuakeNet		
-487	ERR_CHANTOORECENT	IRCnet		
-487	ERR_MSGSERVICES	Bahamut		
-488	ERR_TSLESSCHAN	IRCnet		
-489	ERR_VOICENEEDED	Undernet		
-489	ERR_SECUREONLYCHAN	Unreal		
+485	ERR_KILLDENY	Unreal
+485	ERR_CANTKICKADMIN	PTlink
+485	ERR_ISREALSERVICE	QuakeNet
+486	ERR_NONONREG
+486	ERR_HTMDISABLED	Unreal
+486	ERR_ACCOUNTONLY	QuakeNet
+487	ERR_CHANTOORECENT	IRCnet
+487	ERR_MSGSERVICES	Bahamut
+488	ERR_TSLESSCHAN	IRCnet
+489	ERR_VOICENEEDED	Undernet
+489	ERR_SECUREONLYCHAN	Unreal
 491	ERR_NOOPERHOST	RFC1459	:<reason>	Returned by OPER to a client who cannot become an IRC operator because the server has been configured to disallow the client's host
-492	ERR_NOSERVICEHOST	RFC1459		
-493	ERR_NOFEATURE	ircu		
-494	ERR_BADFEATURE	ircu		
-495	ERR_BADLOGTYPE	ircu		
-496	ERR_BADLOGSYS	ircu		
-497	ERR_BADLOGVALUE	ircu		
-498	ERR_ISOPERLCHAN	ircu		
+492	ERR_NOSERVICEHOST	RFC1459
+493	ERR_NOFEATURE	ircu
+494	ERR_BADFEATURE	ircu
+495	ERR_BADLOGTYPE	ircu
+496	ERR_BADLOGSYS	ircu
+497	ERR_BADLOGVALUE	ircu
+498	ERR_ISOPERLCHAN	ircu
 499	ERR_CHANOWNPRIVNEEDED	Unreal		Works just like ERR_CHANOPRIVSNEEDED except it indicates that owner status (+q) is needed. Also see #482.
 501	ERR_UMODEUNKNOWNFLAG	RFC1459	:<reason>	Returned by the server to indicate that a MODE message was sent with a nickname parameter and that the mode flag sent was not recognised
 502	ERR_USERSDONTMATCH	RFC1459	:<reason>	Error sent to any user trying to view or change the user mode for a user other than themselves
-503	ERR_GHOSTEDCLIENT	Hybrid		
+503	ERR_GHOSTEDCLIENT	Hybrid
 503	ERR_VWORLDWARN	AustHex	:<warning_text>	Warning about Virtual-World being turned off. Obsoleted in favour for RPL_MODECHANGEWARN Also see #662.
-504	ERR_USERNOTONSERV			
-511	ERR_SILELISTFULL	ircu		
+504	ERR_USERNOTONSERV
+511	ERR_SILELISTFULL	ircu
 512	ERR_TOOMANYWATCH	Bahamut		Also known as ERR_NOTIFYFULL (aircd), I presume they are the same
 513	ERR_BADPING	ircu		Also known as ERR_NEEDPONG (Unreal/Ultimate) for use during registration, however it's not used in Unreal (and might not be used in Ultimate either).
-514	ERR_INVALID_ERROR	ircu		
-514	ERR_TOOMANYDCC	Bahamut		
-515	ERR_BADEXPIRE	ircu		
-516	ERR_DONTCHEAT	ircu		
-517	ERR_DISABLED	ircu	<command> :<info/reason>	
-518	ERR_NOINVITE	Unreal		
-518	ERR_LONGMASK	ircu		
-519	ERR_ADMONLY	Unreal		
-519	ERR_TOOMANYUSERS	ircu		
-520	ERR_OPERONLY	Unreal		
-520	ERR_MASKTOOWIDE	ircu		
+514	ERR_INVALID_ERROR	ircu
+514	ERR_TOOMANYDCC	Bahamut
+515	ERR_BADEXPIRE	ircu
+516	ERR_DONTCHEAT	ircu
+517	ERR_DISABLED	ircu	<command> :<info/reason>
+518	ERR_NOINVITE	Unreal
+518	ERR_LONGMASK	ircu
+519	ERR_ADMONLY	Unreal
+519	ERR_TOOMANYUSERS	ircu
+520	ERR_OPERONLY	Unreal
+520	ERR_MASKTOOWIDE	ircu
 520	ERR_WHOTRUNC	AustHex		This is considered obsolete in favour of ERR_TOOMANYMATCHES, and should no longer be used. Also see #416.
-521	ERR_LISTSYNTAX	Bahamut		
-522	ERR_WHOSYNTAX	Bahamut		
-523	ERR_WHOLIMEXCEED	Bahamut		
-524	ERR_QUARANTINED	ircu		
-524	ERR_OPERSPVERIFY	Unreal		
+521	ERR_LISTSYNTAX	Bahamut
+522	ERR_WHOSYNTAX	Bahamut
+523	ERR_WHOLIMEXCEED	Bahamut
+524	ERR_QUARANTINED	ircu
+524	ERR_OPERSPVERIFY	Unreal
 525	ERR_REMOTEPFX	CAPAB USERCMDPFX	<nickname> :<reason>	Proposed.
 526	ERR_PFXUNROUTABLE	CAPAB USERCMDPFX	<nickname> :<reason>	Proposed.
-550	ERR_BADHOSTMASK	QuakeNet		
-551	ERR_HOSTUNAVAIL	QuakeNet		
-552	ERR_USINGSLINE	QuakeNet		
-553	ERR_STATSSLINE	QuakeNet		
-600	RPL_LOGON	Bahamut, Unreal		
-601	RPL_LOGOFF	Bahamut, Unreal		
-602	RPL_WATCHOFF	Bahamut, Unreal		
-603	RPL_WATCHSTAT	Bahamut, Unreal		
-604	RPL_NOWON	Bahamut, Unreal		
-605	RPL_NOWOFF	Bahamut, Unreal		
-606	RPL_WATCHLIST	Bahamut, Unreal		
-607	RPL_ENDOFWATCHLIST	Bahamut, Unreal		
-608	RPL_WATCHCLEAR	Ultimate		
-610	RPL_MAPMORE	Unreal		
-610	RPL_ISOPER	Ultimate		
-611	RPL_ISLOCOP	Ultimate		
-612	RPL_ISNOTOPER	Ultimate		
-613	RPL_ENDOFISOPER	Ultimate		
-615	RPL_MAPMORE	PTlink		
-615	RPL_WHOISMODES	Ultimate		
-616	RPL_WHOISHOST	Ultimate		
-617	RPL_DCCSTATUS	Bahamut		
-617	RPL_WHOISBOT	Ultimate		
-618	RPL_DCCLIST	Bahamut		
-619	RPL_ENDOFDCCLIST	Bahamut		
-619	RPL_WHOWASHOST	Ultimate		
-620	RPL_DCCINFO	Bahamut		
-620	RPL_RULESSTART	Ultimate		
-621	RPL_RULES	Ultimate		
-622	RPL_ENDOFRULES	Ultimate		
-623	RPL_MAPMORE	Ultimate		
-624	RPL_OMOTDSTART	Ultimate		
-625	RPL_OMOTD	Ultimate		
-626	RPL_ENDOFO	Ultimate		
-630	RPL_SETTINGS	Ultimate		
-631	RPL_ENDOFSETTINGS	Ultimate		
+550	ERR_BADHOSTMASK	QuakeNet
+551	ERR_HOSTUNAVAIL	QuakeNet
+552	ERR_USINGSLINE	QuakeNet
+553	ERR_STATSSLINE	QuakeNet
+600	RPL_LOGON	Bahamut, Unreal
+601	RPL_LOGOFF	Bahamut, Unreal
+602	RPL_WATCHOFF	Bahamut, Unreal
+603	RPL_WATCHSTAT	Bahamut, Unreal
+604	RPL_NOWON	Bahamut, Unreal
+605	RPL_NOWOFF	Bahamut, Unreal
+606	RPL_WATCHLIST	Bahamut, Unreal
+607	RPL_ENDOFWATCHLIST	Bahamut, Unreal
+608	RPL_WATCHCLEAR	Ultimate
+610	RPL_MAPMORE	Unreal
+610	RPL_ISOPER	Ultimate
+611	RPL_ISLOCOP	Ultimate
+612	RPL_ISNOTOPER	Ultimate
+613	RPL_ENDOFISOPER	Ultimate
+615	RPL_MAPMORE	PTlink
+615	RPL_WHOISMODES	Ultimate
+616	RPL_WHOISHOST	Ultimate
+617	RPL_DCCSTATUS	Bahamut
+617	RPL_WHOISBOT	Ultimate
+618	RPL_DCCLIST	Bahamut
+619	RPL_ENDOFDCCLIST	Bahamut
+619	RPL_WHOWASHOST	Ultimate
+620	RPL_DCCINFO	Bahamut
+620	RPL_RULESSTART	Ultimate
+621	RPL_RULES	Ultimate
+622	RPL_ENDOFRULES	Ultimate
+623	RPL_MAPMORE	Ultimate
+624	RPL_OMOTDSTART	Ultimate
+625	RPL_OMOTD	Ultimate
+626	RPL_ENDOFO	Ultimate
+630	RPL_SETTINGS	Ultimate
+631	RPL_ENDOFSETTINGS	Ultimate
 640	RPL_DUMPING	Unreal		Never actually used by Unreal - was defined however the feature that would have used this numeric was never created.
 641	RPL_DUMPRPL	Unreal		Never actually used by Unreal - was defined however the feature that would have used this numeric was never created.
 642	RPL_EODUMP	Unreal		Never actually used by Unreal - was defined however the feature that would have used this numeric was never created.
 660	RPL_TRACEROUTE_HOP	KineIRCd	<target> <hop#> [<address> [<hostname> | '*'] <usec_ping>]	Returned from the TRACEROUTE IRC-Op command when tracerouting a host
-661	RPL_TRACEROUTE_START	KineIRCd	<target> <target_FQDN> <target_address> <max_hops>	Start of an RPL_TRACEROUTE_HOP list
+661	RPL_TRACEROUTE_START	KineIRCd	<target> <target_FQDN> <target_address> <max_hops> 	Start of an RPL_TRACEROUTE_HOP list
 662	RPL_MODECHANGEWARN	KineIRCd	['+' | '-']<mode_char> :<warning>	Plain text warning to the user about turning on or off a user mode. If no '+' or '-' prefix is used for the mode char, '+' is presumed.
 663	RPL_CHANREDIR	KineIRCd	<old_chan> <new_chan> :<info>	Used to notify the client upon JOIN that they are joining a different channel than expected because the IRC Daemon has been set up to map the channel they attempted to join to the channel they eventually will join.
 664	RPL_SERVMODEIS	KineIRCd	<server> <modes> <parameters>..	Reply to MODE <servername>. KineIRCd supports server modes to simplify configuration of servers; Similar to RPL_CHANNELMODEIS

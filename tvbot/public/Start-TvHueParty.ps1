@@ -1,8 +1,28 @@
-function Start-TvHueParty {
+﻿function Start-TvHueParty {
     <#
     .SYNOPSIS
-        Gets Twitch User
-    #>
+        Invokes a Philips Hue light effect
+
+    .DESCRIPTION
+        Invokes a Philips Hue light effect. Uses the HueHub and HubToken configuration values.
+
+        Visit http://sqlps.io/hue for more information on how to generate a token for your Philips Hue Hub.
+
+    .PARAMETER Group
+        The target group or groups of lights
+
+    .PARAMETER Type
+        The type of effect. Currently, only looping is supported.
+
+    .PARAMETER Duration
+        The length of the light change. Defaults to 10.
+
+    .EXAMPLE
+        PS> Start-TvHueParty
+
+        Loops colors for Philips Hue lights
+
+#>
     [CmdletBinding()]
     param
     (

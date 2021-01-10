@@ -1,4 +1,23 @@
-function Disable-TvAlertSound {
+﻿function Disable-TvAlertSound {
+    <#
+    .SYNOPSIS
+        Disables chat notification sounds
+
+    .DESCRIPTION
+        Disables chat notification sounds. Only supported on Windows 5.1.
+
+    .PARAMETER WhatIf
+        Shows what would happen if the command would run
+
+    .PARAMETER Confirm
+        Displays (or disables using -Confirm:$false) a confirmation prompt
+
+    .EXAMPLE
+        PS> Disable-TvAlertSound
+
+        Disables chat notification sounds
+
+#>
     [CmdletBinding(SupportsShouldProcess)]
     param()
     process {

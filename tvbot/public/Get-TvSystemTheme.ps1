@@ -1,13 +1,15 @@
 function Get-TvSystemTheme {
     <#
     .SYNOPSIS
-        Connects to a Twitch
+        Gets system theme (dark or light)
 
     .DESCRIPTION
-        Connects to a Twitch
+        Gets system theme (dark or light)
 
     .EXAMPLE
-        PS C:\>
+        PS C:\> Get-TvSystemTheme
+
+        Gets system theme (dark or light)
 
 #>
     [CmdletBinding()]

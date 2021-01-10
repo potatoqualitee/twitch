@@ -1,7 +1,24 @@
-function Get-TvUser {
+﻿function Get-TvUser {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets detailed information about a user
+
+    .DESCRIPTION
+        Gets detailed information about a user
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .EXAMPLE
+        PS> Get-TvUser
+
+        Gets detailed information about your own account
+
+    .EXAMPLE
+        PS> Get-TvUser -UserName potatoqualitee, MarvRobot
+
+        Gets detailed information for potatoqualitee and MarvRobot
+
 #>
     [CmdletBinding()]
     param

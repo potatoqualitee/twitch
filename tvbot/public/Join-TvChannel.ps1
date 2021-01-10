@@ -2,13 +2,10 @@
 function Join-TvChannel {
     <#
     .SYNOPSIS
-        Joins a channel.
+        Joins a channel as defined by the BotChannel configuration value
 
     .DESCRIPTION
-        Joins a channel.
-
-    .PARAMETER Channel
-        The name of the channel.
+        Joins a channel as defined by the BotChannel configuration value
 
     .EXAMPLE
         PS> Join-TvChannel

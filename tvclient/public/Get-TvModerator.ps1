@@ -1,7 +1,22 @@
-function Get-TvModerator {
+﻿function Get-TvModerator {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of your moderators
+
+    .DESCRIPTION
+        Gets a list of your moderators
+
+    .PARAMETER MaxResults
+        The maximum number of results to return. The max value is 50 by default and can be no larger than 100.
+
+    .PARAMETER Next
+        The next set of results
+
+    .EXAMPLE
+        PS> Get-TvModerator
+
+        Gets a list of moderators
+
 #>
     [CmdletBinding()]
     param

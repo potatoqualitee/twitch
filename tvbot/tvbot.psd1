@@ -45,7 +45,6 @@
         'Disable-TvAlertSound',
         'Disconnect-TvServer',
         'Enable-TvAlertSound',
-        'Get-TvStatusList',
         'Get-TvSystemTheme',
         'Invoke-TvCommand',
         'Join-TvChannel',

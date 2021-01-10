@@ -1,13 +1,28 @@
-function Show-TvViewerCount {
+﻿function Show-TvViewerCount {
     <#
     .SYNOPSIS
-        Connects to a Twitch
+        In Windows 10, creates a notify icon that shows how many users are currently watching a stream
 
     .DESCRIPTION
-        Connects to a Twitch
+        In Windows 10, creates a notify icon that shows how many users are currently watching a stream
+
+    .PARAMETER UserName
+        The username of the target account
+
+        Defaults to the account that generated the API key
 
     .EXAMPLE
-        PS C:\>
+        PS> Show-TvViewerCount
+
+        In Windows 10, creates a notify icon that shows how many users are currently watching a stream
+
+    .EXAMPLE
+        PS> Set-TvConfig -NotifyColor Magenta
+        PS> Set-TvConfig -DefaultFont Arial
+        PS> Show-TvViewerCount
+
+        Sets the notify color to Magenta and the default font to Arial then, in Windows 10, creates a
+        notify icon that shows how many users are currently watching a stream
 
 #>
     [CmdletBinding()]
