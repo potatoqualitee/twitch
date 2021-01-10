@@ -1,7 +1,7 @@
 name: Actions Workflow
 on: [push, pull_request]
 jobs:
-  nessus8:
+  twitch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
           Install-Module ${{ steps.psmodulecache.outputs.needed }} -ErrorAction Stop
-      - name: Initialize the nessus server with admin user and license
+      - name: Import tvclient and tvbot
         shell: pwsh
         run: |
           Import-Module ./tvclient/tvclient.psd1
