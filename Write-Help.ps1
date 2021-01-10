@@ -140,7 +140,7 @@ Function Write-Help {
         $text.SubString($end, $text.Length - $end)
     }
 
-    $files = Get-ChildItem -Recurse C:\github\twitch\*\public\*.ps1
+    $files = Get-ChildItem -Recurse C:\github\twitch\*\public\*.ps1 -Exclude *tests*
 
     foreach ($file in $files) {
         write-warning "$file"

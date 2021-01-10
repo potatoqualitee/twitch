@@ -1,8 +1,26 @@
-function Start-TvHueParty {
-    <#
+﻿function Start-TvHueParty {
+<#
     .SYNOPSIS
-        Gets Twitch User
-    #>
+        Starts a list of hue partys
+
+    .DESCRIPTION
+        Starts a list of hue partys
+        
+    .PARAMETER Group
+        Description for Group
+        
+    .PARAMETER Type
+        The type of hue party
+        
+    .PARAMETER Duration
+        Description for Duration
+        
+    .EXAMPLE
+        PS C:\> Start-TvHueParty
+
+        Starts a list of hue partys
+        
+#>
     [CmdletBinding()]
     param
     (

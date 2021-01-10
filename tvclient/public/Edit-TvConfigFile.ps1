@@ -1,14 +1,19 @@
-function Edit-TvConfigFile {
-    <#
+﻿function Edit-TvConfigFile {
+<#
     .SYNOPSIS
-        Gets configuration values
+        Edits a list of config files
 
     .DESCRIPTION
-        Gets configuration values
-
+        Edits a list of config files
+        
+    .PARAMETER Editor
+        Description for Editor
+        
     .EXAMPLE
-        PS C:\>
+        PS C:\> Edit-TvConfigFile
 
+        Edits a list of config files
+        
 #>
     [CmdletBinding()]
     param (
