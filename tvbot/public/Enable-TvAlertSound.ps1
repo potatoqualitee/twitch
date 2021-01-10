@@ -1,8 +1,23 @@
 function Enable-TvAlertSound {
     <#
+    .SYNOPSIS
+        Enables chat notification sounds
 
-    hello
-    #>
+    .DESCRIPTION
+        Enables chat notification sounds. Only supported on Windows 5.1.
+
+    .PARAMETER WhatIf
+        Shows what would happen if the command would run
+
+    .PARAMETER Confirm
+        Displays (or disables using -Confirm:$false) a confirmation prompt
+
+    .EXAMPLE
+        PS> Enables-TvAlertSound
+
+        Enables chat notification sounds
+
+#>
     [CmdletBinding(SupportsShouldProcess)]
     param()
     process {

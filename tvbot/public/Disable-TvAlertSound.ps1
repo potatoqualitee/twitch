@@ -13,7 +13,7 @@
         Displays (or disables using -Confirm:$false) a confirmation prompt
 
     .EXAMPLE
-        PS C:\> Disable-TvAlertSound
+        PS> Disable-TvAlertSound
 
         Disables chat notification sounds
 
