@@ -9,7 +9,7 @@
         Visit http://sqlps.io/hue for more information on how to generate a token for your Philips Hue Hub.
 
     .PARAMETER Group
-        The target group or groups of lights
+        The target group or groups of lights. This value should auto-complete.
 
     .PARAMETER Type
         The type of effect. Currently, only looping is supported.
@@ -20,7 +20,7 @@
     .EXAMPLE
         PS> Start-TvHueParty
 
-        Loops colors for Philips Hue lights
+        Loops colors for Philips Hue lights for 10 seconds
 
 #>
     [CmdletBinding()]
@@ -35,6 +35,7 @@
     process {
         <# Thanks https://blog.kloud.com.au/2018/03/19/commanding-your-philips-hue-lights-with-powershell/
         #>
+
         $huehub = Get-TvConfigValue -Name HueHub
         $apikey = Get-TvConfigValue -Name HueToken
 

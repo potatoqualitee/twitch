@@ -167,5 +167,19 @@ if (-not $config.BotClientId -and -not $config.BotToken) {
     Write-Warning "BotClientId and BotToken not found. Please use Set-TvConfig to set your BotClientId and BotToken. If no BotChannel is set, the bot will join its own channel."
 }
 
-
 $script:logger = New-Logger
+
+if ($config.HueHub -and $config.HueToken) {
+    Register-ArgumentCompleter -ParameterName Group -CommandName Start-TvHueParty -ScriptBlock {
+        param($wordToComplete, $commandAst, $cursorPosition)
+        $groups = Invoke-RestMethod -Method Get -Uri "http://$($config.HueHub)/api/$($config.HueToken)/groups/"
+        $groupid = ($groups | Get-Member -Type NoteProperty).Name
+        $names = @()
+        foreach ($groupname in $groupid) {
+            $names += $groups.$groupname.name
+        }
+        $names | Sort-Object -Unique | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+        }
+    }
+}
