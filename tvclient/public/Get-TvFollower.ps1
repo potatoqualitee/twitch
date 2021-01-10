@@ -1,7 +1,42 @@
 function Get-TvFollower {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Gets a list of followers
+
+    .DESCRIPTION
+        Gets a list of followers
+
+    .PARAMETER UserName
+        The username of the target account. Defaults to the account that generated the API key
+
+    .PARAMETER MaxResults
+        The maximum number of results to return. The max value is 50 by default and can be no larger than 100.
+
+    .PARAMETER Next
+        The next set of results
+
+    .PARAMETER Since
+        Show follows since StreamStarted, LastStream or a specified datetime (Get-Date)
+
+    .EXAMPLE
+        PS> Get-TvFollower
+
+        Gets a list of the first 50 followers
+
+    .EXAMPLE
+        PS> Get-TvFollower -MaxResults 100 -Next -UserName potatoqualitee
+
+        Gets the next batch of 100 followers of potatoqualitee
+
+    .EXAMPLE
+        PS> Get-TvFollower -Since StreamStarted
+
+        Get a list of users who started following since your stream started
+
+    .EXAMPLE
+        PS> Get-TvFollower -Since (Get-Date).AddDays(-5)
+
+        Get a list of users who started following in the last 5 days
 #>
     [CmdletBinding()]
     param
