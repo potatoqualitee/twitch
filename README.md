@@ -58,4 +58,4 @@ And start your bot
 ```
 Start-TvBot
 ```
-Read more at [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/)
+Read more at [tvbot](https://github.com/potatoqualitee/twitch/blob/main/tvbot/).
