@@ -10,6 +10,11 @@ Describe "Integration Tests" -Tag "IntegrationTests" {
         It "Show-TvAlert should probably return nothing" {
             Show-TvAlert -UserName MrMarkWest -Type Follow | Should -BeNullOrEmpty
         }
-
+        It "Connect-TvServer should match twisty" {
+            Connect-TvServer | Should -Match "twisty"
+        }
+        It "Disconnect-TvServer should rturn '*** Disconnected'" {
+            Disconnect-TvServer | Should -Be "*** Disconnected"
+        }
     }
 }
