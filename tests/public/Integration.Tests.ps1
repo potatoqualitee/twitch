@@ -11,7 +11,7 @@ Describe "Integration Tests" -Tag "IntegrationTests" {
             Show-TvAlert -UserName MrMarkWest -Type Follow | Should -BeNullOrEmpty
         }
         It "Connect-TvServer should match twisty" {
-            Connect-TvServer | Should -Match "Connecting to irc.chat.twitch.tv:6697"
+            Connect-TvServer | Out-String | Should -Match "Connecting to irc.chat.twitch.tv:6697"
         }
         It "Disconnect-TvServer should rturn '*** Disconnected'" {
             Disconnect-TvServer | Should -Be "*** Disconnected"
