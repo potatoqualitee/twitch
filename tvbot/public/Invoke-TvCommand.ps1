@@ -7,23 +7,13 @@ function Invoke-TvCommand {
     .DESCRIPTION
         Invokes a command and reports text back to the channel
 
-    .PARAMETER Channel
-        The destionation channel where the messages will go
-
     .PARAMETER InputObject
         The message to parse for commands
 
-    .PARAMETER Key
-        The token that designates if a message is intended for the bot
-
-    .PARAMETER UserCommand
-        The commands that users are allowed to execute
-
-    .PARAMETER AdminCommand
-        The commands for admins
-
     .EXAMPLE
-        PS> Invoke-TvCommand -Message "Test!"
+        PS> $InputObject | Invoke-TvCommand -User potatoqualitee
+
+        Processes a complex string from IRC and checks to see if potatoqualitee is qualified to run the command
     #>
     [CmdletBinding()]
     Param (

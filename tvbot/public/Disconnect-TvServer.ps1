@@ -11,6 +11,8 @@ function Disconnect-TvServer {
 
     .EXAMPLE
         PS> Disconnect-TvServer -Message "Gotta go!"
+
+        Disconnects from the connected IRC server after saying Gotta go!
     #>
     [CmdletBinding()]
     param (

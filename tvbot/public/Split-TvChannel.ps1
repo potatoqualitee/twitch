@@ -2,16 +2,23 @@
 function Split-TvChannel {
     <#
     .SYNOPSIS
-        Leaves a channel.
+        Leaves a channel
 
     .DESCRIPTION
-        Leaves a channel.
+        Leaves a channel
 
     .PARAMETER Channel
-        The channel to leave. If no channel is specified, the configuration value for BotChannel will be used.
+        The channel to leave. If no channel is specified, the configuration value for BotChannel will be used
 
     .EXAMPLE
-        PS> Split-TvChannel -Channel mychannel
+        PS> Split-TvChannel
+
+        Leaves the channel configured in BotChannel
+
+    .EXAMPLE
+        PS> Split-TvChannel -Channel potatoqualitee
+
+        Leaves the potatoqualitee channel
     #>
     [CmdletBinding()]
     Param (

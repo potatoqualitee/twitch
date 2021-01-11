@@ -9,6 +9,8 @@ function Join-TvChannel {
 
     .EXAMPLE
         PS> Join-TvChannel
+
+        Joins the channel defined in BotChannel config
     #>
     [CmdletBinding()]
     param ()
