@@ -11,7 +11,7 @@ jobs:
         id: psmodulecache
         uses: potatoqualitee/psmodulecache@v1
         with:
-          modules-to-cache: PoshNotify
+          modules-to-cache: PoshNotify, PSNotifySend
       - name: Setup PowerShell module cache
         id: cacher
         uses: actions/cache@v2
@@ -24,8 +24,18 @@ jobs:
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
           Install-Module ${{ steps.psmodulecache.outputs.needed }} -ErrorAction Stop
-      - name: Import tvclient and tvbot
+      - name: Load time to import modules
         shell: pwsh
         run: |
-          Import-Module ./tvclient/tvclient.psd1
-          Import-Module ./tvbot/tvbot.psd1
+          Import-Module ./tvclient/tvclient.psd1 -WarningAction SilentlyContinue
+          Import-Module ./tvbot/tvbot.psd1 -WarningAction SilentlyContinue
+
+      - name: Run tests
+        shell: pwsh
+        env:
+          clientid: ${{secrets.CLIENTID}}
+          token: ${{secrets.TOKEN}}
+          botclientid: ${{secrets.BOTCLIENTID}}
+          bottoken: ${{secrets.BOTTOKEN}}
+        run: |
+          ./tests/pester.ps1
