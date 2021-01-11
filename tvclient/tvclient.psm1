@@ -76,15 +76,28 @@ Register-ArgumentCompleter -ParameterName SubSound -CommandName Set-TvConfig -Sc
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }
+
 Register-ArgumentCompleter -ParameterName FollowSound -CommandName Set-TvConfig -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
     $script:sounds | Where-Object { $PSitem -match $wordToComplete } | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }
+
 Register-ArgumentCompleter -ParameterName Since -CommandName Get-TvFollower -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
     "StreamStart", "LastStream" | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
+    }
+}
+
+Register-ArgumentCompleter -ParameterName Name -CommandName Get-TvConfig -ScriptBlock {
+    param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+    (Get-Command -Name Set-TvConfig).Parameters.Keys | Where-Object {
+        $PSItem -notin "Append", "Force", "WhatIf", "Confirm"
+        -and $PSItem -notin [System.Management.Automation.PSCmdlet]::CommonParameters
+        -and $PSItem -like "$WordToComplete*"
+    } | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }

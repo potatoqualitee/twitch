@@ -6,6 +6,9 @@ function Get-TvConfigValue {
     .DESCRIPTION
         Gets the value for a specified configuration. This comand will not obscure sensitive information.
 
+    .PARAMETER Name
+        The name of the desired configuration value
+
     .EXAMPLE
         PS C:\> Get-TvConfigValue -Name BotToken
 

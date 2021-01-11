@@ -11,6 +11,8 @@ function Write-TvChannelMessage {
 
     .EXAMPLE
         PS> Write-TvChannelMessage -Message "Test!"
+
+        Writes "Test!" to the channel configured in BotChannel
     #>
     [CmdletBinding()]
     param (

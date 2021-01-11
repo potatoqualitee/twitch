@@ -30,7 +30,7 @@ jobs:
           Import-Module ./tvclient/tvclient.psd1 -WarningAction SilentlyContinue
           Import-Module ./tvbot/tvbot.psd1 -WarningAction SilentlyContinue
 
-      - name: Run tests
+      - name: Run Pester tests
         shell: pwsh
         env:
           clientid: ${{secrets.CLIENTID}}
