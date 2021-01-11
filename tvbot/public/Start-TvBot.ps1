@@ -17,6 +17,12 @@ function Start-TvBot {
     .PARAMETER NoAutoReconnect
         Do not attempt to automatically reconnect if disconnected
 
+    .PARAMETER NoHide
+        Show bot right to console and do not create a notify icon
+
+    .PARAMETER PrimaryPid
+        Internal parameter
+
     .EXAMPLE
         PS> $splat = @{
                 BotClientId      = "abcdefh01234567ijklmop"

@@ -10,6 +10,9 @@ function Invoke-TvCommand {
     .PARAMETER InputObject
         The message to parse for commands
 
+    .PARAMETER User
+        The username invoking the command
+
     .EXAMPLE
         PS> $InputObject | Invoke-TvCommand -User potatoqualitee
 
