@@ -25,11 +25,19 @@ function Start-AlertJob {
 
             if (-not (Get-Job -Name tvbotsubsfollows -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
                 $null = Start-Job -Name tvbotsubsfollows -ScriptBlock {
+                    # Get internal commands
+                    Import-Module tvclient, tvbot
+                    Import-Module (Get-Module -Name tvbot).Path -Force
+                    Import-Module (Get-Module -Name tvclient).Path -Force
+
                     $StartingSubs = Get-TvSubscriber
                     $startingFollows = Get-TvFollower
 
+                    Write-TvSystemMessage -Type Verbose -Message "Got $($StartingSubs.Count) subs"
+                    Write-TvSystemMessage -Type Verbose -Message "Got $($startingFollows.Count) follows"
+
                     while ($true) {
-                        Start-Sleep -Seconds 3
+                        Start-Sleep -Seconds 2
 
                         # Get updated lists of follows and subs
                         $subupdate = Get-TvSubscriber
@@ -40,25 +48,18 @@ function Start-AlertJob {
 
                         foreach ($follower in $newfollowers.FromName) {
                             Show-TvAlert -UserName $follower -Type Follow
+                            Write-TvSystemMessage -Type Verbose -Message "New follower: $follower!"
                         }
 
                         foreach ($sub in $newsubs) {
                             $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
-
-                            if ($cmd) {
-                                if ((Test-Path -Path $cmd)) {
-                                    foreach ($file in $cmd) {
-                                        Write-Verbose -Message "Executing $file"
-                                        $externalcode = Get-Content -Path $file -Raw
-                                        Invoke-Expression -Command $externalcode
-                                    }
-                                }
-                            }
-
                             if ($sub.GifterName) {
                                 Show-TvAlert -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
+                                
+                                Write-TvSystemMessage -Type Verbose -Message "New Tier $tier sub gifted from $($sub.GifterName) to $($sub.UserName)!"
                             } else {
                                 Show-TvAlert -UserName $sub.UserName -Type Sub -MiscNumber $tier
+                                Write-TvSystemMessage -Type Verbose -Message "New Tier $tier sub: $($sub.UserName)!"
                             }
                         }
 
@@ -70,7 +71,7 @@ function Start-AlertJob {
                             if ($cmd) {
                                 if ((Test-Path -Path $cmd)) {
                                     foreach ($file in $cmd) {
-                                        Write-Verbose -Message "Executing $file"
+                                        Write-TvSystemMessage -Type Verbose -Message "Executing $file"
                                         $externalcode = Get-Content -Path $file -Raw
                                         Invoke-Expression -Command $externalcode
                                     }
