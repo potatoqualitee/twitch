@@ -58,7 +58,7 @@ function Invoke-TvCommand {
 
                     try {
                         if ($code) {
-                            Write-Verbose -Message "Executing $code"
+                            Write-TvSystemMessage -Type Verbose -Message "Executing $code"
                             Invoke-Expression -Command $code
                         }
                     } catch {

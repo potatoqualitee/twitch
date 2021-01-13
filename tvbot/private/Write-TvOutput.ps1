@@ -58,7 +58,7 @@ function Write-TvOutput {
         $emote = $hash["emotes"]
         $emoteonly = [bool]$hash["emote-only"]
 
-        Write-Verbose $InputObject
+        Write-TvSystemMessage -Type Verbose -Message $InputObject
         # format it
         switch ($command) {
             "USERNOTICE" {
@@ -128,7 +128,7 @@ function Write-TvOutput {
                             if ($cmd) {
                                 if ((Test-Path -Path $cmd)) {
                                     foreach ($file in $cmd) {
-                                        Write-Verbose -Message "Executing $file"
+                                        Write-TvSystemMessage -Type Verbose -Message "Executing $file"
                                         $externalcode = Get-Content -Path $file -Raw
                                         Invoke-Expression -Command $externalcode
                                     }

@@ -59,7 +59,7 @@ function Start-TvBot {
 
         # Check if running in Core or in Windows Terminal ($env:WT_SESSION)
         if (-not $PSBoundParameters.NoHide -and ($PSVersionTable.PSEdition -eq "Core" -or $env:WT_SESSION)) {
-            Write-Verbose -Message "Bot cannot be hidden when using PowerShell Core. Setting -NoHide."
+            Write-TvSystemMessage -Type Verbose -Message "Bot cannot be hidden when using PowerShell Core. Setting -NoHide."
             $PSBoundParameters.NoHide = $true
         }
         $script:startboundparams = $PSBoundParameters
