@@ -45,11 +45,11 @@ function Connect-TvServer {
             $bot.SendBufferSize = 81920
             $bot.ReceiveBufferSize = 81920
 
-            Write-Output "> Connecting to $($Server):$Port"
+            Write-Output "[$(Get-Date)] > Connecting to $($Server):$Port"
             $bot.Connect($Server, $Port)
             $stream = $bot.GetStream()
 
-            Write-Output "> Connected"
+            Write-Output "[$(Get-Date)] > Connected"
             $script:sslstream = New-Object System.Net.Security.SslStream $stream, $false
             $sslstream.AuthenticateAsClient($Server)
 
