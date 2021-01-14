@@ -55,6 +55,7 @@
         'Start-TvBot',
         'Start-TvHueParty',
         'Write-TvChannelMessage',
+        'Write-TvSystemMessage',
         'Wait-TvResponse'
     )
 

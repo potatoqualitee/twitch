@@ -25,11 +25,6 @@ function Start-AlertJob {
 
             if (-not (Get-Job -Name tvbotsubsfollows -ErrorAction SilentlyContinue | Where-Object State -eq Running)) {
                 $null = Start-Job -Name tvbotsubsfollows -ScriptBlock {
-                    # Get internal commands
-                    Import-Module tvclient, tvbot
-                    Import-Module (Get-Module -Name tvbot).Path -Force
-                    Import-Module (Get-Module -Name tvclient).Path -Force
-
                     $StartingSubs = Get-TvSubscriber
                     $startingFollows = Get-TvFollower
 
@@ -52,10 +47,10 @@ function Start-AlertJob {
                         }
 
                         foreach ($sub in $newsubs) {
-                            $tier = $sub.Tier.ToCharArray() | Select-Object -First 1
+                            $tier = $sub.Tier
                             if ($sub.GifterName) {
                                 Show-TvAlert -UserName $sub.GifterName -Type SubGifted -MiscNumber $tier -MiscString $sub.UserName
-                                
+
                                 Write-TvSystemMessage -Type Verbose -Message "New Tier $tier sub gifted from $($sub.GifterName) to $($sub.UserName)!"
                             } else {
                                 Show-TvAlert -UserName $sub.UserName -Type Sub -MiscNumber $tier
