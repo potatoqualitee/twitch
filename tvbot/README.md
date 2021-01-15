@@ -92,3 +92,60 @@ The owner(s) of the bot can issue the following command:
 * `!quit` - disconnects the bot and quits the script
 
 To interact with the bot, join the same channel and execute a command.
+
+## Advanced config
+
+There's a lot that can be configured, which can be seen with `Get-TvConfig`.
+
+```
+AdminCommandFile : C:\Users\ctrlb\AppData\Roaming\tvclient\admin-commands.json
+BitsIcon         : C:\Users\ctrlb\AppData\Roaming\tvclient\bits.gif
+BitsImage        : C:\Users\ctrlb\AppData\Roaming\tvclient\vibecat.gif
+BitsSound        : ms-winsoundevent:Notification.Mail
+BitsText         : Thanks so much for the <<bitcount>>, <<username>> ??
+BitsTitle        : <<username>> shared bits!
+BotChannel       : pspibot
+BotClientId      : **************
+BotIcon          : C:\Users\ctrlb\AppData\Roaming\tvclient\bot.ico
+BotIconColor     : White
+BotKey           : !
+BotOwner         : {potatoqualitee}
+BotToken         : **************
+ClientId         : **************
+ConfigFile       : C:\Users\ctrlb\AppData\Roaming\tvclient\config.json
+DefaultFont      : Segoe UI
+DiscordWebhook   : **************
+FollowIcon       : 
+FollowImage      : C:\Users\ctrlb\AppData\Roaming\tvclient\vibecat.gif
+FollowSound      : ms-winsoundevent:Notification.Mail
+FollowText       : Thanks so much for the follow, <<username>>!
+FollowTitle      : New follower ??
+HueHub           : hue
+HueToken         : **************
+NotifyColor      : Magenta
+NotifyType       : {chat}
+RaidIcon         : C:\Users\ctrlb\AppData\Roaming\tvclient\yay.gif
+RaidImage        : C:\Users\ctrlb\AppData\Roaming\tvclient\catparty.gif
+RaidSound        : ms-winsoundevent:Notification.IM
+RaidText         : 
+RaidTitle        : IT'S A RAID!
+ScriptsToProcess : {C:\github\bot\botcommands.ps1}
+Sound            : Enabled
+SubGiftedIcon    : C:\Users\ctrlb\AppData\Roaming\tvclient\yay.gif
+SubGiftedImage   : C:\Users\ctrlb\AppData\Roaming\tvclient\catparty.gif
+SubGiftedSound   : ms-winsoundevent:Notification.Mail
+SubGiftedText    : Thank you so very much for gifting a Tier <<tier>> sub, 
+                   <<gifter>>!
+SubGiftedTitle   : <<gifter>> has gifted <<giftee>> a sub ??
+SubIcon          : C:\Users\ctrlb\AppData\Roaming\tvclient\yay.gif
+SubImage         : C:\Users\ctrlb\AppData\Roaming\tvclient\catparty.gif
+SubSound         : ms-winsoundevent:Notification.Mail
+SubText          : Thank you so very much for the tier <<tier>> sub, 
+                   <<username>> ??
+SubTitle         : AWESOME!!
+Token            : **************
+UserCommandFile  : C:\Users\ctrlb\AppData\Roaming\tvclient\user-commands.json
+UsersToIgnore    : {Wizebot, Nightbot}
+```
+
+To see the actual values for sensitive fields such as `Token`, use `Get-TvConfig -Force`.
