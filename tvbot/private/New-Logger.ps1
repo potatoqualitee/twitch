@@ -10,7 +10,7 @@ function New-Logger {
     if (-not (Test-Path -Path $dir)) {
         $null = New-Item -ItemType Directory -Path $dir
     }
-    $logfile = Join-Path -Path $dir -ChildPath "tvbot-$((Get-Date -Format FileDate).ToString()).log"
+    $logfile = Join-Path -Path $dir -ChildPath "tvbot-$((Get-Date -Format FileDate).ToString())-$pid.log"
     $append = $true
 
     #Load FileAppender Configuration

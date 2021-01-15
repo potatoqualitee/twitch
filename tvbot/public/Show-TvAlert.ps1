@@ -84,9 +84,11 @@
                     $Value = $Value.Replace("<<bitcount>>", "$MiscNumber $bitword")
                 }
                 "Sub" {
+                    $MiscNumber = "$MiscNumber".ToCharArray() | Select-Object -First 1
                     $Value = $Value.Replace("<<tier>>", $MiscNumber)
                 }
                 "SubGifted" {
+                    $MiscNumber = "$MiscNumber".ToCharArray() | Select-Object -First 1
                     $Value = $Value.Replace("<<gifter>>", $UserName)
                     $Value = $Value.Replace("<<tier>>", $MiscNumber)
                     $Value = $Value.Replace("<<giftee>>", $MiscString)

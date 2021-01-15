@@ -1,24 +1,33 @@
 function Write-TvSystemMessage {
     <#
     .SYNOPSIS
-        Gets Twitch User
+        Writes output to console and log
+
+    .DESCRIPTION
+        Writes output to console and log
+
+    .PARAMETER Message
+        The message
+
+    .PARAMETER Type
+        Verbose or debug
     #>
     [CmdletBinding()]
     param
     (
         [string]$Message,
         [ValidateSet("Verbose", "Debug")]
-        [string]$Type
+        [string]$Type = "Verbose"
     )
     process {
         switch ($Type) {
             "Verbose" {
-                Write-Verbose -Message "[$(Get-Date)] $Message"
                 $null = $script:logger.Info($Message)
+                Write-Verbose -Message "[$(Get-Date)] $Message"
             }
             "Debug" {
-                Write-Debug -Message "[$(Get-Date)] $Message"
                 $null = $script:logger.Debug($Message)
+                Write-Debug -Message "[$(Get-Date)] $Message"
             }
         }
     }
