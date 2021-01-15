@@ -49,7 +49,7 @@ Start-TvBot
 
 If you are on a Windows 10 machine and running PowerShell 5.1, the bot will open a new window, then minimize to the taskbar as a notify icon.
 
-![image](https://user-images.githubusercontent.com/8278033/104730790-f714fe80-573a-11eb-8faf-7c36dad51e3f.png)
+<img src=https://user-images.githubusercontent.com/8278033/104730790-f714fe80-573a-11eb-8faf-7c36dad51e3f.png height=424px width=452px>
 
 You'll also be notified of chats, follows, subs and more.
 
