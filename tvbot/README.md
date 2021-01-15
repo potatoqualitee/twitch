@@ -47,7 +47,7 @@ Next, start it up.
 Start-TvBot
 ```
 
-If you are on a Windows 10 machine and running PowerShell 5.1, the bot will open a new window, then minimize to the taskbar as a notify icon. 
+If you are on a Windows 10 machine and running PowerShell 5.1, the bot will open a new window, then minimize to the taskbar as a notify icon.
 
 ![image](https://user-images.githubusercontent.com/8278033/104730790-f714fe80-573a-11eb-8faf-7c36dad51e3f.png)
 
@@ -83,6 +83,9 @@ In your chat room, users execute the following commands:
 
 * `!ping` - says "pong" back
 * `!pwd` - shows the present working directory
+* `!psversion` - displays the powershell version
+* `!hello` - says "hi!" back
+* `!say` - says whatever
 
 The owner(s) of the bot can issue the following command:
 
