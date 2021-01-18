@@ -91,10 +91,10 @@
             Tags         = @('twitch', 'bot', 'irc', 'api')
 
             # The web address of an icon which can be used in galleries to represent this module
-            IconUri      = "https://user-images.githubusercontent.com/8278033/95674723-6c0fef80-0bb2-11eb-8156-fbb026255c94.png"
+            IconUri      = "https://github.com/potatoqualitee/twitch/blob/main/tvclient/icon.png?raw=true"
 
             # The web address of this module's project or support homepage.
-            ProjectUri   = "https://github.com/potatoqualitee/twitch"
+            ProjectUri   = "https://github.com/potatoqualitee/twitch/tvclient"
 
             # The web address of this module's license. Points to a page that's embeddable and linkable.
             LicenseUri   = "https://opensource.org/licenses/MIT"
@@ -110,4 +110,3 @@
         }
     }
 }
-
