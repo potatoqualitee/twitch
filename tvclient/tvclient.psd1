@@ -10,7 +10,7 @@
     RootModule         = 'tvclient.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.0.10'
+    ModuleVersion      = '0.0.11'
 
     # ID used to uniquely identify this module
     GUID               = '46d77594-0721-45ad-ac7c-0cb366db089e'
@@ -94,7 +94,7 @@
             IconUri      = "https://github.com/potatoqualitee/twitch/blob/main/tvclient/icon.png?raw=true"
 
             # The web address of this module's project or support homepage.
-            ProjectUri   = "https://github.com/potatoqualitee/twitch/tvclient"
+            ProjectUri   = "https://github.com/potatoqualitee/twitch/"
 
             # The web address of this module's license. Points to a page that's embeddable and linkable.
             LicenseUri   = "https://opensource.org/licenses/MIT"

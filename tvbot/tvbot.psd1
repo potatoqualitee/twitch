@@ -10,7 +10,7 @@
     RootModule         = 'tvbot.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.0.10'
+    ModuleVersion      = '0.0.11'
 
     # ID used to uniquely identify this module
     GUID               = 'd6a499b1-fafd-4911-9b4c-cabd00c11546'
@@ -84,7 +84,7 @@
             IconUri      = "https://github.com/potatoqualitee/twitch/blob/main/tvbot/icon.png?raw=true"
 
             # The web address of this module's project or support homepage.
-            ProjectUri   = "https://github.com/potatoqualitee/twitch/tvbot"
+            ProjectUri   = "https://github.com/potatoqualitee/twitch/"
 
             # The web address of this module's license. Points to a page that's embeddable and linkable.
             LicenseUri   = "https://opensource.org/licenses/MIT"

@@ -86,7 +86,7 @@ Register-ArgumentCompleter -ParameterName FollowSound -CommandName Set-TvConfig 
 
 Register-ArgumentCompleter -ParameterName Since -CommandName Get-TvFollower -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
-    "StreamStart", "LastStream" | ForEach-Object {
+    $querytool.values | Select-Object -Unique | Sort-Object | ForEach-Object {
         [System.Management.Automation.CompletionResult]::new($PSItem, $PSItem, "ParameterName", $PSItem)
     }
 }
